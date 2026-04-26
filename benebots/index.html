@@ -1,12 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BeneBots — Benefits Without Boundaries</title>
+    <meta name="description" content="BeneBots — AI agents for benefits administration. Automate benefits stewardship, enrollment, and compliance." />
+    <meta name="theme-color" content="#00C47A" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="BeneBots — AI Agents for Benefits Admin" />
+    <meta property="og:description" content="Each BeneBot knows every plan detail like the back of its hand. Never sleeps, never sighs." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://benebots.github.io" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Google Analytics — replace G-XXXXXXXXXX with your Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <title>BeneBots — AI Agents for Benefits Admin</title>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
