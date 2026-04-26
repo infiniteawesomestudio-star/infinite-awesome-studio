@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment — never commit API keys
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

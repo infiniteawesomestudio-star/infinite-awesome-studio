@@ -1,0 +1,7 @@
+name = "benebots-proxy"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# ANTHROPIC_API_KEY is set as a secret — never put real keys here.
+# Run: npx wrangler secret put ANTHROPIC_API_KEY
