@@ -74,6 +74,7 @@ function LeadForm() {
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder="Your name"
+          maxLength={100}
           className="w-full px-4 py-2.5 text-sm font-body bg-dark-base border border-dark-border rounded-xl text-dark-text placeholder-dark-muted focus:outline-none focus:border-mint/40 transition-colors"
         />
       </div>
@@ -88,6 +89,7 @@ function LeadForm() {
           value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="you@brokerage.com"
+          maxLength={254}
           className="w-full px-4 py-2.5 text-sm font-body bg-dark-base border border-dark-border rounded-xl text-dark-text placeholder-dark-muted focus:outline-none focus:border-mint/40 transition-colors"
         />
       </div>
@@ -100,6 +102,7 @@ function LeadForm() {
           value={message}
           onChange={e => setMessage(e.target.value)}
           rows={3}
+          maxLength={2000}
           placeholder="Open enrollment chaos, stewardship reports, COBRA follow-ups..."
           className="w-full px-4 py-2.5 text-sm font-body bg-dark-base border border-dark-border rounded-xl text-dark-text placeholder-dark-muted focus:outline-none focus:border-mint/40 transition-colors resize-none"
         />

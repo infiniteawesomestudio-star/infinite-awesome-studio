@@ -24,7 +24,24 @@ export default {
       return new Response("Invalid JSON", { status: 400 });
     }
 
+    // Rate limiting — 20 requests per IP per minute
+    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+    const { success } = await env.RATE_LIMITER.limit({ key: ip });
+    if (!success) {
+      return new Response("Too many requests", { status: 429, headers: corsHeaders(request) });
+    }
+
     const { system, messages, maxTokens } = body;
+
+    // Validate system prompt if provided
+    if (system !== undefined && system !== null) {
+      if (typeof system !== "string") {
+        return new Response("system must be a string", { status: 400 });
+      }
+      if (system.length > 8000) {
+        return new Response("system prompt too long", { status: 400 });
+      }
+    }
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return new Response("Missing or empty messages array", { status: 400 });

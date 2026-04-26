@@ -3,5 +3,12 @@ main = "index.js"
 compatibility_date = "2025-01-01"
 
 [vars]
-# ANTHROPIC_API_KEY is set as a secret — never put real keys here.
+# ANTHROPIC_API_KEY and WORKER_TOKEN are set as secrets — never put real keys here.
 # Run: npx wrangler secret put ANTHROPIC_API_KEY
+# Run: npx wrangler secret put WORKER_TOKEN
+
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 20, period = 60 }

@@ -16,3 +16,10 @@ build/
 # Editor
 .vscode/
 .idea/
+
+# Wrangler local cache — contains account ID, never commit
+.wrangler/
+worker/.wrangler/
+
+# Vite local dep cache
+benebots/.vite/
