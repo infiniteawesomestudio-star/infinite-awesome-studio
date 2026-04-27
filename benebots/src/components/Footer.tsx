@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { Send, ExternalLink, Calendar } from 'lucide-react'
 
-const FORMSUBMIT_EMAIL = 'hello@benebots.ai'
+const CONTACT_EMAIL = 'ty@infiniteawesomestudio.com'
 
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -26,7 +25,7 @@ function LeadForm() {
     e.preventDefault()
     setLoading(true)
     try {
-      await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+      await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
@@ -38,7 +37,6 @@ function LeadForm() {
       })
       setSubmitted(true)
     } catch {
-      // On network error still show success (formsubmit handles retry)
       setSubmitted(true)
     } finally {
       setLoading(false)
@@ -64,9 +62,7 @@ function LeadForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4" aria-label="Contact form">
       <div>
-        <label htmlFor="contact-name" className="block text-xs font-body text-dark-muted mb-1.5 uppercase tracking-wider">
-          Name
-        </label>
+        <label htmlFor="contact-name" className="block text-xs font-body text-dark-muted mb-1.5 uppercase tracking-wider">Name</label>
         <input
           id="contact-name"
           type="text"
@@ -79,9 +75,7 @@ function LeadForm() {
         />
       </div>
       <div>
-        <label htmlFor="contact-email" className="block text-xs font-body text-dark-muted mb-1.5 uppercase tracking-wider">
-          Work Email
-        </label>
+        <label htmlFor="contact-email" className="block text-xs font-body text-dark-muted mb-1.5 uppercase tracking-wider">Work Email</label>
         <input
           id="contact-email"
           type="email"
@@ -94,16 +88,14 @@ function LeadForm() {
         />
       </div>
       <div>
-        <label htmlFor="contact-message" className="block text-xs font-body text-dark-muted mb-1.5 uppercase tracking-wider">
-          What's on your plate? (optional)
-        </label>
+        <label htmlFor="contact-message" className="block text-xs font-body text-dark-muted mb-1.5 uppercase tracking-wider">What's on your plate? (optional)</label>
         <textarea
           id="contact-message"
           value={message}
           onChange={e => setMessage(e.target.value)}
           rows={3}
           maxLength={2000}
-          placeholder="Open enrollment chaos, stewardship reports, COBRA follow-ups..."
+          placeholder="Open enrollment chaos, stewardship reports, COBRA follow-ups…"
           className="w-full px-4 py-2.5 text-sm font-body bg-dark-base border border-dark-border rounded-xl text-dark-text placeholder-dark-muted focus:outline-none focus:border-mint/40 transition-colors resize-none"
         />
       </div>
@@ -127,7 +119,7 @@ function NewsletterCapture() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+    await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ email, _subject: 'BeneBots — Newsletter signup', type: 'newsletter' }),
@@ -178,7 +170,6 @@ export default function Footer() {
       {/* CTA strip */}
       <div id="demo" className="border-b border-dark-border py-16 px-4 sm:px-6 bg-grid">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
-          {/* Left: CTA copy */}
           <div className="reveal">
             <div className="inline-flex items-center gap-2 bg-dark-card border border-dark-border rounded-full px-4 py-1.5 mb-6">
               <span className="w-2 h-2 rounded-full bg-mint animate-pulse" />
@@ -190,11 +181,8 @@ export default function Footer() {
               that aren't actually dumb?
             </h2>
             <p className="text-base font-body text-dark-muted leading-relaxed mb-8 max-w-md">
-              Tell us what's on your plate. We'll scope the right BeneBot, no pressure, no deck —
-              just a real conversation about what your team is drowning in.
+              Tell us what's on your plate. We'll scope the right BeneBot — no deck, no pressure, just a real conversation about where your team is spending time it shouldn't be.
             </p>
-
-            {/* Calendly link */}
             <a
               href="https://calendly.com/benebots/discovery"
               target="_blank"
@@ -205,7 +193,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Right: Contact form */}
           <div className="reveal bg-dark-card border border-dark-border rounded-2xl p-6" style={{ transitionDelay: '0.15s' }}>
             <h3 className="font-display font-bold text-lg text-dark-text mb-1">Send us a message</h3>
             <p className="text-xs font-body text-dark-muted mb-5">We respond within one business day.</p>
@@ -216,9 +203,8 @@ export default function Footer() {
 
       {/* Footer nav */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {/* Brand */}
         <div className="reveal sm:col-span-2 lg:col-span-1">
-          <a href="#" className="flex items-center gap-2 mb-4" aria-label="BeneBots home">
+          <a href="/" className="flex items-center gap-2 mb-4" aria-label="BeneBots home">
             <div className="w-8 h-8 rounded-lg bg-mint flex items-center justify-center">
               <span className="text-dark-base font-display font-bold text-sm">B</span>
             </div>
@@ -237,7 +223,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Site links */}
         <div className="reveal" style={{ transitionDelay: '0.1s' }}>
           <h4 className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-4">Site</h4>
           <ul className="space-y-2.5">
@@ -251,18 +236,12 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* External links */}
         <div className="reveal" style={{ transitionDelay: '0.2s' }}>
           <h4 className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-4">Ecosystem</h4>
           <ul className="space-y-3">
             {externalLinks.map(l => (
               <li key={l.label}>
-                <a
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-col"
-                >
+                <a href={l.href} target="_blank" rel="noopener noreferrer" className="group flex flex-col">
                   <span className="text-sm font-body text-dark-muted group-hover:text-mint transition-colors flex items-center gap-1">
                     {l.label} <ExternalLink size={11} className="opacity-50" />
                   </span>
@@ -273,7 +252,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Newsletter */}
         <div className="reveal" style={{ transitionDelay: '0.3s' }}>
           <h4 className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-4">Stay in the loop</h4>
           <p className="text-xs font-body text-dark-muted mb-3 leading-relaxed">
@@ -283,7 +261,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-dark-border px-4 sm:px-6 py-5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs font-body text-dark-muted">
@@ -293,10 +270,10 @@ export default function Footer() {
             <a href="/privacy" className="text-xs font-body text-dark-muted hover:text-mint transition-colors">Privacy</a>
             <a href="/terms" className="text-xs font-body text-dark-muted hover:text-mint transition-colors">Terms</a>
             <a
-              href="mailto:hello@benebots.ai"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-xs font-body text-dark-muted hover:text-mint transition-colors"
             >
-              hello@benebots.ai
+              {CONTACT_EMAIL}
             </a>
           </div>
         </div>

@@ -1,17 +1,19 @@
-import { ArrowRight, Calendar } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Calendar } from 'lucide-react'
 
 const stats = [
-  { value: '4', label: 'specialized agents, one shared client profile' },
+  { value: '5', label: 'specialized agents, one shared client profile' },
   { value: '40 min', label: 'stewardship report — down from six hours' },
   { value: '0', label: 'generic answers — every response cites the plan' },
 ]
 
 const BOT_FACES = [
-  { color: '#00C47A', label: 'Ask', delay: '0s' },
-  { color: '#5B8FFF', label: 'OE', delay: '1s' },
-  { color: '#F7D154', label: 'Plan', delay: '2s' },
-  { color: '#FF6F61', label: 'Draft', delay: '0.5s' },
+  { color: '#00C47A', label: 'Ask', delay: '0s', slug: 'ask' },
+  { color: '#5B8FFF', label: 'Reports', delay: '1s', slug: 'stewardship' },
+  { color: '#F7D154', label: 'Compare', delay: '2s', slug: 'plan-compare' },
+  { color: '#FF6F61', label: 'OE', delay: '0.5s', slug: 'oe-coach' },
+  { color: '#A78BFA', label: 'LOA', delay: '1.5s', slug: 'loa-navigator' },
 ]
 
 function BotFace({ color, label, delay, size = 56 }: { color: string; label: string; delay: string; size?: number }) {
@@ -39,6 +41,7 @@ function BotFace({ color, label, delay, size = 56 }: { color: string; label: str
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const el = sectionRef.current
@@ -71,37 +74,31 @@ export default function Hero() {
           </div>
 
           <h1 className="reveal font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-dark-text leading-tight mb-5" style={{ transitionDelay: '0.1s' }}>
-            Meet{' '}
-            <span className="text-gradient">BeneBots</span>
-            <span className="block mt-1">AI Agents for</span>
-            <span className="block">Benefits Admin</span>
+            AI agents that{' '}
+            <span className="text-gradient">know the plan.</span>
+            <span className="block mt-1">Not just the topic.</span>
           </h1>
 
-          <p className="reveal text-base sm:text-lg font-body text-dark-muted leading-relaxed mb-3 max-w-lg" style={{ transitionDelay: '0.2s' }}>
-            The AI platform for employee benefits,{' '}
-            <span className="text-dark-text">built by a benefits expert who writes code.</span>
-          </p>
-          <p className="reveal text-sm font-body text-dark-muted leading-relaxed mb-8 max-w-lg" style={{ transitionDelay: '0.25s' }}>
-            Each BeneBot knows every plan detail like the back of its hand.{' '}
-            Never sleeps, never sighs. So HR can finally focus on the rest of the HR circus.
+          <p className="reveal text-base sm:text-lg font-body text-dark-muted leading-relaxed mb-8 max-w-lg" style={{ transitionDelay: '0.2s' }}>
+            Five BeneBots. Each one grounded in your client's actual plan data — deductibles, copays, SPD language, carrier contracts. Pick a bot below and see it answer a real question.
           </p>
 
           <div className="reveal flex flex-wrap gap-3 mb-12" style={{ transitionDelay: '0.3s' }}>
-            <a
-              href="#demo"
+            <button
+              onClick={() => navigate('/demo/ask')}
               className="inline-flex items-center gap-2 bg-mint text-deep-forest font-display font-semibold px-6 py-3 rounded-xl hover:bg-[#00a868] transition-colors shadow-lg shadow-mint/25 text-sm"
             >
-              See Demo <ArrowRight size={16} />
-            </a>
+              Try Ask BeneBot →
+            </button>
             <a
-              href="#contact"
+              href="mailto:ty@infiniteawesomestudio.com"
               className="inline-flex items-center gap-2 text-dark-text border border-dark-border font-body font-medium px-6 py-3 rounded-xl hover:border-mint/40 hover:text-mint transition-all text-sm"
             >
-              <Calendar size={16} /> Schedule Consultation
+              <Calendar size={16} /> Schedule a call
             </a>
           </div>
 
-          {/* Stats row — handoff-sourced, defensible */}
+          {/* Stats */}
           <div className="reveal grid grid-cols-3 gap-4" style={{ transitionDelay: '0.4s' }}>
             {stats.map(s => (
               <div key={s.label} className="text-center sm:text-left">
@@ -112,7 +109,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: Bot constellation — 4 bots */}
+        {/* Right: Bot constellation — 5 bots */}
         <div className="relative flex items-center justify-center h-80 lg:h-auto" aria-hidden="true">
           <div className="relative animate-float" style={{ animationDuration: '5s' }}>
             <div
@@ -133,7 +130,7 @@ export default function Hero() {
 
           {BOT_FACES.map((b, i) => {
             const angle = (i / BOT_FACES.length) * 2 * Math.PI - Math.PI / 2
-            const r = 130
+            const r = 140
             const x = Math.cos(angle) * r
             const y = Math.sin(angle) * r
             return (
@@ -155,7 +152,7 @@ export default function Hero() {
             <g transform="translate(160,160)">
               {BOT_FACES.map((b, i) => {
                 const angle = (i / BOT_FACES.length) * 2 * Math.PI - Math.PI / 2
-                const r = 130
+                const r = 140
                 return (
                   <line
                     key={i}

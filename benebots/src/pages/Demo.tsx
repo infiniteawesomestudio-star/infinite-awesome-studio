@@ -1,0 +1,89 @@
+import { useParams, Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import AskDemo from '../demo/AskDemo'
+import StewardshipDemo from '../demo/StewardshipDemo'
+import PlanCompareDemo from '../demo/PlanCompareDemo'
+import OECoachDemo from '../demo/OECoachDemo'
+import LOANavigatorDemo from '../demo/LOANavigatorDemo'
+
+const BOT_META: Record<string, { name: string; color: string; tagline: string }> = {
+  ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in Acme\'s plans' },
+  stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, Acme claims data pre-loaded' },
+  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO — Acme\'s actual numbers' },
+  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans' },
+  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide — FMLA, CA/NY/WA, parental leave' },
+}
+
+export default function Demo() {
+  const { botId } = useParams<{ botId: string }>()
+  const meta = botId ? BOT_META[botId] : undefined
+
+  if (!meta) {
+    return (
+      <div className="min-h-screen bg-dark-base text-dark-text flex flex-col">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-4 pt-16">
+          <div className="text-center">
+            <p className="font-display font-bold text-2xl text-dark-text mb-3">Bot not found.</p>
+            <Link to="/" className="text-mint text-sm font-body hover:underline">← Back to BeneBots</Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-dark-base text-dark-text flex flex-col">
+      <Navbar />
+
+      {/* Demo header */}
+      <div className="pt-16 border-b border-dark-border bg-dark-surface">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center gap-4 justify-between">
+          <div className="flex items-center gap-4">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: `${meta.color}1a`, border: `1.5px solid ${meta.color}44` }}
+            >
+              <div className="flex flex-col items-center gap-0.5">
+                <div className="flex gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: meta.color }} />
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: meta.color }} />
+                </div>
+                <div className="w-3 h-0.5 rounded-full" style={{ backgroundColor: `${meta.color}88` }} />
+              </div>
+            </div>
+            <div>
+              <h1 className="font-display font-bold text-dark-text text-lg leading-tight">{meta.name}</h1>
+              <p className="text-xs font-body text-dark-muted">{meta.tagline}</p>
+            </div>
+            <span
+              className="text-[10px] font-body font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full border"
+              style={{ backgroundColor: `${meta.color}12`, color: meta.color, borderColor: `${meta.color}33` }}
+            >
+              Demo mode — Acme Industries
+            </span>
+          </div>
+          <Link
+            to="/"
+            className="text-xs font-body text-dark-muted hover:text-mint transition-colors flex items-center gap-1"
+          >
+            ← Back to BeneBots
+          </Link>
+        </div>
+      </div>
+
+      {/* Demo interface */}
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
+        {botId === 'ask' && <AskDemo />}
+        {botId === 'stewardship' && <StewardshipDemo />}
+        {botId === 'plan-compare' && <PlanCompareDemo />}
+        {botId === 'oe-coach' && <OECoachDemo />}
+        {botId === 'loa-navigator' && <LOANavigatorDemo />}
+      </main>
+
+      <Footer />
+    </div>
+  )
+}

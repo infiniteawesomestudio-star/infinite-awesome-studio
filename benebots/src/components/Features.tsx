@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { MessageSquare, FileText, Scale, Compass } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { MessageSquare, FileText, Scale, Compass, Navigation } from 'lucide-react'
 
 interface Bot {
   icon: React.ElementType
@@ -8,6 +9,7 @@ interface Bot {
   description: string
   color: string
   tasks: string[]
+  slug: string
 }
 
 const bots: Bot[] = [
@@ -16,7 +18,7 @@ const bots: Bot[] = [
     name: 'Ask BeneBot',
     tagline: 'Every plan detail, plain language',
     description:
-      'Translating insurance chaos into human language — for HR teams, for employees, for the 11pm Sunday question that can\'t wait. Cites the plan it\'s referencing. Admits when the answer isn\'t in the data.',
+      'Answers employee benefits questions grounded in your client\'s actual plan. Cites the SPD page. Admits when the answer isn\'t there.',
     color: '#00C47A',
     tasks: [
       'Deductible & copay lookups',
@@ -24,13 +26,14 @@ const bots: Bot[] = [
       'In/out-of-network guidance',
       'COBRA eligibility',
     ],
+    slug: 'ask',
   },
   {
     icon: FileText,
     name: 'Stewardship Studio',
     tagline: 'Broker-quality narratives in 40 minutes',
     description:
-      'Seven report section types. Every draft anchored in the client\'s actual claims and enrollment data. Markdown output that copies cleanly into Word or PowerPoint — no reformatting needed.',
+      'Seven report section types, each anchored in the client\'s actual claims and enrollment data. Markdown output that copies cleanly into Word or PowerPoint.',
     color: '#5B8FFF',
     tasks: [
       'Executive summary',
@@ -38,13 +41,14 @@ const bots: Bot[] = [
       'Market benchmarking',
       'Strategic recommendations',
     ],
+    slug: 'stewardship',
   },
   {
     icon: Scale,
     name: 'Plan Compare',
     tagline: 'Side-by-side, with the math shown',
     description:
-      'Pick two or three plans. Get a structured comparison with real cost scenarios by employee profile — low utilizer, family with expected care, chronic condition. Includes honest watch-outs.',
+      'Two or three plans, structured comparison with real cost scenarios by employee profile — low utilizer, family with expected care, chronic condition. Includes honest watch-outs.',
     color: '#F7D154',
     tasks: [
       'Medical plan comparison',
@@ -52,13 +56,14 @@ const bots: Bot[] = [
       'HSA vs FSA guidance',
       'Renewal strategy support',
     ],
+    slug: 'plan-compare',
   },
   {
     icon: Compass,
     name: 'OE Coach',
     tagline: 'Open enrollment, one step at a time',
     description:
-      'A short questionnaire — coverage tier, expected care, prescriptions, budget. Returns a personalized plan recommendation, HSA/FSA contribution strategy, three "don\'t forget" elections, and one sentence on the trade-off they\'re making.',
+      'Short questionnaire — coverage tier, expected care, prescriptions, budget. Returns a personalized plan recommendation, HSA/FSA contribution strategy, and the one trade-off they\'re making.',
     color: '#FF6F61',
     tasks: [
       'Plan recommendation by profile',
@@ -66,20 +71,45 @@ const bots: Bot[] = [
       '"Don\'t forget" elections',
       'Trade-off plain language',
     ],
+    slug: 'oe-coach',
+  },
+  {
+    icon: Navigation,
+    name: 'LOA Navigator',
+    tagline: 'Leave policy, state by state',
+    description:
+      'Dual-mode: employee-facing education and HR admin checklist. Covers FMLA, state paid leave (CA/NY/WA), parental leave, STD/LTD integration. Every response ends with "what to ask HR."',
+    color: '#A78BFA',
+    tasks: [
+      'FMLA & state leave education',
+      'Employee vs HR admin mode',
+      'STD/LTD integration guidance',
+      '"What to ask HR" checklist',
+    ],
+    slug: 'loa-navigator',
   },
 ]
 
 function BotCard({ bot, index }: { bot: Bot; index: number }) {
+  const navigate = useNavigate()
   const Icon = bot.icon
   return (
     <article
-      className="reveal card-lift bg-dark-card border border-dark-border rounded-2xl p-6 flex flex-col gap-4"
-      style={{ transitionDelay: `${index * 0.1}s`, borderLeftColor: `${bot.color}44`, borderLeftWidth: '3px' }}
-      aria-label={bot.name}
+      className="reveal card-lift bg-dark-card border border-dark-border rounded-2xl p-6 flex flex-col gap-4 cursor-pointer group transition-all hover:border-opacity-60"
+      style={{
+        transitionDelay: `${index * 0.1}s`,
+        borderLeftColor: `${bot.color}44`,
+        borderLeftWidth: '3px',
+      }}
+      onClick={() => navigate(`/demo/${bot.slug}`)}
+      aria-label={`${bot.name} — try the demo`}
+      role="button"
+      tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && navigate(`/demo/${bot.slug}`)}
     >
       <div className="flex items-start justify-between gap-3">
         <div
-          className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all group-hover:scale-105"
           style={{ backgroundColor: `${bot.color}1a`, border: `1px solid ${bot.color}33` }}
         >
           <Icon size={20} style={{ color: bot.color }} />
@@ -106,6 +136,15 @@ function BotCard({ bot, index }: { bot: Bot; index: number }) {
           </li>
         ))}
       </ul>
+
+      <div className="pt-1 border-t border-dark-border">
+        <span
+          className="text-xs font-body font-medium transition-colors"
+          style={{ color: bot.color }}
+        >
+          See it in action →
+        </span>
+      </div>
     </article>
   )
 }
@@ -129,19 +168,19 @@ export default function Features() {
     <section ref={sectionRef} id="features" className="py-24 px-4 sm:px-6 max-w-6xl mx-auto" aria-labelledby="features-heading">
       <div className="text-center mb-16">
         <div className="reveal inline-flex items-center gap-2 bg-dark-card border border-dark-border rounded-full px-4 py-1.5 mb-5">
-          <span className="text-xs font-body text-mint uppercase tracking-widest">Four Agents, One Platform</span>
+          <span className="text-xs font-body text-mint uppercase tracking-widest">Five Agents, One Platform</span>
         </div>
         <h2 id="features-heading" className="reveal font-display font-bold text-3xl sm:text-4xl text-dark-text mb-4" style={{ transitionDelay: '0.1s' }}>
           A BeneBot for every job in the stack
         </h2>
         <p className="reveal text-base font-body text-dark-muted max-w-xl mx-auto leading-relaxed" style={{ transitionDelay: '0.2s' }}>
-          Each agent is tuned to a specific function — so HR stops drowning in the dumb questions that aren't actually dumb,
-          and brokers stop writing the same stewardship narrative for the fourteenth time.
+          Each agent handles a specific function — grounded in your client's actual plan data, not generic insurance content.
+          Click any card to see a live demo with Acme Industries data.
         </p>
       </div>
 
-      {/* 2x2 grid */}
-      <div className="grid sm:grid-cols-2 gap-5">
+      {/* 2+3 grid — 5 bots */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {bots.map((bot, i) => (
           <BotCard key={bot.name} bot={bot} index={i} />
         ))}
