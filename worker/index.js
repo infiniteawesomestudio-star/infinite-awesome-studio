@@ -8,20 +8,20 @@ export default {
     }
 
     if (request.method !== "POST") {
-      return new Response("Method not allowed", { status: 405 });
+      return new Response("Method not allowed", { status: 405, headers: corsHeaders(request) });
     }
 
     // Shared-secret token check — blocks anonymous abuse from outside the app.
     const auth = request.headers.get("Authorization") || "";
     if (!env.WORKER_TOKEN || auth !== `Bearer ${env.WORKER_TOKEN}`) {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response("Unauthorized", { status: 401, headers: corsHeaders(request) });
     }
 
     let body;
     try {
       body = await request.json();
     } catch {
-      return new Response("Invalid JSON", { status: 400 });
+      return new Response("Invalid JSON", { status: 400, headers: corsHeaders(request) });
     }
 
     // Rate limiting — 20 requests per IP per minute
@@ -36,27 +36,27 @@ export default {
     // Validate system prompt if provided
     if (system !== undefined && system !== null) {
       if (typeof system !== "string") {
-        return new Response("system must be a string", { status: 400 });
+        return new Response("system must be a string", { status: 400, headers: corsHeaders(request) });
       }
       if (system.length > 8000) {
-        return new Response("system prompt too long", { status: 400 });
+        return new Response("system prompt too long", { status: 400, headers: corsHeaders(request) });
       }
     }
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return new Response("Missing or empty messages array", { status: 400 });
+      return new Response("Missing or empty messages array", { status: 400, headers: corsHeaders(request) });
     }
 
     // Validate each message: must have string role and string content only.
     for (const msg of messages) {
       if (!msg || typeof msg.role !== "string" || typeof msg.content !== "string") {
-        return new Response("Invalid message shape", { status: 400 });
+        return new Response("Invalid message shape", { status: 400, headers: corsHeaders(request) });
       }
       if (!["user", "assistant"].includes(msg.role)) {
-        return new Response("Invalid message role", { status: 400 });
+        return new Response("Invalid message role", { status: 400, headers: corsHeaders(request) });
       }
       if (msg.content.length > MAX_MESSAGE_CHARS) {
-        return new Response("Message content too long", { status: 400 });
+        return new Response("Message content too long", { status: 400, headers: corsHeaders(request) });
       }
     }
 
