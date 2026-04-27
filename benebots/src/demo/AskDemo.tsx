@@ -116,7 +116,7 @@ export default function AskDemo() {
       if (msg === 'WORKER_NOT_CONFIGURED') {
         setError('Demo worker not configured. Set VITE_WORKER_URL and VITE_WORKER_TOKEN to enable live responses.')
       } else {
-        setError('Something went wrong. Try again.')
+        setError(`Worker error: ${msg}`)
       }
     } finally {
       setLoading(false)
