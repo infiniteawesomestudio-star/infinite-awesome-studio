@@ -131,9 +131,9 @@ export default function AskDemo() {
   }
 
   return (
-    <div className="flex flex-col gap-4 h-full" style={{ minHeight: '70vh' }}>
+    <div className="flex flex-col gap-4 flex-1 min-h-0">
       {/* Chat window */}
-      <div className="flex-1 bg-dark-card border border-dark-border rounded-2xl flex flex-col overflow-hidden" style={{ minHeight: '500px' }}>
+      <div className="flex-1 min-h-0 bg-dark-card border border-dark-border rounded-2xl flex flex-col overflow-hidden">
         <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-5 space-y-4">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-6 py-10">

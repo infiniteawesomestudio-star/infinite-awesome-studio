@@ -34,12 +34,14 @@ export default function Demo() {
     )
   }
 
+  const isChat = botId === 'ask'
+
   return (
-    <div className="min-h-screen bg-dark-base text-dark-text flex flex-col">
+    <div className="h-screen bg-dark-base text-dark-text flex flex-col overflow-hidden">
       <Navbar />
 
       {/* Demo header */}
-      <div className="pt-16 border-b border-dark-border bg-dark-surface">
+      <div className="pt-16 border-b border-dark-border bg-dark-surface flex-shrink-0">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <div
@@ -74,16 +76,16 @@ export default function Demo() {
         </div>
       </div>
 
-      {/* Demo interface */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
-        {botId === 'ask' && <AskDemo />}
-        {botId === 'stewardship' && <StewardshipDemo />}
-        {botId === 'plan-compare' && <PlanCompareDemo />}
-        {botId === 'oe-coach' && <OECoachDemo />}
-        {botId === 'loa-navigator' && <LOANavigatorDemo />}
+      {/* Demo interface — scrollable for non-chat bots, fixed for chat */}
+      <main className={`flex-1 min-h-0 ${isChat ? 'flex flex-col' : 'overflow-y-auto'}`}>
+        <div className={`max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 ${isChat ? 'flex-1 flex flex-col min-h-0' : ''}`}>
+          {botId === 'ask' && <AskDemo />}
+          {botId === 'stewardship' && <StewardshipDemo />}
+          {botId === 'plan-compare' && <PlanCompareDemo />}
+          {botId === 'oe-coach' && <OECoachDemo />}
+          {botId === 'loa-navigator' && <LOANavigatorDemo />}
+        </div>
       </main>
-
-      <Footer />
     </div>
   )
 }
