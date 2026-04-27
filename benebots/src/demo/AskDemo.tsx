@@ -95,9 +95,11 @@ export default function AskDemo() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const container = scrollContainerRef.current
+    if (container) container.scrollTop = container.scrollHeight
   }, [messages])
 
   const send = async (text: string) => {
@@ -132,7 +134,7 @@ export default function AskDemo() {
     <div className="flex flex-col gap-4 h-full" style={{ minHeight: '70vh' }}>
       {/* Chat window */}
       <div className="flex-1 bg-dark-card border border-dark-border rounded-2xl flex flex-col overflow-hidden" style={{ minHeight: '500px' }}>
-        <div className="flex-1 overflow-y-auto p-5 space-y-4">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-5 space-y-4">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-6 py-10">
               <div className="text-center">
