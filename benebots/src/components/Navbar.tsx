@@ -29,10 +29,8 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group" aria-label="BeneBots home">
-          <div className="w-8 h-8 rounded-lg bg-mint flex items-center justify-center shadow-lg shadow-mint/30 group-hover:shadow-mint/50 transition-shadow">
-            <span className="text-dark-base font-display font-bold text-sm">B</span>
-          </div>
+        <Link to="/" className="flex items-center gap-3 group" aria-label="BeneBots home">
+          <img src="/ias-logo.png" alt="Infinite Awesome Studio" className="h-8 w-auto" />
           <span className="font-display font-bold text-dark-text text-lg tracking-tight">
             Bene<span className="text-mint">Bots</span>
           </span>

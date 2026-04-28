@@ -205,22 +205,14 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="reveal sm:col-span-2 lg:col-span-1">
           <a href="/" className="flex items-center gap-2 mb-4" aria-label="BeneBots home">
-            <div className="w-8 h-8 rounded-lg bg-mint flex items-center justify-center">
-              <span className="text-dark-base font-display font-bold text-sm">B</span>
-            </div>
-            <span className="font-display font-bold text-dark-text text-lg">
-              Bene<span className="text-mint">Bots</span>
-            </span>
+            <img src="/benebots-logo.png" alt="BeneBots" className="h-8 w-auto" />
           </a>
           <p className="text-xs font-body text-dark-muted leading-relaxed max-w-[220px]">
             AI agents for benefits administration. Every benefit. Every penny.
           </p>
-          <p className="text-xs font-body text-dark-muted mt-4">
-            Built by{' '}
-            <a href="https://infiniteawesome.studio" target="_blank" rel="noopener noreferrer" className="text-mint hover:underline">
-              Infinite Awesome Studio
-            </a>
-          </p>
+          <a href="https://infiniteawesome.studio" target="_blank" rel="noopener noreferrer" className="mt-4 inline-block" aria-label="Infinite Awesome Studio">
+            <img src="/ias-logo.png" alt="Infinite Awesome Studio" className="h-6 w-auto opacity-50 hover:opacity-90 transition-opacity" />
+          </a>
         </div>
 
         <div className="reveal" style={{ transitionDelay: '0.1s' }}>

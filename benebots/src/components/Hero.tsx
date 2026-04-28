@@ -113,18 +113,13 @@ export default function Hero() {
         <div className="relative flex items-center justify-center h-80 lg:h-auto" aria-hidden="true">
           <div className="relative animate-float" style={{ animationDuration: '5s' }}>
             <div
-              className="w-28 h-28 rounded-3xl flex flex-col items-center justify-center gap-2 glow-mint"
+              className="w-28 h-28 rounded-3xl flex items-center justify-center glow-mint p-3"
               style={{
                 backgroundColor: 'rgba(0,196,122,0.12)',
                 border: '2px solid rgba(0,196,122,0.35)',
               }}
             >
-              <div className="flex gap-2">
-                <div className="w-4 h-4 rounded-full bg-mint animate-glow-pulse" />
-                <div className="w-4 h-4 rounded-full bg-mint animate-glow-pulse" style={{ animationDelay: '0.3s' }} />
-              </div>
-              <div className="w-10 h-1.5 rounded-full bg-mint/60 mt-1" />
-              <span className="text-[10px] font-display font-bold text-mint tracking-wider">BENEBOTS</span>
+              <img src="/benebots-logo.png" alt="BeneBots" className="w-full h-full object-contain" />
             </div>
           </div>
 
