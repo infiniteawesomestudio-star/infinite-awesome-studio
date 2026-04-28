@@ -115,10 +115,10 @@ export default function AskDemo() {
       setMessages(m => [...m, { role: 'assistant', content: reply }])
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'unknown'
-      if (msg === 'WORKER_NOT_CONFIGURED') {
-        setError('Demo worker not configured. Set VITE_WORKER_URL and VITE_WORKER_TOKEN to enable live responses.')
+      if (msg.includes('429')) {
+        setError('Too many requests — give it a moment and try again.')
       } else {
-        setError(`Worker error: ${msg}`)
+        setError('Something went wrong. Please try again in a moment.')
       }
     } finally {
       setLoading(false)
