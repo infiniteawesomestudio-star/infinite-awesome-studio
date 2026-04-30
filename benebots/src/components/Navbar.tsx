@@ -37,7 +37,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
+        <nav className="hidden min-[900px]:flex items-center gap-6" aria-label="Main navigation">
           {links.map(l => (
             <a
               key={l.label}
@@ -50,7 +50,7 @@ export default function Navbar() {
         </nav>
 
         {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden min-[900px]:flex items-center gap-3">
           <a
             href="mailto:ty@infiniteawesomestudio.com"
             className="text-sm font-body font-medium text-dark-text border border-dark-border px-4 py-2 rounded-lg hover:border-mint/40 hover:text-mint transition-all"
@@ -67,7 +67,7 @@ export default function Navbar() {
 
         {/* Mobile menu toggle */}
         <button
-          className="md:hidden text-dark-text p-2 rounded-lg hover:bg-dark-card transition-colors"
+          className="min-[900px]:hidden text-dark-text p-2 rounded-lg hover:bg-dark-card transition-colors"
           onClick={() => setMenuOpen(o => !o)}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
@@ -78,7 +78,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-dark-surface border-b border-dark-border px-4 pb-5 pt-2">
+        <div className="min-[900px]:hidden bg-dark-surface border-b border-dark-border px-4 pb-5 pt-2">
           <nav className="flex flex-col gap-3" aria-label="Mobile navigation">
             {links.map(l => (
               <a
