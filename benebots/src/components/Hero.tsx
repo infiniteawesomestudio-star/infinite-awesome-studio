@@ -70,7 +70,7 @@ export default function Hero() {
         <div>
           <div className="reveal inline-flex items-center gap-2 bg-dark-card border border-dark-border rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 rounded-full bg-mint animate-pulse" />
-            <span className="text-xs font-body text-dark-muted uppercase tracking-widest">Now available for brokers</span>
+            <span className="text-xs font-body text-dark-muted uppercase tracking-widest">Here's the shovel</span>
           </div>
 
           <h1 className="reveal font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-dark-text leading-tight mb-5" style={{ transitionDelay: '0.1s' }}>

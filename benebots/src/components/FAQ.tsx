@@ -12,6 +12,15 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
+    question: "Why is it called 'the shovel'?",
+    answer:
+      "Because it's a tool, not a hype cycle. The benefits industry moves slower than tech because it should — compliance has real consequences. But skepticism toward hype isn't the same as skepticism toward tools that actually work. I built BeneBots as a practitioner who got tired of digging with my hands. It's not revolutionary. It's just better.",
+    bot: 'MyBenefitsGuy',
+    botIcon: MessageSquare,
+    botColor: '#00C47A',
+    category: 'About BeneBots',
+  },
+  {
     question: "Is my client's benefit plan data secure?",
     answer:
       'Every piece of client data lives in your environment — we don\'t store plan documents on shared infrastructure. Agents operate within your access controls, with audit trails on every interaction. For clients with elevated requirements, we support HIPAA Business Associate Agreements and can scope isolated deployments. We treat employee benefits data the way it deserves to be treated: like it belongs to your clients, not us.',
