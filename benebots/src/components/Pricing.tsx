@@ -23,7 +23,7 @@ const tiers: Tier[] = [
     audience: 'Solo consultants · boutique brokerages · 1–5 clients',
     tagline: 'Full platform from day one. Start with the bot that solves your biggest problem.',
     features: [
-      'Full platform — all 4 agents',
+      'Full platform with all 4 agents',
       '5 client profiles',
       'Live Anthropic API',
       'Markdown exports (Word / PowerPoint ready)',
@@ -91,7 +91,7 @@ const addOns = [
     price: '$15K+',
     unit: 'per engagement',
     description:
-      'Build a fifth, sixth, or seventh bot for a workflow only you do — renewal strategy, compliance calendar, vendor scorecards. Domain expert meets code.',
+      'Build a fifth, sixth, or seventh bot for a workflow only you do: renewal strategy, compliance calendar, vendor scorecards. Domain expert meets code.',
   },
 ]
 
@@ -120,7 +120,7 @@ export default function Pricing() {
           Pick your starting point
         </h2>
         <p className="reveal text-base font-body text-dark-muted max-w-xl mx-auto leading-relaxed" style={{ transitionDelay: '0.2s' }}>
-          Every tier runs on the same platform — four agents, one shared client profile, live model, diagnostics suite.
+          Every tier runs on the same platform: four agents, one shared client profile, live model, diagnostics suite.
           Scale up as your book of business grows.
         </p>
       </div>

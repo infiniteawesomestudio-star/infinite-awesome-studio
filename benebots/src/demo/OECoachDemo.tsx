@@ -21,7 +21,7 @@ function getRecommendation(a: Answers) {
 
   const plan = isHDHP ? ACME_PROFILE.medical.hdhp : ACME_PROFILE.medical.ppo
   const hsaNote = isHDHP
-    ? `Open an HSA. Acme seeds $${ACME_PROFILE.hsa.employerSeed.toLocaleString()} — that's free money in your account on day one. You can contribute up to $${
+    ? `Open an HSA. Acme seeds $${ACME_PROFILE.hsa.employerSeed.toLocaleString()}. That's free money in your account on day one. You can contribute up to $${
         a.family === 'family'
           ? ACME_PROFILE.hsa.limit2026Family.toLocaleString()
           : ACME_PROFILE.hsa.limit2026Individual.toLocaleString()
@@ -33,9 +33,9 @@ function getRecommendation(a: Answers) {
     : `You're paying more in premiums to avoid the deductible uncertainty. That's the right call when care is predictable and you don't want to manage an HSA.`
 
   const dontForget = [
-    isHDHP ? `Enroll in the HSA — it doesn't open automatically` : `Check if a Limited Purpose FSA is available alongside the PPO`,
-    a.family === 'family' ? `Review the family deductible — $${plan.deductible.family.toLocaleString()} for ${plan.name}` : `Your individual OOPM is $${plan.oopm.individual.toLocaleString()}`,
-    `Dental: ${ACME_PROFILE.dental.carrier} — preventive is 100%, no deductible`,
+    isHDHP ? `Enroll in the HSA. It doesn't open automatically` : `Check if a Limited Purpose FSA is available alongside the PPO`,
+    a.family === 'family' ? `Review the family deductible: $${plan.deductible.family.toLocaleString()} for ${plan.name}` : `Your individual OOPM is $${plan.oopm.individual.toLocaleString()}`,
+    `Dental: ${ACME_PROFILE.dental.carrier}. Preventive is 100%, no deductible`,
   ]
 
   return { plan, hsaNote, tradeoff, dontForget, isHDHP }
@@ -83,7 +83,7 @@ export default function OECoachDemo() {
       <div className="bg-dark-card border border-dark-border rounded-2xl p-6">
         {step === 'q1' && (
           <Question
-            label="1 of 4 — Expected care level"
+            label="1 of 4: Expected care level"
             prompt="How much medical care do you expect to use this year?"
             options={[
               { val: 'low', label: 'Low', desc: 'Annual physical, maybe one urgent care. No ongoing Rx.' },
@@ -95,7 +95,7 @@ export default function OECoachDemo() {
         )}
         {step === 'q2' && (
           <Question
-            label="2 of 4 — Coverage tier"
+            label="2 of 4: Coverage tier"
             prompt="Who are you covering?"
             options={[
               { val: 'single', label: 'Just me', desc: 'Employee-only coverage.' },
@@ -106,7 +106,7 @@ export default function OECoachDemo() {
         )}
         {step === 'q3' && (
           <Question
-            label="3 of 4 — HSA familiarity"
+            label="3 of 4: HSA familiarity"
             prompt="Are you comfortable managing an HSA?"
             options={[
               { val: 'yes', label: 'Yes', desc: "I know how HSAs work or I'm willing to learn." },
@@ -117,7 +117,7 @@ export default function OECoachDemo() {
         )}
         {step === 'q4' && (
           <Question
-            label="4 of 4 — Budget preference"
+            label="4 of 4: Budget preference"
             prompt="What matters more to you right now?"
             options={[
               { val: 'lower-now', label: 'Lower paycheck deduction', desc: 'I want more in my pocket each pay period.' },
@@ -167,7 +167,7 @@ export default function OECoachDemo() {
       </div>
 
       <p className="text-[10px] font-body text-dark-muted text-center">
-        Demo mode — recommendations based on Acme Industries plan data. Not a substitute for a licensed benefits advisor.
+        Demo mode. Recommendations based on Acme Industries plan data. Not a substitute for a licensed benefits advisor.
       </p>
     </div>
   )

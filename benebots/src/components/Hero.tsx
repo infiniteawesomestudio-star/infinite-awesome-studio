@@ -4,8 +4,8 @@ import { Calendar } from 'lucide-react'
 
 const stats = [
   { value: '5', label: 'specialized agents, one shared client profile' },
-  { value: '40 min', label: 'stewardship report — down from six hours' },
-  { value: '0', label: 'generic answers — every response cites the plan' },
+  { value: '40 min', label: 'stewardship report, down from six hours' },
+  { value: '0', label: 'generic answers. Every response cites the plan' },
 ]
 
 const BOT_FACES = [
@@ -80,7 +80,7 @@ export default function Hero() {
           </h1>
 
           <p className="reveal text-base sm:text-lg font-body text-dark-muted leading-relaxed mb-8 max-w-lg" style={{ transitionDelay: '0.2s' }}>
-            Five BeneBots. Each one grounded in your client's actual plan data — deductibles, copays, SPD language, carrier contracts. Pick a bot below and see it answer a real question.
+            Five BeneBots. Each one grounded in your client's actual plan data: deductibles, copays, SPD language, carrier contracts. Pick a bot below and see it answer a real question.
           </p>
 
           <div className="reveal flex flex-wrap gap-3 mb-12" style={{ transitionDelay: '0.3s' }}>

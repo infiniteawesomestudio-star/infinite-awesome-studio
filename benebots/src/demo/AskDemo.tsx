@@ -10,11 +10,11 @@ interface Message {
 const SUGGESTED = [
   "What's the difference between the HDHP and PPO?",
   "How much does Acme put in my HSA?",
-  "I just had a baby — what do I do?",
+  "I just had a baby. What do I do?",
   "When is open enrollment?",
 ]
 
-const SYSTEM_PROMPT = `You are Ask BeneBot, an AI benefits assistant for ${ACME_PROFILE.companyName} employees during plan year ${ACME_PROFILE.planYear}. You know this company's benefits inside out. Answer every question using the actual plan data below. Cite the specific plan when relevant. If the answer isn't in the plan data, say so clearly — never guess.
+const SYSTEM_PROMPT = `You are Ask BeneBot, an AI benefits assistant for ${ACME_PROFILE.companyName} employees during plan year ${ACME_PROFILE.planYear}. You know this company's benefits inside out. Answer every question using the actual plan data below. Cite the specific plan when relevant. If the answer isn't in the plan data, say so clearly and never guess.
 
 Company: ${ACME_PROFILE.companyName} (${ACME_PROFILE.companySize})
 
@@ -67,7 +67,7 @@ LEAVE:
 
 COBRA: Administered by ${ACME_PROFILE.cobra.administrator}. Election window: ${ACME_PROFILE.cobra.qualifyingEventWindow} days from qualifying event.
 
-Keep answers direct and plain. Use real benefit terms — employees trust specifics. Short paragraphs. If a question needs a follow-up clarification, ask one question. This is a demo — you are showing what a real deployed Ask BeneBot looks like for an actual client.`
+Keep answers direct and plain. Use real benefit terms because employees trust specifics. Short paragraphs. If a question needs a follow-up clarification, ask one question. This is a demo, and you are showing what a real deployed Ask BeneBot looks like for an actual client.`
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL as string | undefined
 const WORKER_TOKEN = import.meta.env.VITE_WORKER_TOKEN as string | undefined
@@ -116,7 +116,7 @@ export default function AskDemo() {
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'unknown'
       if (msg.includes('429')) {
-        setError('Too many requests — give it a moment and try again.')
+        setError('Too many requests. Give it a moment and try again.')
       } else {
         setError('Something went wrong. Please try again in a moment.')
       }
@@ -138,7 +138,7 @@ export default function AskDemo() {
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-6 py-10">
               <div className="text-center">
-                <p className="font-display font-bold text-dark-text text-lg mb-1">Ask BeneBot — Acme Industries</p>
+                <p className="font-display font-bold text-dark-text text-lg mb-1">Ask BeneBot | Acme Industries</p>
                 <p className="text-sm font-body text-dark-muted max-w-sm">
                   Ask anything about Acme's benefits. Every answer is grounded in the actual plan data.
                 </p>
@@ -230,7 +230,7 @@ export default function AskDemo() {
             </button>
           </form>
           <p className="text-[10px] font-body text-dark-muted mt-2 text-center">
-            Demo mode — responses are grounded in Acme Industries plan data
+            Demo mode. Responses are grounded in Acme Industries plan data
           </p>
         </div>
       </div>

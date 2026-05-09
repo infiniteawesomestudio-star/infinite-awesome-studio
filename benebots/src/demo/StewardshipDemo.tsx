@@ -31,23 +31,23 @@ const ACME_CLAIMS = {
 }
 
 const DRAFTS: Record<Section, string> = {
-  'executive-summary': `## Executive Summary — Acme Industries Plan Year ${ACME_PROFILE.planYear}
+  'executive-summary': `## Executive Summary | Acme Industries Plan Year ${ACME_PROFILE.planYear}
 
 **Prepared for:** ${ACME_PROFILE.companyName} (${ACME_PROFILE.companySize})
 
-Total plan spend for the period was **$${ACME_CLAIMS.totalSpend.toLocaleString()}**, or **$${ACME_CLAIMS.pmpm}/member/month** — tracking 4.2% above prior year. The group is self-funded, with stop-loss protection through The Hartford.
+Total plan spend for the period was **$${ACME_CLAIMS.totalSpend.toLocaleString()}**, or **$${ACME_CLAIMS.pmpm}/member/month**, tracking 4.2% above prior year. The group is self-funded, with stop-loss protection through The Hartford.
 
 **Three things leadership needs to know:**
 
 1. **Mental health spend is up 11%.** At 12% of total claims, this is Acme's fastest-growing cost driver. It reflects national trends but is accelerating faster than the peer benchmark. A carrier-sponsored EAP audit and network adequacy review are recommended before renewal.
 
-2. **Generic fill rate is strong at ${ACME_CLAIMS.genericFillRate}%.** Rx management is working. The step-therapy program introduced last renewal cycle is producing measurable savings — estimated $180,000 in avoidance vs. brand-only utilization.
+2. **Generic fill rate is strong at ${ACME_CLAIMS.genericFillRate}%.** Rx management is working. The step-therapy program introduced last renewal cycle is producing measurable savings, estimated at $180,000 in avoidance vs. brand-only utilization.
 
 3. **Preventive compliance sits at ${ACME_CLAIMS.preventiveCompliance}%.** Leaving $0-deductible, $0-copay value on the table. A targeted communication campaign during the next OE cycle is the lowest-cost intervention with highest potential ROI.
 
 The renewal strategy section covers carrier negotiation positioning, plan design adjustment options, and a three-year trend projection at current trajectory.`,
 
-  'claims-analysis': `## Claims & Utilization Analysis — Acme Industries ${ACME_PROFILE.planYear}
+  'claims-analysis': `## Claims & Utilization Analysis | Acme Industries ${ACME_PROFILE.planYear}
 
 **Total medical + Rx spend:** $${ACME_CLAIMS.totalSpend.toLocaleString()}
 **Member months:** ${ACME_CLAIMS.memberMonths.toLocaleString()}
@@ -56,20 +56,20 @@ The renewal strategy section covers carrier negotiation positioning, plan design
 
 ### Top Cost Drivers
 
-${ACME_CLAIMS.topCostDrivers.map(d => `**${d.category}** — ${d.pct}% of total spend, ${d.trend} YoY trend`).join('\n')}
+${ACME_CLAIMS.topCostDrivers.map(d => `**${d.category}**: ${d.pct}% of total spend, ${d.trend} YoY trend`).join('\n')}
 
 ### Pharmacy
-Generic fill rate is **${ACME_CLAIMS.genericFillRate}%** — above the national benchmark of 82%. Step-therapy compliance is holding. One specialty drug account (oncology) represents 31% of total Rx spend; worth flagging for stop-loss coordination.
+Generic fill rate is **${ACME_CLAIMS.genericFillRate}%**, above the national benchmark of 82%. Step-therapy compliance is holding. One specialty drug account (oncology) represents 31% of total Rx spend; worth flagging for stop-loss coordination.
 
 ### Emergency Department
-**${ACME_CLAIMS.erVisits} ER visits** in the period. Estimated 38% were classified as avoidable based on primary diagnosis codes. Carrier-sponsored nurse line utilization is low — worth a targeted communication push to redirect non-emergency visits.
+**${ACME_CLAIMS.erVisits} ER visits** in the period. Estimated 38% were classified as avoidable based on primary diagnosis codes. Carrier-sponsored nurse line utilization is low and worth a targeted communication push to redirect non-emergency visits.
 
 ### Key Watch-Outs
-- Mental health trend at +11% — network adequacy and EAP utilization both warrant review
-- Musculoskeletal at 18% of spend — physical therapy benefit design may be driving utilization; consider comparative effectiveness data from carrier
-- Preventive compliance at ${ACME_CLAIMS.preventiveCompliance}% — direct impact on downstream chronic condition costs`,
+- Mental health trend at +11%. Network adequacy and EAP utilization both warrant review
+- Musculoskeletal at 18% of spend. Physical therapy benefit design may be driving utilization; consider comparative effectiveness data from carrier
+- Preventive compliance at ${ACME_CLAIMS.preventiveCompliance}% with direct impact on downstream chronic condition costs`,
 
-  'market-benchmarking': `## Market Benchmarking — Acme Industries vs. Peer Group
+  'market-benchmarking': `## Market Benchmarking | Acme Industries vs. Peer Group
 
 **Peer group:** Mid-size employers, 400–600 employees, mixed-state workforce, self-funded
 
@@ -81,28 +81,28 @@ Generic fill rate is **${ACME_CLAIMS.genericFillRate}%** — above the national 
 | Mental health trend | +11% | +8% | Above |
 | Preventive compliance | ${ACME_CLAIMS.preventiveCompliance}% | 79% | Below |
 
-**HDHP enrollment penetration:** Acme is at ~40% HDHP uptake vs. a peer median of 52%. The gap suggests the employer HSA seed ($${ACME_PROFILE.hsa.employerSeed.toLocaleString()}) may not be compelling enough relative to the deductible burden. Consider increasing the seed at renewal — even a $200 increase often moves enrollment materially.
+**HDHP enrollment penetration:** Acme is at ~40% HDHP uptake vs. a peer median of 52%. The gap suggests the employer HSA seed ($${ACME_PROFILE.hsa.employerSeed.toLocaleString()}) may not be compelling enough relative to the deductible burden. Consider increasing the seed at renewal. Even a $200 increase often moves enrollment materially.
 
 **Dental:** Annual maximum of $${ACME_PROFILE.dental.annualMax.toLocaleString()} is above peer median of $2,000. This is a retention tool worth keeping. Orthodontia at $2,000 lifetime is at market.
 
 **Benchmarking takeaway:** Acme's Rx management is a strength. The PMPM gap is driven primarily by mental health trend, which is consistent with white-collar workforce profiles nationally. Intervention options are discussed in Strategic Recommendations.`,
 
-  'strategic-recommendations': `## Strategic Recommendations — Acme Industries Renewal
+  'strategic-recommendations': `## Strategic Recommendations | Acme Industries Renewal
 
-### Priority 1 — Mental Health Network Audit
-Commission a network adequacy review through the carrier before renewal negotiations. Specifically: in-network therapist availability within 30 miles of each major employee zip cluster. If adequacy is below 80%, use it as negotiating leverage on administrative fees. If adequacy is adequate, the spend increase is a utilization story — consider an EAP awareness campaign.
+### Priority 1: Mental Health Network Audit
+Commission a network adequacy review through the carrier before renewal negotiations. Specifically: in-network therapist availability within 30 miles of each major employee zip cluster. If adequacy is below 80%, use it as negotiating leverage on administrative fees. If adequacy is adequate, the spend increase is a utilization story. Consider an EAP awareness campaign.
 
-### Priority 2 — HSA Seed Increase
+### Priority 2: HSA Seed Increase
 Increasing the employer HSA seed from $${ACME_PROFILE.hsa.employerSeed.toLocaleString()} to $1,200 would cost approximately $90,000 in additional employer spend, but actuarial modeling for similar groups suggests 6–9% migration toward the HDHP. That migration typically produces $150,000–$200,000 in premium relief (or self-funded equivalent), generating positive ROI in year one.
 
-### Priority 3 — ER Diversion Campaign
+### Priority 3: ER Diversion Campaign
 A targeted "When to go where" communication campaign, delivered via carrier nurse line promotion, can reduce avoidable ER utilization by 15–20% in the first year. This is a $0 benefit-design change that produces measurable ROI.
 
-### Priority 4 — Preventive Compliance Push
+### Priority 4: Preventive Compliance Push
 ${ACME_PROFILE.companyName} is leaving 7 percentage points of preventive compliance on the table vs. peer median. Every percentage point of improvement reduces expected downstream chronic condition spend. A one-time incentive ($25 gift card for annual physical confirmation) has shown 8–12 pt compliance lift in similar groups.
 
 ### Carrier Renewal Positioning
-Current stop-loss threshold and attachment points should be reviewed given oncology spend concentration. The Hartford relationship is solid — recommend requesting a rate hold on the LTD/STD stack in exchange for renewal commitment on medical.`,
+Current stop-loss threshold and attachment points should be reviewed given oncology spend concentration. The Hartford relationship is solid. Recommend requesting a rate hold on the LTD/STD stack in exchange for renewal commitment on medical.`,
 }
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL as string | undefined
@@ -224,7 +224,7 @@ export default function StewardshipDemo() {
         )}
         {draft && !loading && (
           <div className="border-t border-dark-border px-6 py-3 flex items-center justify-between">
-            <p className="text-[10px] font-body text-dark-muted">Markdown — copies cleanly into Word or Notion</p>
+            <p className="text-[10px] font-body text-dark-muted">Markdown format. Copies cleanly into Word or Notion</p>
             <button
               onClick={() => navigator.clipboard.writeText(draft)}
               className="text-xs font-body text-dark-muted hover:text-[#5B8FFF] transition-colors"

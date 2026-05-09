@@ -7,7 +7,7 @@ const USE_TYPES = [
     color: '#00C47A',
     items: [
       'Ask BeneBot + OE Coach for employee-facing support during OE',
-      'Stewardship Studio for renewal prep — draft the narrative in 40 minutes',
+      'Stewardship Studio for renewal prep. Draft the narrative in 40 minutes',
       'Grounded in each client\'s specific plan data, not generic content',
       'No IT department required',
     ],
@@ -17,7 +17,7 @@ const USE_TYPES = [
     color: '#5B8FFF',
     items: [
       'Full 5-bot suite configured per client',
-      'Multi-client management — each client\'s bots know only their own plans',
+      'Multi-client management where each client\'s bots know only their own plans',
       'White-label ready for client portal deployment',
       'Diagnostics suite runs before every client demo',
     ],
@@ -27,7 +27,7 @@ const USE_TYPES = [
     color: '#A78BFA',
     items: [
       'Ask BeneBot + LOA Navigator embedded in your HR portal',
-      'Custom escalation rules — bots know when to hand off to HR',
+      'Custom escalation rules so bots know when to hand off to HR',
       'Grounded in your SPD, not a generic summary',
       'Employee mode and HR admin mode for LOA Navigator',
     ],
@@ -94,7 +94,7 @@ export default function Capabilities() {
         {/* CTA row */}
         <div className="reveal flex flex-col sm:flex-row items-center justify-center gap-4" style={{ transitionDelay: '0.3s' }}>
           <a
-            href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots — Tell me what your practice looks like"
+            href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots | Tell me what your practice looks like"
             className="inline-flex items-center gap-2 text-dark-text border border-dark-border font-body font-medium px-6 py-3 rounded-xl hover:border-mint/40 hover:text-mint transition-all text-sm"
           >
             Tell me what your practice looks like →

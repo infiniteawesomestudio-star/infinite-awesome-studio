@@ -10,9 +10,9 @@ import LOANavigatorDemo from '../demo/LOANavigatorDemo'
 const BOT_META: Record<string, { name: string; color: string; tagline: string }> = {
   ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in Acme\'s plans' },
   stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, Acme claims data pre-loaded' },
-  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO — Acme\'s actual numbers' },
+  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with Acme\'s actual numbers' },
   'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans' },
-  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide — FMLA, CA/NY/WA, parental leave' },
+  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave' },
 }
 
 export default function Demo() {
@@ -64,7 +64,7 @@ export default function Demo() {
               className="text-[10px] font-body font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full border"
               style={{ backgroundColor: `${meta.color}12`, color: meta.color, borderColor: `${meta.color}33` }}
             >
-              Demo mode — Acme Industries
+              Demo mode | Acme Industries
             </span>
           </div>
           <Link

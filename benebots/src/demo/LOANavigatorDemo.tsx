@@ -7,19 +7,19 @@ type State = 'CA' | 'NY' | 'WA' | 'other'
 const STATE_LEAVE: Record<Exclude<State, 'other'>, { name: string; paidLeave: string; duration: string; note: string }> = {
   CA: {
     name: 'California',
-    paidLeave: 'California Paid Family Leave (PFL) — up to 8 weeks at 60–70% of wages',
+    paidLeave: 'California Paid Family Leave (PFL), up to 8 weeks at 60–70% of wages',
     duration: 'CFRA: up to 12 weeks job-protected leave',
     note: 'CA requires leave stacking analysis between CFRA, PDL (pregnancy disability), and FMLA. They do not run concurrently in all cases.',
   },
   NY: {
     name: 'New York',
-    paidLeave: 'NY Paid Family Leave — up to 12 weeks at 67% of statewide average weekly wage',
+    paidLeave: 'NY Paid Family Leave, up to 12 weeks at 67% of statewide average weekly wage',
     duration: '12 weeks of job-protected, paid leave',
     note: 'NY PFL is employee-funded via payroll deduction. HR must track the NY DBL (disability) integration with PFL when leaves overlap.',
   },
   WA: {
     name: 'Washington',
-    paidLeave: 'WA Paid Family & Medical Leave — up to 12 weeks (18 in some cases) at 90% of wages up to state average',
+    paidLeave: 'WA Paid Family & Medical Leave, up to 12 weeks (18 in some cases) at 90% of wages up to state average',
     duration: '12–18 weeks depending on qualifying event',
     note: 'WA PFML has both employee and employer contribution requirements. HR must register and report quarterly.',
   },
@@ -34,19 +34,19 @@ const EMPLOYEE_CONTENT: Record<State, string[]> = {
   ],
   NY: [
     `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave stacks with NY PFL (up to 12 weeks at 67% of the statewide average weekly wage).`,
-    `FMLA runs concurrently with NY PFL for qualifying events — you typically only get the longer of the two, not both added together.`,
+    `FMLA runs concurrently with NY PFL for qualifying events. You typically only get the longer of the two, not both added together.`,
     `STD through ${ACME_PROFILE.loa.stdCarrier} covers disability-related absence (pregnancy disability, serious health condition). PFL covers bonding or family care.`,
     `Start with ${ACME_PROFILE.loa.loaAdministrator}. NY requires 30 days notice when leave is foreseeable.`,
   ],
   WA: [
     `WA Paid Family & Medical Leave provides up to 12 weeks (18 in some cases) at approximately 90% of your wage up to the state average.`,
     `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently with FMLA and WA PFML.`,
-    `Notify ${ACME_PROFILE.loa.loaAdministrator} as early as possible — ideally 30 days before leave. WA PFML applications go through the WA Employment Security Department directly.`,
+    `Notify ${ACME_PROFILE.loa.loaAdministrator} as early as possible, ideally 30 days before leave. WA PFML applications go through the WA Employment Security Department directly.`,
     `Fitness-for-duty form required before returning from medical leave.`,
   ],
   other: [
     `Federal FMLA provides up to 12 weeks of job-protected, unpaid leave for qualifying events (serious health condition, new child, qualifying military exigency).`,
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of fully paid parental leave applies for new child events — this is Acme's policy on top of FMLA.`,
+    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of fully paid parental leave applies for new child events. This is Acme's policy on top of FMLA.`,
     `STD/LTD coverage through ${ACME_PROFILE.loa.stdCarrier} provides income replacement during disability-related absences.`,
     `Contact ${ACME_PROFILE.loa.loaAdministrator} to initiate. Allow 5–7 business days for paperwork processing.`,
   ],
@@ -54,30 +54,30 @@ const EMPLOYEE_CONTENT: Record<State, string[]> = {
 
 const HR_CONTENT: Record<State, string[]> = {
   CA: [
-    `Designate FMLA and CFRA concurrently where they overlap — but note that Pregnancy Disability Leave (PDL) runs separately from CFRA baby bonding. Total protected leave for a birthing employee can exceed 12 weeks in CA.`,
-    `CA PFL is state-administered — HR does not manage the claims, but must coordinate the leave dates with payroll and the employee.`,
+    `Designate FMLA and CFRA concurrently where they overlap, but note that Pregnancy Disability Leave (PDL) runs separately from CFRA baby bonding. Total protected leave for a birthing employee can exceed 12 weeks in CA.`,
+    `CA PFL is state-administered. HR does not manage the claims, but must coordinate the leave dates with payroll and the employee.`,
     `Ensure CFRA and FMLA notices go out within 5 business days of learning of the need for leave. Document the designation in writing.`,
-    `Fitness-for-duty certification is required before reinstatement from medical leave. Do not require it for baby bonding leave — that's a CA CFRA pitfall.`,
+    `Fitness-for-duty certification is required before reinstatement from medical leave. Do not require it for baby bonding leave. That's a CA CFRA pitfall.`,
     `Benefits continuation: maintain health coverage during CFRA/FMLA at the same cost as if the employee were actively working.`,
   ],
   NY: [
     `NY PFL and FMLA run concurrently when both apply. Notify the employee of both designations simultaneously.`,
     `NY PFL claims are submitted by the employee directly to the carrier (the DBL carrier handles NY PFL for most groups). HR's role is to provide the leave dates and return-to-work information.`,
     `For pregnancy: NY DBL covers the disability period (typically 6–8 weeks for vaginal delivery, 8–10 for C-section). NY PFL baby bonding begins after DBL ends.`,
-    `30-day advance notice requirement for foreseeable leave — document if the employee gave less notice and why.`,
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently. Coordinate payroll integration carefully — NY PFL is a separate wage benefit.`,
+    `30-day advance notice requirement for foreseeable leave. Document if the employee gave less notice and why.`,
+    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently. Coordinate payroll integration carefully since NY PFL is a separate wage benefit.`,
   ],
   WA: [
     `WA PFML is administered by the WA Employment Security Department. Employees apply directly; HR must verify employment and confirm leave dates when contacted.`,
     `Acme must continue benefits during WA PFML leave and maintain the employee's position (or equivalent) upon return.`,
-    `Track employer contribution requirements — WA PFML has both employee and employer premium shares. Confirm your payroll is remitting correctly.`,
+    `Track employer contribution requirements. WA PFML has both employee and employer premium shares. Confirm your payroll is remitting correctly.`,
     `FMLA runs concurrently with WA PFML. Provide both designations in writing.`,
     `Return-to-work: Acme's fitness-for-duty process applies for medical leaves. Do not apply it to bonding leaves.`,
   ],
   other: [
     `FMLA applies to employers with 50+ employees. Acme meets this threshold. Designate eligible leave within 5 business days.`,
     `Provide the employee with the FMLA rights notice (WHD Publication 1420) and the designation notice.`,
-    `STD/LTD through ${ACME_PROFILE.loa.stdCarrier} manages income replacement — coordinate leave dates with the carrier's claim status.`,
+    `STD/LTD through ${ACME_PROFILE.loa.stdCarrier} manages income replacement. Coordinate leave dates with the carrier's claim status.`,
     `Benefits continue during FMLA at the same cost. If the employee fails to return, you may recover the employer's share of premiums paid.`,
     `Acme's ${ACME_PROFILE.loa.companyParentalLeave} paid parental leave policy runs concurrently with FMLA for qualifying events. Document both.`,
   ],
@@ -86,7 +86,7 @@ const HR_CONTENT: Record<State, string[]> = {
 const ASK_HR_CHECKLIST = [
   "How do I start my leave paperwork?",
   "Will my benefits continue during leave?",
-  "How does my salary get covered — is it STD, state leave, or Acme's policy?",
+  "How does my salary get covered? Is it STD, state leave, or Acme's policy?",
   "Can I take leave in increments, or does it have to be continuous?",
   "What do I need to provide before I can return?",
 ]

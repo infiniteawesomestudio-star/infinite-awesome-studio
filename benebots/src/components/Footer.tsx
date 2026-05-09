@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { Send, ExternalLink, Calendar } from 'lucide-react'
 
 const CONTACT_EMAIL = 'ty@infiniteawesomestudio.com'
@@ -32,7 +33,7 @@ function LeadForm() {
           name,
           email,
           message,
-          _subject: 'BeneBots — New consultation request',
+          _subject: 'BeneBots | New consultation request',
         }),
       })
       setSubmitted(true)
@@ -50,7 +51,7 @@ function LeadForm() {
           <span className="text-2xl" role="img" aria-label="Checkmark">✓</span>
         </div>
         <div>
-          <p className="font-display font-bold text-dark-text text-lg mb-1">Got it — we'll be in touch.</p>
+          <p className="font-display font-bold text-dark-text text-lg mb-1">Got it. We'll be in touch.</p>
           <p className="text-sm font-body text-dark-muted">
             Expect a response within one business day. In the meantime, every benefit. Every penny.
           </p>
@@ -122,7 +123,7 @@ function NewsletterCapture() {
     await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ email, _subject: 'BeneBots — Newsletter signup', type: 'newsletter' }),
+      body: JSON.stringify({ email, _subject: 'BeneBots | Newsletter signup', type: 'newsletter' }),
     }).catch(() => null)
     setSubmitted(true)
   }
@@ -181,7 +182,7 @@ export default function Footer() {
               that aren't actually dumb?
             </h2>
             <p className="text-base font-body text-dark-muted leading-relaxed mb-8 max-w-md">
-              Tell us what's on your plate. We'll scope the right BeneBot — no deck, no pressure, just a real conversation about where your team is spending time it shouldn't be.
+              Tell us what's on your plate. We'll scope the right BeneBot. No deck, no pressure, just a real conversation about where your team is spending time it shouldn't be.
             </p>
             <a
               href="https://calendly.com/benebots/discovery"
@@ -259,8 +260,8 @@ export default function Footer() {
             © {new Date().getFullYear()} BeneBots / Infinite Awesome Studio. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <a href="/privacy" className="text-xs font-body text-dark-muted hover:text-mint transition-colors">Privacy</a>
-            <a href="/terms" className="text-xs font-body text-dark-muted hover:text-mint transition-colors">Terms</a>
+            <Link to="/privacy" className="text-xs font-body text-dark-muted hover:text-mint transition-colors">Privacy</Link>
+            <Link to="/terms" className="text-xs font-body text-dark-muted hover:text-mint transition-colors">Terms</Link>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               className="text-xs font-body text-dark-muted hover:text-mint transition-colors"

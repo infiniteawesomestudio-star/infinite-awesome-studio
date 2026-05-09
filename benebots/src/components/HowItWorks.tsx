@@ -8,7 +8,7 @@ const steps = [
     title: 'Assessment',
     subtitle: 'We map your benefits stack',
     description:
-      "We dig into your client profiles — plans, carriers, claims data, and the deliverables your team produces on repeat. Then we identify exactly where an agent takes the wheel.",
+      "We dig into your client profiles: plans, carriers, claims data, and the deliverables your team produces on repeat. Then we identify exactly where an agent takes the wheel.",
     color: '#00C47A',
     bullets: ['Benefits inventory audit', 'Workflow mapping session', 'Bot fit analysis', 'Client data review'],
   },
@@ -18,7 +18,7 @@ const steps = [
     title: 'Design',
     subtitle: 'Built to your spec, grounded in your data',
     description:
-      "Each BeneBot is trained on your actual client plan data — not generic insurance content. We design the persona, the guardrails, and the system prompt. Pure-function prompts: easy to test, easy to override, easy to version.",
+      "Each BeneBot is trained on your actual client plan data, not generic insurance content. We design the persona, the guardrails, and the system prompt. Pure-function prompts: easy to test, easy to override, easy to version.",
     color: '#5B8FFF',
     bullets: ['Custom plan data ingestion', 'Persona + tone calibration', 'Compliance guardrails', 'Diagnostics suite setup'],
   },
@@ -60,7 +60,7 @@ export default function HowItWorks() {
             From first call to live bot
           </h2>
           <p className="reveal text-base font-body text-dark-muted max-w-lg mx-auto leading-relaxed" style={{ transitionDelay: '0.2s' }}>
-            No consultants. No hand-wavy promises. A real agent, deployed in your environment, doing real work — grounded in your actual client data.
+            No consultants. No hand-wavy promises. A real agent, deployed in your environment, doing real work, grounded in your actual client data.
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function HowItWorks() {
           <div>
             <p className="font-display font-bold text-dark-text mb-0.5">Built-in Diagnostics Suite</p>
             <p className="text-sm font-body text-dark-muted">
-              Five tests that hit the live model and assert on output properties — structure, numeric grounding, refusal behavior.
+              Five tests that hit the live model and assert on output properties: structure, numeric grounding, refusal behavior.
               Run before every client demo. Run after every prompt change. Know your bots still work.
             </p>
           </div>

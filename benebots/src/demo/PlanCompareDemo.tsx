@@ -89,7 +89,7 @@ export default function PlanCompareDemo() {
         <div className="bg-dark-card border border-[#00C47A]/30 rounded-2xl p-5 space-y-4">
           <div>
             <p className="font-display font-bold text-dark-text text-base">{medical.hdhp.name}</p>
-            <p className="text-xs font-body text-dark-muted mt-0.5">Lower premium, higher deductible — pairs with HSA</p>
+            <p className="text-xs font-body text-dark-muted mt-0.5">Lower premium, higher deductible. Pairs with HSA</p>
           </div>
           <div className="space-y-2 text-sm font-body">
             <Row label="Individual deductible" value={`$${medical.hdhp.deductible.individual.toLocaleString()}`} />
@@ -129,12 +129,12 @@ export default function PlanCompareDemo() {
         <p className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-3">Watch-outs for this profile</p>
         {profile === 'low' && (
           <p className="text-sm font-body text-dark-muted leading-relaxed">
-            Low utilizers almost always come out ahead on the HDHP — the $1,000 employer HSA seed covers their typical spend and rolls over. The PPO's higher premium is the hidden cost here.
+            Low utilizers almost always come out ahead on the HDHP. The $1,000 employer HSA seed covers their typical spend and rolls over. The PPO's higher premium is the hidden cost here.
           </p>
         )}
         {profile === 'family' && (
           <p className="text-sm font-body text-dark-muted leading-relaxed">
-            Families with predictable care need to compare the family deductible ($3,200 HDHP vs $1,000 PPO) against the $1,000 HSA seed. If they max the HSA, the math often favors HDHP — but cash flow matters. The HDHP asks you to fund the deductible before insurance kicks in.
+            Families with predictable care need to compare the family deductible ($3,200 HDHP vs $1,000 PPO) against the $1,000 HSA seed. If they max the HSA, the math often favors HDHP, but cash flow matters. The HDHP asks you to fund the deductible before insurance kicks in.
           </p>
         )}
         {profile === 'chronic' && (
@@ -145,7 +145,7 @@ export default function PlanCompareDemo() {
       </div>
 
       <p className="text-[10px] font-body text-dark-muted text-center">
-        Cost estimates are illustrative — based on Acme plan parameters. Actual costs depend on specific services, network status, and Rx usage.
+        Cost estimates are illustrative and based on Acme plan parameters. Actual costs depend on specific services, network status, and Rx usage.
       </p>
     </div>
   )

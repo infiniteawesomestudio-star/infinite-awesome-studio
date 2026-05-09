@@ -57,7 +57,7 @@ export const ACME_PROFILE = {
     stateLeaveJurisdictions: ["CA", "NY", "WA"],
     stdCarrier: "The Hartford",
     ltdCarrier: "The Hartford",
-    loaAdministrator: "Acme HR — hr@acme-demo.com",
+    loaAdministrator: "Acme HR, hr@acme-demo.com",
     returnToWorkProcess: "Fitness-for-duty form required",
   },
 

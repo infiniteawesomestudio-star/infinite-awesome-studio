@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Infinite Awesome Studio — Every benefit. Every penny. Delivered awesomely.</title>
+<title>Infinite Awesome Studio | Every benefit. Every penny. Delivered awesomely.</title>
 <meta name="description" content="Translating insurance chaos into human language. Benefits consulting, AI products, and advisory from a 20-year industry insider.">
 <link rel="canonical" href="https://infiniteawesomestudio.com" />
 
@@ -98,7 +98,7 @@ html,body{background:var(--warm-neutral);}
   backdrop-filter:blur(10px);
 }
 .ias-logo{display:flex;align-items:center;}
-.ias-logo img{height:36px;width:auto;display:block;}
+.ias-logo img{height:56px;width:auto;display:block;}
 
 .ias-nav-links{display:flex;gap:28px;list-style:none;}
 .ias-nav-links a{
@@ -317,6 +317,55 @@ html,body{background:var(--warm-neutral);}
 }
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ================= ACCESSIBILITY ================= */
+*:focus-visible{outline:2px solid var(--mint);outline-offset:2px;border-radius:4px;}
+.ias-skip-link{
+  position:absolute;top:-100%;left:16px;
+  font-family:var(--font-body);font-size:14px;font-weight:600;
+  padding:10px 18px;border-radius:8px;
+  background:var(--mint);color:var(--deep-forest);
+  z-index:999;text-decoration:none;
+  transition:top 0.2s;
+}
+.ias-skip-link:focus{top:16px;}
+
+/* ================= MOBILE NAV ================= */
+.ias-mobile-toggle{
+  display:none;
+  background:none;border:none;color:var(--ink);cursor:pointer;
+  padding:8px;border-radius:8px;
+}
+.ias-mobile-toggle:hover{background:var(--ink-08);}
+.ias-mobile-menu{
+  display:none;flex-direction:column;gap:4px;
+  padding:12px 20px 20px;
+  background:rgba(245,245,242,0.98);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--ink-08);
+  position:relative;z-index:2;
+}
+.ias-mobile-menu.open{display:flex;}
+.ias-mobile-menu a{
+  font-family:var(--font-body);font-size:15px;font-weight:500;
+  color:var(--ink-55);text-decoration:none;padding:10px 8px;
+  border-radius:8px;transition:all 0.15s;
+}
+.ias-mobile-menu a:hover{color:var(--ink);background:var(--ink-08);}
+.ias-mobile-cta{
+  margin-top:8px;text-align:center;
+  background:var(--mint) !important;color:var(--white) !important;
+  font-weight:600 !important;border-radius:40px !important;
+  padding:12px 20px !important;
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+}
 
 /* ================================================
    SECTION — MyBenefitsGuy (The Guy)
@@ -633,6 +682,8 @@ html,body{background:var(--warm-neutral);}
   .ias-section-title{font-size:32px;}
   .ias-bots-grid{grid-template-columns:repeat(2,1fr);}
   .ias-nav-links{display:none;}
+  .ias-nav-cta{display:none;}
+  .ias-mobile-toggle{display:block;}
   .ias-guy-features{grid-template-columns:1fr;}
 }
 @media (max-width: 520px){
@@ -647,12 +698,13 @@ html,body{background:var(--warm-neutral);}
 <body>
 
 <div class="ias-root">
+  <a href="#main-content" class="ias-skip-link">Skip to main content</a>
   <div class="ias-grid-bg"></div>
   <div class="ias-glow"></div>
   <div class="ias-glow2"></div>
 
   <!-- ============== NAV ============== -->
-  <nav class="ias-nav">
+  <nav class="ias-nav" aria-label="Main navigation">
     <div class="ias-logo">
       <img src="assets/ias-logo.png" alt="Infinite Awesome Studio" />
     </div>
@@ -662,10 +714,23 @@ html,body{background:var(--warm-neutral);}
       <li><a href="#benebots">BeneBots</a></li>
       <li><a href="#about">About</a></li>
     </ul>
-    <button class="ias-nav-cta">Let's Talk</button>
+    <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-nav-cta">Let's Talk</a>
   </nav>
 
+  <!-- Mobile menu -->
+  <div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <a href="#services" onclick="closeMobileNav()">Services</a>
+    <a href="#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
+    <a href="#benebots" onclick="closeMobileNav()">BeneBots</a>
+    <a href="#about" onclick="closeMobileNav()">About</a>
+    <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-mobile-cta" onclick="closeMobileNav()">Let's Talk</a>
+  </div>
+
   <!-- ============== HERO ============== -->
+  <main id="main-content">
   <section class="ias-hero">
     <div class="ias-badge">
       <span class="ias-badge-dot"></span>
@@ -693,7 +758,7 @@ html,body{background:var(--warm-neutral);}
       <div class="ias-card-icon ias-icon-mint">⚡</div>
       <div class="ias-card-title">Fractional Benefits Consulting</div>
       <div class="ias-divider"></div>
-      <div class="ias-card-body">Senior-level benefits strategy on demand — renewal prep, stewardship reports, self-funded analysis, and carrier negotiation. 20 years of translating insurance chaos, deployed for clients who need it most.</div>
+      <div class="ias-card-body">Senior-level benefits strategy on demand, including renewal prep, stewardship reports, self-funded analysis, and carrier negotiation. 20 years of translating insurance chaos, deployed for clients who need it most.</div>
       <div class="ias-stat-row">
         <div class="ias-stat"><div class="ias-stat-val">20+</div><div class="ias-stat-label">Years experience</div></div>
         <div class="ias-stat"><div class="ias-stat-val">3×</div><div class="ias-stat-label">Faster deliverables</div></div>
@@ -702,22 +767,10 @@ html,body{background:var(--warm-neutral);}
     </div>
 
     <div class="ias-card">
-      <div class="ias-card-tag">AI Automation</div>
-      <div class="ias-card-icon ias-icon-blue">🤖</div>
-      <div class="ias-card-title">Workflow Automation Builds</div>
-      <div class="ias-card-body">n8n, Make.com, and Claude API agents built for HR and benefits workflows.</div>
-      <div class="ias-pill-row">
-        <span class="ias-pill ias-pill-blue">n8n</span>
-        <span class="ias-pill ias-pill-blue">LangChain</span>
-        <span class="ias-pill ias-pill-blue">Claude API</span>
-      </div>
-    </div>
-
-    <div class="ias-card">
       <div class="ias-card-tag">Digital Products</div>
       <div class="ias-card-icon ias-icon-mint">📦</div>
       <div class="ias-card-title">Templates &amp; Toolkits</div>
-      <div class="ias-card-body">Power BI dashboards, stewardship templates, and benefits guides — plug-and-play ready.</div>
+      <div class="ias-card-body">Power BI dashboards, stewardship templates, and benefits guides, all plug-and-play ready.</div>
       <div class="ias-pill-row">
         <span class="ias-pill ias-pill-mint">Power BI</span>
         <span class="ias-pill ias-pill-mint">Templates</span>
@@ -740,11 +793,10 @@ html,body{background:var(--warm-neutral);}
       <div class="ias-card-icon ias-icon-blue">✍️</div>
       <div class="ias-card-title">The Benefits × AI Newsletter</div>
       <div class="ias-divider" style="background:linear-gradient(90deg,var(--ink-blue),transparent)"></div>
-      <div class="ias-card-body">Weekly breakdowns of AI tools, benefits strategy, and the intersection of both — for HR and benefits professionals ready to lead.</div>
+      <div class="ias-card-body">Weekly breakdowns of AI tools, benefits strategy, and the intersection of both. Built for HR and benefits professionals ready to lead.</div>
       <div class="ias-pill-row" style="margin-top:14px;">
         <span class="ias-pill ias-pill-blue">LinkedIn</span>
         <span class="ias-pill ias-pill-blue">Newsletter</span>
-        <span class="ias-pill ias-pill-blue">Podcast</span>
       </div>
     </div>
 
@@ -760,10 +812,10 @@ html,body{background:var(--warm-neutral);}
     </div>
 
     <div style="max-width:740px;margin:0 auto;">
-      <p class="ias-section-sub" style="margin-bottom:20px;">Think about the first person to use a shovel. Everyone around them was digging with their hands — that's how it had always been done. Nobody wanted to try the shovel. Didn't matter how much easier it looked. They just kept digging.</p>
-      <p class="ias-section-sub" style="margin-bottom:20px;">But the shovel guy didn't stop. He dug bigger holes. Better holes. Holes that would have taken everyone else a week, done in an afternoon. And eventually — slowly, reluctantly — the rest of them picked up a shovel too.</p>
+      <p class="ias-section-sub" style="margin-bottom:20px;">Think about the first person to use a shovel. Everyone around them was digging with their hands because that's how it had always been done. Nobody wanted to try the shovel. Didn't matter how much easier it looked. They just kept digging.</p>
+      <p class="ias-section-sub" style="margin-bottom:20px;">But the shovel guy didn't stop. He dug bigger holes. Better holes. Holes that would have taken everyone else a week, done in an afternoon. And eventually, slowly, reluctantly, the rest of them picked up a shovel too.</p>
       <p class="ias-section-sub" style="margin-bottom:20px;font-weight:600;color:var(--ink);">AI is the shovel.</p>
-      <p class="ias-section-sub" style="margin-bottom:20px;">Benefits administration today — the stewardship reports built manually in Excel, the open enrollment FAQs answered one by one, the COBRA notices tracked in a spreadsheet — is an entire industry still digging with its hands. Not because shovels don't exist. Because that's the way it's always been done.</p>
+      <p class="ias-section-sub" style="margin-bottom:20px;">Benefits administration today is an entire industry still digging with its hands. The stewardship reports built manually in Excel, the open enrollment FAQs answered one by one, the COBRA notices tracked in a spreadsheet. Not because shovels don't exist. Because that's the way it's always been done.</p>
       <p class="ias-section-sub" style="margin-bottom:20px;font-weight:600;color:var(--ink);">That's why the BeneBots exist.</p>
       <p class="ias-section-sub" style="margin-bottom:20px;">Twenty years watching good HR admins drown in work that didn't need to be manual. Twenty years knowing there was a better way, and building toward it. The BeneBots aren't a product. They're the proof.</p>
       <p class="ias-section-sub" style="margin-bottom:32px;font-weight:600;color:var(--ink);">Pick up the shovel.</p>
@@ -780,7 +832,7 @@ html,body{background:var(--warm-neutral);}
         <div class="ias-eyebrow">The Guy · Benefits Practice</div>
         <h2 class="ias-section-title">Meet <em>MyBenefitsGuy</em>.</h2>
         <p class="ias-section-sub">
-          Human-led benefits consulting — 20 years of expertise, delivered for clients who need it most. Business owners, HR managers, and executives who want real answers, not more jargon.
+          Human-led benefits consulting with 20 years of expertise, delivered for clients who need it most. Business owners, HR managers, and executives who want real answers, not more jargon.
         </p>
       </div>
     </div>
@@ -794,19 +846,19 @@ html,body{background:var(--warm-neutral);}
         <span class="ias-guy-tag">BUILT BY A 20-YEAR INSIDER</span>
         <h3 class="ias-guy-title">I'm not an AI person who wandered into benefits. I'm a benefits person who found a better tool.</h3>
         <p class="ias-guy-body">
-          Twenty years in this industry — no college degree, just the work. HR administration, retirement planning, benefits consulting, carrier negotiations. I've been in the room for the hard conversations: the employee who didn't understand their COBRA deadline, the small business owner who didn't know their plan had a compliance gap, the HR admin who spent a full day building a report that should have taken an hour.
+          Twenty years in this industry. No college degree, just the work. HR administration, retirement planning, benefits consulting, carrier negotiations. I've been in the room for the hard conversations: the employee who didn't understand their COBRA deadline, the small business owner who didn't know their plan had a compliance gap, the HR admin who spent a full day building a report that should have taken an hour.
         </p>
         <p class="ias-guy-body">
           I was skeptical about AI in a field where mistakes have real consequences for real people's healthcare. The compliance stakes are real. The trust stakes are real. I get why the industry is cautious.
         </p>
         <p class="ias-guy-body">
-          But I also got tired of watching capable people do exhausting work that didn't need to be manual. So I built the BeneBots — AI workflow agents designed specifically for benefits administration, with human oversight built into every step.
+          But I also got tired of watching capable people do exhausting work that didn't need to be manual. So I built the BeneBots. AI workflow agents designed specifically for benefits administration, with human oversight built into every step.
         </p>
         <p class="ias-guy-body">
           <em>The industry thought the shovel guy was crazy. He was right.</em>
         </p>
         <p class="ias-guy-body" style="margin-top:8px;">
-          — Ty Mosher, Employee Benefits Account Manager | Founder, Infinite Awesome Studio<br>
+          Ty Mosher, Employee Benefits Account Manager | Founder, Infinite Awesome Studio<br>
           <span style="font-size:13px;opacity:0.7;">Licensed Producer: MD · VA · DC</span>
         </p>
 
@@ -883,7 +935,7 @@ html,body{background:var(--warm-neutral);}
         <div class="ias-bot-num">BOT 05</div>
         <div class="ias-bot-icon">🤝</div>
         <div class="ias-bot-name">LOA Navigator</div>
-        <div class="ias-bot-desc">Untangle federal, state, and company leave — without crossing into advice.</div>
+        <div class="ias-bot-desc">Untangle federal, state, and company leave without crossing into advice.</div>
         <div class="ias-bot-audience">Dual-audience</div>
       </div>
     </div>
@@ -900,6 +952,8 @@ html,body{background:var(--warm-neutral);}
     </div>
   </section>
 
+  </main>
+
   <!-- ============== FOOTER ============== -->
   <footer class="ias-footer">
     <div class="ias-footer-left">
@@ -910,5 +964,21 @@ html,body{background:var(--warm-neutral);}
 
 </div>
 
+<script>
+function toggleMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  var open=m.classList.toggle('open');
+  b.setAttribute('aria-expanded',open);
+  b.setAttribute('aria-label',open?'Close menu':'Open menu');
+}
+function closeMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  m.classList.remove('open');
+  b.setAttribute('aria-expanded','false');
+  b.setAttribute('aria-label','Open menu');
+}
+</script>
 </body>
 </html>

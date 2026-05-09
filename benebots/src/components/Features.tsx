@@ -48,7 +48,7 @@ const bots: Bot[] = [
     name: 'Plan Compare',
     tagline: 'Side-by-side, with the math shown',
     description:
-      'Two or three plans, structured comparison with real cost scenarios by employee profile — low utilizer, family with expected care, chronic condition. Includes honest watch-outs.',
+      'Two or three plans, structured comparison with real cost scenarios by employee profile: low utilizer, family with expected care, chronic condition. Includes honest watch-outs.',
     color: '#F7D154',
     tasks: [
       'Medical plan comparison',
@@ -63,7 +63,7 @@ const bots: Bot[] = [
     name: 'OE Coach',
     tagline: 'Open enrollment, one step at a time',
     description:
-      'Short questionnaire — coverage tier, expected care, prescriptions, budget. Returns a personalized plan recommendation, HSA/FSA contribution strategy, and the one trade-off they\'re making.',
+      'A short questionnaire covering coverage tier, expected care, prescriptions, and budget. Returns a personalized plan recommendation, HSA/FSA contribution strategy, and the one trade-off they\'re making.',
     color: '#FF6F61',
     tasks: [
       'Plan recommendation by profile',
@@ -102,7 +102,7 @@ function BotCard({ bot, index }: { bot: Bot; index: number }) {
         borderLeftWidth: '3px',
       }}
       onClick={() => navigate(`/demo/${bot.slug}`)}
-      aria-label={`${bot.name} — try the demo`}
+      aria-label={`${bot.name}, try the demo`}
       role="button"
       tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && navigate(`/demo/${bot.slug}`)}
@@ -174,7 +174,7 @@ export default function Features() {
           A BeneBot for every job in the stack
         </h2>
         <p className="reveal text-base font-body text-dark-muted max-w-xl mx-auto leading-relaxed" style={{ transitionDelay: '0.2s' }}>
-          Each agent handles a specific function — grounded in your client's actual plan data, not generic insurance content.
+          Each agent handles a specific function, grounded in your client's actual plan data, not generic insurance content.
           Click any card to see a live demo with Acme Industries data.
         </p>
       </div>
@@ -200,7 +200,7 @@ export default function Features() {
         <div className="hidden sm:block w-px bg-dark-border self-stretch" aria-hidden="true" />
         <div>
           <p className="font-display font-bold text-2xl text-coral mb-1">Every benefit. Every penny.</p>
-          <p className="text-sm font-body text-dark-muted">no generic answers — grounded in your client data</p>
+          <p className="text-sm font-body text-dark-muted">no generic answers, grounded in your client data</p>
         </div>
       </div>
     </section>
