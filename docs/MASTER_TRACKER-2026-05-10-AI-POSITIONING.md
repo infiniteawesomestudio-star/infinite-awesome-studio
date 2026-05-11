@@ -24,7 +24,7 @@ date: 2026-05-10
 | 1.26 | Hero section: new messaging (AI Tools focus) | Pending | "Benefits shouldn't be this hard" + 3 AI tool pillars |
 | 1.27 | Replace "How It Works" with "The Problem" | Pending | Pain points: drowning in manual work, compliance chaos, etc. |
 | 1.28 | Add "Quick Win: AI Tools" section | Pending | Copilot/Claude/ChatGPT cards with prompts + time savings |
-| 1.29 | Expand founder bio: Blue Cross experience | Pending | 9 years @ BCBS (roles, dates), transition to consulting, origin story |
+| 1.29 | Expand founder bio: Blue Cross experience | Pending | 10 years @ BCBS in Benefits Operations, 15 years HR/Broker world, 25 years total since 2002 |
 | 1.30 | Add BeneBots section: "Want Full Automation?" | Pending | Position as upgrade from manual AI prompting |
 | 1.31 | Update CTA hierarchy | Pending | Primary: "Download AI Workflows"; Secondary: "Explore BeneBots" |
 | 1.32 | Test responsive on mobile (375px, 768px, 1024px) | Pending | Messaging clarity at all breakpoints |

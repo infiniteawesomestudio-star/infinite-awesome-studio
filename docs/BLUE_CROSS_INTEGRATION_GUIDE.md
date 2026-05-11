@@ -20,7 +20,7 @@ Your BCBS background isn't decoration — it's the *reason* people should listen
 - **You identified process improvements** → you've solved this before
 - **You managed 9+ years of this** → you're not guessing
 
-**The narrative:** "I spent 9 years inside a major insurance system analyzing the exact problems I'm teaching you to solve with AI."
+**The narrative:** "I've spent 25 years in benefits — 10 of them inside a major health plan's operations, 15 in the HR/Broker world. I'm teaching you to solve the same problems I analyzed for a decade."
 
 ---
 
@@ -34,17 +34,13 @@ Your BCBS background isn't decoration — it's the *reason* people should listen
 
 **Copy:**
 ```
-I spent 9 years at Horizon Blue Cross Blue Shield analyzing benefit systems, 
-designing solutions, and fixing the operational bottlenecks that benefits 
-teams face every day.
+I've been in benefits since 2002 — 25 years across the HR/Broker world and inside operations at Horizon Blue Cross Blue Shield. For 10 of those years, I was analyzing benefit systems, designing solutions, and fixing the operational bottlenecks that benefits teams face every day.
 
 As a Benefit Analyst and Business Systems Analyst, I built systems for 
 plan implementations, led User Acceptance Testing (UAT) for complex benefits, 
 and worked directly with HR teams to solve their biggest pain points.
 
-Then I spent another decade in brokerage and HR benefits consulting, 
-watching the same problems repeat: manual work, outdated processes, 
-HR teams drowning in documentation.
+For 15 years in benefits consulting and brokerage, I watched the same problems repeat at every company: manual work, outdated processes, HR teams drowning in documentation.
 
 So I did two things:
 1. Started showing benefits teams how to use AI tools (Copilot, Claude, 
@@ -54,12 +50,12 @@ So I did two things:
 ```
 
 **Credentials Callout (under copy):**
-- 9 years @ Horizon Blue Cross Blue Shield NJ
+- 10 years @ Horizon Blue Cross Blue Shield NJ
 - Roles: Benefit Analyst → Business Systems Analyst II → Senior Analyst
 - Specialty: Benefit coding, system implementation, UAT, process improvement
 - Health & Life Producer licenses (MD, VA, DC)
 - Active CEBS/GBA candidate
-- 10+ years brokerage & HR consulting
+- 15 years in benefits consulting & brokerage (HR/Broker world)
 
 ---
 
@@ -85,7 +81,7 @@ Then in consulting, I saw them 1,000 more times.
 The pattern was always the same: manual work that a computer should be doing."
 ```
 
-**Why this works:** You're not speculating about the problem — you documented it for 9 years.
+**Why this works:** You're not speculating about the problem — you documented it for a decade inside a major health plan and watched it repeat for 15 more years in the field.
 
 ---
 
@@ -193,7 +189,7 @@ we had the tools, but nobody was teaching people how to use them.
 Heading: "10 Years in the Consulting Trenches"
 
 Content:
-After 9 years at Blue Cross, I moved into brokerage and HR consulting. 
+After 10 years at Blue Cross, I moved into brokerage and HR consulting full-time (though I'd been doing advisory work in the HR/Broker world for years alongside my BCBS role). 
 I thought I'd see different problems.
 
 I didn't.
@@ -275,7 +271,7 @@ practitioner who:
 - Coded benefit structures for a major health plan
 - Conducted UAT for complex system implementations
 - Worked directly with HR teams on their biggest pain points
-- Spent 10+ years seeing the same operational problems repeat
+- Spent 15 years in the HR/Broker world seeing the same operational problems repeat
 - Now shows people how to solve those problems with technology
 
 I'm not selling you a dream. I'm showing you how to automate the work 
@@ -287,7 +283,7 @@ And I know it works because I've been doing it for years.
 #### Section 7: Credentials
 
 ```
-HORIZON BLUE CROSS BLUE SHIELD NJ (2013-2022, 9 years)
+HORIZON BLUE CROSS BLUE SHIELD NJ (10 years, Benefits Operations & Systems)
 
 Benefit Analyst I (2013-2015) | On-Site, Newark NJ
 - Interpreted benefit documentation for new accounts
@@ -335,9 +331,7 @@ CREDENTIALS
 ```
 Q: Who built BeneBots?
 
-A: I'm Ty Mosher. I spent 9 years at Horizon Blue Cross Blue Shield 
-analyzing benefit systems and fixing operational bottlenecks. Then 
-10+ years in HR consulting, watching the same problems repeat.
+A: I'm Ty Mosher. I've been in benefits since 2002 — 25 years across the HR/Broker world and inside Benefits Operations at Horizon Blue Cross Blue Shield. I spent 10 of those years at BCBS analyzing benefit systems and fixing operational bottlenecks. For 15 years in the HR/Broker world, I watched the same problems repeat.
 
 I started teaching HR teams how to use AI tools (Copilot, Claude, ChatGPT) 
 to cut their work in half. The response was immediate.
@@ -345,8 +339,7 @@ to cut their work in half. The response was immediate.
 But people kept asking: "Can you make it just run automatically?"
 
 That's what BeneBots does. It's the automated version of the manual 
-workflows I teach. Built by someone who's spent 20 years on the HR side 
-of benefits administration.
+workflows I teach. Built by someone who's spent 25 years on the HR side of benefits administration.
 ```
 
 **Existing FAQ Question to Enhance:**
@@ -373,7 +366,7 @@ to BeneBots (automated, 24/7) when they want to stop manually prompting.
 
 | Message | Where | Why |
 |---------|-------|-----|
-| "9 years at Blue Cross" | Landing page, /about-ty, BeneBots FAQ | Establishes authority |
+| "10 years at Blue Cross" | Landing page, /about-ty, BeneBots FAQ | Establishes authority |
 | "I coded benefit structures" | /about-ty (detailed) | Shows depth of understanding |
 | "Conducted UAT for implementations" | /about-ty, possibly FAQ | Demonstrates system knowledge |
 | "Worked directly with HR teams" | Landing page, /about-ty | Shows empathy, not theoretical |
@@ -392,7 +385,7 @@ to BeneBots (automated, 24/7) when they want to stop manually prompting.
 - ❌ Long lists of job titles (confusing)
 
 **What to Do:**
-- ✅ "I spent 9 years at Blue Cross"
+- ✅ "I spent 10 years at Blue Cross"
 - ✅ "I coded benefit structures"
 - ✅ "I conducted UAT for complex implementations"
 - ✅ "I saw the same problem 1,000+ times"
@@ -448,7 +441,7 @@ to BeneBots (automated, 24/7) when they want to stop manually prompting.
 
 **After Session 10:**
 ```
-"I spent 9 years at Blue Cross seeing the same problems repeat.
+"I spent 10 years inside Blue Cross seeing the same problems repeat.
 Here's how to solve them TODAY with AI tools you have.
 Here's BeneBots for teams that want full automation.
 And here's why you should listen to me."
@@ -460,6 +453,6 @@ And here's why you should listen to me."
 
 Your BCBS background isn't just credibility for the website. It's the *reason* you can teach this authentically.
 
-You're not a startup founder with an idea. You're a benefits practitioner who spent nearly a decade inside a major health plan, then another decade in the field, and is now showing people the solutions.
+You're not a startup founder with an idea. You're a benefits practitioner who spent 10 years inside a major health plan, then 15 years in the HR/Broker world, and is now showing people the solutions.
 
 That's powerful. Let it show.

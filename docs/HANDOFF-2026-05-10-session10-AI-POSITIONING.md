@@ -22,7 +22,7 @@ owner: Ty Mosher
 - **Immediate credibility:** Shows what's possible NOW with free/paid tools
 - **Removes friction:** HR admins can try solutions today, not wait for pilot
 - **Leads to BeneBots:** Once they see the manual work, BeneBots becomes obvious
-- **Founder authority:** 9 years at Blue Cross analyzing benefit systems = credible guide
+- **Founder authority:** 25 years in benefits (10 at BCBS in Operations, 15 in HR/Broker world) = credible guide
 
 ### Messaging Hierarchy
 ```
@@ -91,24 +91,20 @@ Three cards:
 Subtext: "All of these are free or <$20/mo. Try them today."
 
 #### UPDATED SECTION 4: "Who's Behind This" (Founder Credibility)
-Current: Brief "Ty is a 25-year benefits veteran"
+Current: Brief "Ty is a 25-year benefits veteran" (now accurate)
 New: Expanded section with Blue Cross context
 
 ```
 Heading: "Built by Someone Who's Been in Your Shoes"
 
 Content:
-"I spent 9 years at Blue Cross Blue Shield analyzing benefit systems, 
-designing solutions, and fixing the operational bottlenecks that 
-benefits teams face every day.
+"I've been in benefits since 2002 — 25 years across the HR/Broker world and inside Horizon Blue Cross Blue Shield in Benefits Operations. For 10 of those years, I was analyzing benefit systems, designing solutions, and fixing the operational bottlenecks that benefits teams face every day.
 
 As a Benefit Analyst and Business Systems Analyst, I built systems 
 for plan implementations, led UAT for complex benefits, and worked 
 directly with HR teams to solve their biggest pain points.
 
-Then I spent another decade in brokerage and HR benefits consulting, 
-watching the same problems repeat: manual work, outdated processes, 
-HR teams drowning in documentation.
+For 15 years in the HR/Broker world — consulting, brokerage, and direct advisory — I watched the same problems repeat: manual work, outdated processes, HR teams drowning in documentation.
 
 So I did two things:
 1. Started showing benefits teams how to use AI tools (Copilot, Claude, 
@@ -121,9 +117,8 @@ So I did two things:
 [Add this AFTER founder bio, BEFORE BeneBots section]
 
 Credentials callout:
-- 9 years @ Horizon Blue Cross Blue Shield NJ (Benefit Coding Analyst 
-  → Business Systems Analyst II → Senior Analyst)
-- 10 years in brokerage & HR consulting
+- 10 years @ Horizon Blue Cross Blue Shield NJ (Benefit Analyst → Business Systems Analyst II → Senior Analyst) — Benefits Operations & Systems
+- 15 years in benefits consulting & brokerage (HR/Broker world)
 - Health & Life Producer licenses: MD, VA, DC
 - Active CEBS/GBA candidate
 - Built BeneBots to solve the problems I saw repeated 1,000+ times

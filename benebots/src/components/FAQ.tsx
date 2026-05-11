@@ -14,7 +14,7 @@ const faqs: FAQItem[] = [
   {
     question: 'Who built BeneBots?',
     answer:
-      "I'm Ty Mosher. I spent 9 years at Horizon Blue Cross Blue Shield analyzing benefit systems and fixing operational bottlenecks. Then 10+ years in HR consulting, watching the same problems repeat. I started teaching HR teams how to use AI tools (Copilot, Claude, ChatGPT) to cut their work in half. The response was immediate. But people kept asking: \"Can you make it just run automatically?\" That's what BeneBots does. It's the automated version of the manual workflows I teach — built by someone who's spent 20 years on the HR side of benefits administration.",
+      "I'm Ty Mosher. I've been in benefits since 2002 — 25 years across the HR/Broker world and inside Benefits Operations at Horizon Blue Cross Blue Shield. For 10 of those years I was coding benefit structures, leading UAT for complex implementations, and fixing operational bottlenecks inside a major health plan. For 15 years in benefits consulting and brokerage, I watched the same problems repeat at every company. I started teaching HR teams how to use AI tools (Copilot, Claude, ChatGPT) to cut their work in half. The response was immediate. But people kept asking: \"Can you make it just run automatically?\" That's what BeneBots does. It's the automated version of the manual workflows I teach — built by someone who's spent 25 years on the HR side of benefits administration.",
     bot: 'MyBenefitsGuy',
     botIcon: MessageSquare,
     botColor: '#00C47A',
