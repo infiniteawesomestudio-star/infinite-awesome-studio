@@ -70,17 +70,17 @@ export default function Hero() {
         <div>
           <div className="reveal inline-flex items-center gap-2 bg-dark-card border border-dark-border rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 rounded-full bg-mint animate-pulse" />
-            <span className="text-xs font-body text-dark-muted uppercase tracking-widest">Here's the shovel</span>
+            <span className="text-xs font-body text-dark-muted uppercase tracking-widest">Set it and forget it</span>
           </div>
 
           <h1 className="reveal font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-dark-text leading-tight mb-5" style={{ transitionDelay: '0.1s' }}>
-            AI agents that{' '}
-            <span className="text-gradient">know the plan.</span>
-            <span className="block mt-1">Not just the topic.</span>
+            For teams that don&apos;t want to{' '}
+            <span className="text-gradient">manually prompt AI</span>
+            <span className="block mt-1">every Monday.</span>
           </h1>
 
           <p className="reveal text-base sm:text-lg font-body text-dark-muted leading-relaxed mb-8 max-w-lg" style={{ transitionDelay: '0.2s' }}>
-            Five BeneBots. Each one grounded in your client's actual plan data: deductibles, copays, SPD language, carrier contracts. Pick a bot below and see it answer a real question.
+            Or want specialized automation that fits your exact workflow. Five BeneBots, each grounded in your client&apos;s actual plan data. Runs 24/7. No manual prompting. Just approve the output.
           </p>
 
           <div className="reveal flex flex-wrap gap-3 mb-12" style={{ transitionDelay: '0.3s' }}>
@@ -88,7 +88,7 @@ export default function Hero() {
               onClick={() => navigate('/demo/ask')}
               className="inline-flex items-center gap-2 bg-mint text-deep-forest font-display font-semibold px-6 py-3 rounded-xl hover:bg-[#00a868] transition-colors shadow-lg shadow-mint/25 text-sm"
             >
-              Try Ask BeneBot →
+              See a Live Demo →
             </button>
             <a
               href="mailto:ty@infiniteawesomestudio.com"
