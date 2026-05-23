@@ -67,7 +67,7 @@ export default function Hero() {
         <div>
           <div className="reveal inline-flex items-center gap-2 bg-dark-card border border-dark-border rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 rounded-full bg-mint animate-pulse" />
-            <span className="text-xs font-body text-dark-muted uppercase tracking-widest">Set it and forget it</span>
+            <span className="text-xs font-body text-dark-muted uppercase tracking-widest">Here's the shovel</span>
           </div>
 
           <h1 className="reveal font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-dark-text leading-tight mb-5" style={{ transitionDelay: '0.1s' }}>
@@ -110,13 +110,13 @@ export default function Hero() {
         <div className="relative flex items-center justify-center h-80 lg:h-auto" aria-hidden="true">
           <div className="relative animate-float" style={{ animationDuration: '5s' }}>
             <div
-              className="w-28 h-28 rounded-3xl flex items-center justify-center glow-mint p-3"
+              className="w-32 h-32 rounded-3xl flex items-center justify-center glow-mint"
               style={{
-                backgroundColor: 'rgba(0,196,122,0.12)',
+                backgroundColor: 'rgba(0,196,122,0.08)',
                 border: '2px solid rgba(0,196,122,0.35)',
               }}
             >
-              <img src="/benebots-logo.png" alt="BeneBots" className="w-full h-full object-contain" />
+              <img src="/MyBenefitsGuy_Logo_TP.png" alt="MyBenefitsGuy" className="w-full h-full object-contain" />
             </div>
           </div>
 
