@@ -16,7 +16,7 @@ const USE_TYPES = [
     audience: 'Mid-size brokerages',
     color: '#5B8FFF',
     items: [
-      'Full 5-bot suite configured per client',
+      'Full 6-bot suite configured per client',
       'Multi-client management where each client\'s bots know only their own plans',
       'White-label ready for client portal deployment',
       'Diagnostics suite runs before every client demo',

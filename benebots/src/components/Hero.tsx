@@ -3,23 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import { Calendar } from 'lucide-react'
 
 const stats = [
-  { value: '5', label: 'specialized agents, one shared client profile' },
+  { value: '6', label: 'specialized agents, one shared client profile' },
   { value: '40 min', label: 'stewardship report, down from six hours' },
   { value: '0', label: 'generic answers. Every response cites the plan' },
 ]
 
 const BOT_FACES = [
-  { color: '#00C47A', label: 'Ask', delay: '0s', slug: 'ask' },
-  { color: '#5B8FFF', label: 'Reports', delay: '1s', slug: 'stewardship' },
-  { color: '#F7D154', label: 'Compare', delay: '2s', slug: 'plan-compare' },
-  { color: '#FF6F61', label: 'OE', delay: '0.5s', slug: 'oe-coach' },
-  { color: '#A78BFA', label: 'LOA', delay: '1.5s', slug: 'loa-navigator' },
+  { color: '#00C47A', label: 'Ask', delay: '0s', slug: 'ask', image: '/HSABot_TP.png' },
+  { color: '#5B8FFF', label: 'Reports', delay: '1s', slug: 'stewardship', image: '/ComplianceBot_TP.png' },
+  { color: '#F7D154', label: 'Compare', delay: '2s', slug: 'plan-compare', image: '/CompareBot_TP.png' },
+  { color: '#FF6F61', label: 'OE', delay: '0.5s', slug: 'oe-coach', image: '/OEBot_TP.png' },
+  { color: '#A78BFA', label: 'LOA', delay: '1.5s', slug: 'loa-navigator', image: '/LOABot_TP.png' },
+  { color: '#F97316', label: 'Claims', delay: '2.5s', slug: 'claims-compass', image: '/ClaimBot_TP.png' },
 ]
 
-function BotFace({ color, label, delay, size = 56 }: { color: string; label: string; delay: string; size?: number }) {
+function BotFace({ color, label, delay, image, size = 56 }: { color: string; label: string; delay: string; image: string; size?: number }) {
   return (
     <div
-      className="rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg animate-float"
+      className="rounded-2xl overflow-hidden shadow-lg animate-float"
       style={{
         width: size,
         height: size,
@@ -28,13 +29,9 @@ function BotFace({ color, label, delay, size = 56 }: { color: string; label: str
         animationDelay: delay,
         boxShadow: `0 0 20px ${color}30`,
       }}
+      aria-label={label}
     >
-      <div className="flex gap-[3px]">
-        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-      </div>
-      <div className="w-5 h-1 rounded-full mt-0.5" style={{ backgroundColor: `${color}88` }} />
-      <span className="text-[8px] font-display font-bold mt-0.5" style={{ color }}>{label}</span>
+      <img src={image} alt={label} className="w-full h-full object-contain p-1" />
     </div>
   )
 }
@@ -80,7 +77,7 @@ export default function Hero() {
           </h1>
 
           <p className="reveal text-base sm:text-lg font-body text-dark-muted leading-relaxed mb-8 max-w-lg" style={{ transitionDelay: '0.2s' }}>
-            Or want specialized automation that fits your exact workflow. Five BeneBots, each grounded in your client&apos;s actual plan data. Runs 24/7. No manual prompting. Just approve the output.
+            Or want specialized automation that fits your exact workflow. Six BeneBots, each grounded in your client&apos;s actual plan data. Runs 24/7. No manual prompting. Just approve the output.
           </p>
 
           <div className="reveal flex flex-wrap gap-3 mb-12" style={{ transitionDelay: '0.3s' }}>
@@ -125,7 +122,7 @@ export default function Hero() {
 
           {BOT_FACES.map((b, i) => {
             const angle = (i / BOT_FACES.length) * 2 * Math.PI - Math.PI / 2
-            const r = 140
+            const r = 148
             const x = Math.cos(angle) * r
             const y = Math.sin(angle) * r
             return (
@@ -134,7 +131,7 @@ export default function Hero() {
                 className="absolute"
                 style={{ left: '50%', top: '50%', transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
               >
-                <BotFace color={b.color} label={b.label} delay={b.delay} />
+                <BotFace color={b.color} label={b.label} delay={b.delay} image={b.image} />
               </div>
             )
           })}

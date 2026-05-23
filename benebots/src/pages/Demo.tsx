@@ -7,12 +7,12 @@ import PlanCompareDemo from '../demo/PlanCompareDemo'
 import OECoachDemo from '../demo/OECoachDemo'
 import LOANavigatorDemo from '../demo/LOANavigatorDemo'
 
-const BOT_META: Record<string, { name: string; color: string; tagline: string }> = {
-  ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in Acme\'s plans' },
-  stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, Acme claims data pre-loaded' },
-  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with Acme\'s actual numbers' },
-  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans' },
-  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave' },
+const BOT_META: Record<string, { name: string; color: string; tagline: string; image: string }> = {
+  ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in Acme\'s plans', image: '/HSABot_TP.png' },
+  stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, Acme claims data pre-loaded', image: '/ComplianceBot_TP.png' },
+  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with Acme\'s actual numbers', image: '/CompareBot_TP.png' },
+  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans', image: '/OEBot_TP.png' },
+  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave', image: '/LOABot_TP.png' },
 }
 
 export default function Demo() {
@@ -45,16 +45,10 @@ export default function Demo() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0"
               style={{ backgroundColor: `${meta.color}1a`, border: `1.5px solid ${meta.color}44` }}
             >
-              <div className="flex flex-col items-center gap-0.5">
-                <div className="flex gap-1">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: meta.color }} />
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: meta.color }} />
-                </div>
-                <div className="w-3 h-0.5 rounded-full" style={{ backgroundColor: `${meta.color}88` }} />
-              </div>
+              <img src={meta.image} alt={meta.name} className="w-full h-full object-contain p-0.5" />
             </div>
             <div>
               <h1 className="font-display font-bold text-dark-text text-lg leading-tight">{meta.name}</h1>

@@ -1,20 +1,20 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MessageSquare, FileText, Scale, Compass, Navigation } from 'lucide-react'
 
 interface Bot {
-  icon: React.ElementType
+  image: string
   name: string
   tagline: string
   description: string
   color: string
   tasks: string[]
   slug: string
+  comingSoon?: boolean
 }
 
 const bots: Bot[] = [
   {
-    icon: MessageSquare,
+    image: '/HSABot_TP.png',
     name: 'Ask BeneBot',
     tagline: 'Every plan detail, plain language',
     description:
@@ -29,7 +29,7 @@ const bots: Bot[] = [
     slug: 'ask',
   },
   {
-    icon: FileText,
+    image: '/ComplianceBot_TP.png',
     name: 'Stewardship Studio',
     tagline: 'Broker-quality narratives in 40 minutes',
     description:
@@ -44,7 +44,7 @@ const bots: Bot[] = [
     slug: 'stewardship',
   },
   {
-    icon: Scale,
+    image: '/CompareBot_TP.png',
     name: 'Plan Compare',
     tagline: 'Side-by-side, with the math shown',
     description:
@@ -59,7 +59,7 @@ const bots: Bot[] = [
     slug: 'plan-compare',
   },
   {
-    icon: Compass,
+    image: '/OEBot_TP.png',
     name: 'OE Coach',
     tagline: 'Open enrollment, one step at a time',
     description:
@@ -74,7 +74,7 @@ const bots: Bot[] = [
     slug: 'oe-coach',
   },
   {
-    icon: Navigation,
+    image: '/LOABot_TP.png',
     name: 'LOA Navigator',
     tagline: 'Leave policy, state by state',
     description:
@@ -88,37 +88,52 @@ const bots: Bot[] = [
     ],
     slug: 'loa-navigator',
   },
+  {
+    image: '/ClaimBot_TP.png',
+    name: 'Claims Compass',
+    tagline: 'Claim denied. Here\'s what to do next.',
+    description:
+      'EOB plain-language review, prior auth appeal checklists, and No Surprises Act balance billing guidance. Dual mode: employee-facing education and HR admin workflow.',
+    color: '#F97316',
+    tasks: [
+      'EOB review & denial translation',
+      'Prior auth appeal step-by-step',
+      'No Surprises Act balance billing',
+      'HR admin vs employee mode',
+    ],
+    slug: 'claims-compass',
+    comingSoon: true,
+  },
 ]
 
 function BotCard({ bot, index }: { bot: Bot; index: number }) {
   const navigate = useNavigate()
-  const Icon = bot.icon
   return (
     <article
-      className="reveal card-lift bg-dark-card border border-dark-border rounded-2xl p-6 flex flex-col gap-4 cursor-pointer group transition-all hover:border-opacity-60"
+      className={`reveal card-lift bg-dark-card border border-dark-border rounded-2xl p-6 flex flex-col gap-4 transition-all hover:border-opacity-60 ${bot.comingSoon ? 'opacity-80' : 'cursor-pointer group'}`}
       style={{
         transitionDelay: `${index * 0.1}s`,
         borderLeftColor: `${bot.color}44`,
         borderLeftWidth: '3px',
       }}
-      onClick={() => navigate(`/demo/${bot.slug}`)}
-      aria-label={`${bot.name}, try the demo`}
-      role="button"
-      tabIndex={0}
-      onKeyDown={e => e.key === 'Enter' && navigate(`/demo/${bot.slug}`)}
+      onClick={() => !bot.comingSoon && navigate(`/demo/${bot.slug}`)}
+      aria-label={bot.comingSoon ? `${bot.name}, coming soon` : `${bot.name}, try the demo`}
+      role={bot.comingSoon ? undefined : 'button'}
+      tabIndex={bot.comingSoon ? undefined : 0}
+      onKeyDown={e => !bot.comingSoon && e.key === 'Enter' && navigate(`/demo/${bot.slug}`)}
     >
       <div className="flex items-start justify-between gap-3">
         <div
-          className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all group-hover:scale-105"
+          className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center transition-all group-hover:scale-105"
           style={{ backgroundColor: `${bot.color}1a`, border: `1px solid ${bot.color}33` }}
         >
-          <Icon size={20} style={{ color: bot.color }} />
+          <img src={bot.image} alt={bot.name} className="w-full h-full object-contain p-0.5" />
         </div>
         <span
           className="text-[10px] font-body font-semibold uppercase tracking-widest px-2 py-1 rounded-full"
           style={{ backgroundColor: `${bot.color}18`, color: bot.color }}
         >
-          BeneBot
+          {bot.comingSoon ? 'Coming Soon' : 'BeneBot'}
         </span>
       </div>
 
@@ -140,9 +155,9 @@ function BotCard({ bot, index }: { bot: Bot; index: number }) {
       <div className="pt-1 border-t border-dark-border">
         <span
           className="text-xs font-body font-medium transition-colors"
-          style={{ color: bot.color }}
+          style={{ color: bot.comingSoon ? `${bot.color}66` : bot.color }}
         >
-          See it in action →
+          {bot.comingSoon ? 'Demo coming soon' : 'See it in action →'}
         </span>
       </div>
     </article>
@@ -168,7 +183,7 @@ export default function Features() {
     <section ref={sectionRef} id="features" className="py-24 px-4 sm:px-6 max-w-6xl mx-auto" aria-labelledby="features-heading">
       <div className="text-center mb-16">
         <div className="reveal inline-flex items-center gap-2 bg-dark-card border border-dark-border rounded-full px-4 py-1.5 mb-5">
-          <span className="text-xs font-body text-mint uppercase tracking-widest">Five Agents, One Platform</span>
+          <span className="text-xs font-body text-mint uppercase tracking-widest">Six Agents, One Platform</span>
         </div>
         <h2 id="features-heading" className="reveal font-display font-bold text-3xl sm:text-4xl text-dark-text mb-4" style={{ transitionDelay: '0.1s' }}>
           A BeneBot for every job in the stack
@@ -179,7 +194,7 @@ export default function Features() {
         </p>
       </div>
 
-      {/* 2+3 grid — 5 bots */}
+      {/* 3+3 grid — 6 bots */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {bots.map((bot, i) => (
           <BotCard key={bot.name} bot={bot} index={i} />
