@@ -12,7 +12,7 @@ const BOT_META: Record<string, { name: string; color: string; tagline: string; i
   stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, Acme claims data pre-loaded', image: '/ComplianceBot_TP.png' },
   'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with Acme\'s actual numbers', image: '/CompareBot_TP.png' },
   'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans', image: '/OEBot_TP.png' },
-  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave', image: '/LOABot_TP.png' },
+  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave', image: '/LOABot_TP2.png' },
 }
 
 export default function Demo() {

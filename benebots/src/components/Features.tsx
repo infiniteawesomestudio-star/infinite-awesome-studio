@@ -14,7 +14,7 @@ interface Bot {
 
 const bots: Bot[] = [
   {
-    image: '/HSABot_TP.png',
+    image: '/AskBot_Duo_TP.png',
     name: 'Ask BeneBot',
     tagline: 'Every plan detail, plain language',
     description:
@@ -74,7 +74,7 @@ const bots: Bot[] = [
     slug: 'oe-coach',
   },
   {
-    image: '/LOABot_TP.png',
+    image: '/LOABot_TP2.png',
     name: 'LOA Navigator',
     tagline: 'Leave policy, state by state',
     description:

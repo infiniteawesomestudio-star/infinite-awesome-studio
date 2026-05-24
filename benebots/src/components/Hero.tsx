@@ -13,7 +13,7 @@ const BOT_FACES = [
   { color: '#5B8FFF', label: 'Reports', delay: '1s', slug: 'stewardship', image: '/ComplianceBot_TP.png' },
   { color: '#F7D154', label: 'Compare', delay: '2s', slug: 'plan-compare', image: '/CompareBot_TP.png' },
   { color: '#FF6F61', label: 'OE', delay: '0.5s', slug: 'oe-coach', image: '/OEBot_TP.png' },
-  { color: '#A78BFA', label: 'LOA', delay: '1.5s', slug: 'loa-navigator', image: '/LOABot_TP.png' },
+  { color: '#A78BFA', label: 'LOA', delay: '1.5s', slug: 'loa-navigator', image: '/LOABot_TP2.png' },
   { color: '#F97316', label: 'Claims', delay: '2.5s', slug: 'claims-compass', image: '/ClaimBot_TP.png' },
 ]
 
