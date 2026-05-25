@@ -27,10 +27,10 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-24 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group" aria-label="BeneBots home">
-          <img src="/ias-logo.png" alt="Infinite Awesome Studio" className="h-20 w-auto" />
+          <img src="/ias-logo.png" alt="Infinite Awesome Studio" className="h-24 w-auto" />
           <div className="flex flex-col leading-tight">
             <span className="text-[10px] font-body font-semibold uppercase tracking-widest text-mint">MyBenefitsGuy Presents</span>
             <span className="font-display font-bold text-dark-text text-lg tracking-tight">Bene<span className="text-mint">Bots</span></span>
