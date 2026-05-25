@@ -14,7 +14,7 @@ const faqs: FAQItem[] = [
   {
     question: 'Who built BeneBots?',
     answer:
-      "I'm Ty Mosher. I've been in benefits since 2002 — 25 years across the HR/Broker world and inside Benefits Operations at Horizon Blue Cross Blue Shield. For 10 of those years I was coding benefit structures, leading UAT for complex implementations, and fixing operational bottlenecks inside a major health plan. For 15 years in benefits consulting and brokerage, I watched the same problems repeat at every company. I started teaching HR teams how to use AI tools (Copilot, Claude, ChatGPT) to cut their work in half. The response was immediate. But people kept asking: \"Can you make it just run automatically?\" That's what BeneBots does. It's the automated version of the manual workflows I teach — built by someone who's spent 25 years on the HR side of benefits administration.",
+      "I'm Ty Mosher. I've been in benefits since 2002, with 25 years across the HR/Broker world and inside Benefits Operations at Horizon Blue Cross Blue Shield. For 10 of those years I was coding benefit structures, leading UAT for complex implementations, and fixing operational bottlenecks inside a major health plan. For 15 years in benefits consulting and brokerage, I watched the same problems repeat at every company. I started teaching HR teams how to use AI tools (Copilot, Claude, ChatGPT) to cut their work in half. The response was immediate. But people kept asking: \"Can you make it just run automatically?\" That's what BeneBots does. It's the automated version of the manual workflows I teach, built by someone who's spent 25 years on the HR side of benefits administration.",
     bot: 'MyBenefitsGuy',
     botIcon: MessageSquare,
     botColor: '#00C47A',
@@ -23,7 +23,7 @@ const faqs: FAQItem[] = [
   {
     question: 'How is BeneBots different from using ChatGPT or Copilot?',
     answer:
-      "ChatGPT and Copilot are great tools — I recommend them all the time. They're free or under $20/month and solve 80% of benefits admin problems. But they require manual prompting every time. If you'd rather not prompt an AI tool every Monday morning, BeneBots is for you. Think of it this way: ChatGPT and Copilot are shovels you pick up and use. BeneBots is the excavator that does the shoveling automatically. Most teams start with ChatGPT or Copilot (free, immediate). Some graduate to BeneBots (automated, 24/7) when they want to stop manually prompting.",
+      "ChatGPT and Copilot are great tools, and I recommend them all the time. They're free or under $20/month and solve 80% of benefits admin problems. But they require manual prompting every time. If you'd rather not prompt an AI tool every Monday morning, BeneBots is for you. Think of it this way: ChatGPT and Copilot are shovels you pick up and use. BeneBots is the excavator that does the shoveling automatically. Most teams start with ChatGPT or Copilot (free, immediate). Some graduate to BeneBots (automated, 24/7) when they want to stop manually prompting.",
     bot: 'MyBenefitsGuy',
     botIcon: MessageSquare,
     botColor: '#00C47A',
