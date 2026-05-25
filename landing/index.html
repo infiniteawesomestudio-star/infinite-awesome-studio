@@ -760,6 +760,78 @@ html,body{background:var(--warm-neutral);}
 }
 .ias-btn-ghost-dark:hover{color:var(--white);}
 
+
+/* ================= INFINITE WORKFLOWS ================= */
+.ias-iw{
+  background:var(--warm-neutral);
+  padding:80px 36px;
+  position:relative;
+  border-top:2px solid rgba(247,209,84,0.35);
+}
+.ias-iw-inner{max-width:1120px;margin:0 auto;}
+.ias-iw-eyebrow{
+  font-family:var(--font-body);
+  font-size:11px;letter-spacing:0.12em;font-weight:600;
+  color:var(--ink-55);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:20px;
+}
+.ias-iw-eyebrow::before{
+  content:'';display:block;width:10px;height:10px;border-radius:50%;
+  background:var(--sunshine-gold);flex-shrink:0;
+}
+.ias-iw-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;
+}
+.ias-iw-quote{
+  font-family:var(--font-body);
+  font-size:17px;line-height:1.6;
+  color:var(--ink);
+  font-style:italic;
+  padding:20px 24px;
+  background:rgba(247,209,84,0.12);
+  border-left:3px solid var(--sunshine-gold);
+  border-radius:0 8px 8px 0;
+  margin:24px 0 32px;
+}
+.ias-iw-cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.ias-btn-gold{
+  font-family:var(--font-body);
+  font-size:14px;font-weight:700;
+  padding:13px 28px;
+  background:var(--sunshine-gold);
+  color:var(--ink);
+  border:none;border-radius:40px;
+  cursor:pointer;letter-spacing:0.01em;
+  transition:all 0.2s;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.ias-btn-gold:hover{background:#e8c03e;transform:translateY(-1px);}
+.ias-iw-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ias-iw-card{
+  background:var(--white);
+  border:1px solid var(--ink-08);
+  border-radius:12px;
+  padding:20px;
+}
+.ias-iw-card-wide{grid-column:span 2;}
+.ias-iw-card-label{
+  font-family:var(--font-body);
+  font-size:10px;letter-spacing:0.1em;font-weight:600;
+  color:var(--ink-40);text-transform:uppercase;
+  margin-bottom:6px;
+}
+.ias-iw-card-title{
+  font-family:var(--font-head);
+  font-size:15px;font-weight:700;color:var(--ink);
+  margin-bottom:6px;
+}
+.ias-iw-card-body{
+  font-family:var(--font-body);
+  font-size:13px;color:var(--ink-55);line-height:1.55;
+}
+
 /* ================= FOOTER ================= */
 .ias-footer{
   padding:32px 36px;
@@ -797,7 +869,7 @@ html,body{background:var(--warm-neutral);}
 }
 @media (max-width: 520px){
   .ias-bots-grid{grid-template-columns:1fr;}
-  .ias-hero,.ias-bento,.ias-section,.ias-benebots{padding-left:20px;padding-right:20px;}
+  .ias-hero,.ias-bento,.ias-section,.ias-benebots,.ias-iw{padding-left:20px;padding-right:20px;}
   .ias-nav{padding:18px 20px;}
   .ias-h1{font-size:32px;}
   .ias-guy-layout{padding:24px;}
@@ -821,6 +893,7 @@ html,body{background:var(--warm-neutral);}
       <li><a href="#services">Services</a></li>
       <li><a href="#mybenefitsguy" class="ias-nav-featured">MyBenefitsGuy</a></li>
       <li><a href="#benebots">BeneBots</a></li>
+      <li><a href="#infinite-workflows">Infinite Workflows</a></li>
       <li><a href="#about">About</a></li>
     </ul>
     <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
@@ -834,6 +907,7 @@ html,body{background:var(--warm-neutral);}
     <a href="#services" onclick="closeMobileNav()">Services</a>
     <a href="#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
     <a href="#benebots" onclick="closeMobileNav()">BeneBots</a>
+    <a href="#infinite-workflows" onclick="closeMobileNav()">Infinite Workflows</a>
     <a href="#about" onclick="closeMobileNav()">About</a>
     <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-mobile-cta" onclick="closeMobileNav()">Let's Talk</a>
   </div>
@@ -1136,6 +1210,60 @@ html,body{background:var(--warm-neutral);}
       <div class="ias-benebots-cta-group">
         <a href="mailto:ty@infiniteawesomestudio.com?subject=Tell%20Me%20More%20About%20BeneBots" class="ias-btn-ghost-dark">Read the build →</a>
         <a href="https://benebots.pages.dev" target="_blank" rel="noopener noreferrer" class="ias-btn-mint">View Live Demo ↗</a>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="ias-iw" id="infinite-workflows">
+    <div class="ias-iw-inner">
+      <div class="ias-iw-eyebrow">AI FOR SMALL BUSINESS · WALDORF, MARYLAND</div>
+      <div class="ias-iw-layout">
+
+        <div>
+          <h2 class="ias-section-title" style="color:var(--ink);">Your admin work shouldn't live in your head.</h2>
+          <p class="ias-section-sub" style="color:var(--ink-55);">
+            Infinite Workflows helps local small business owners pull their repetitive admin tasks out of their heads and into AI tools that actually use them — saving hours every week on work that shouldn't take this long.
+          </p>
+          <div class="ias-iw-quote">
+            "I help Waldorf small businesses turn AI into a practical coworker for the admin work that eats up their week."
+          </div>
+          <div class="ias-iw-cta-row">
+            <a href="/infinite-workflows/" class="ias-btn-gold">Explore Infinite Workflows →</a>
+            <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-btn-ghost">Book a free 15-min review</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="ias-iw-cards">
+            <div class="ias-iw-card ias-iw-card-wide">
+              <div class="ias-iw-card-label">The Engagement</div>
+              <div class="ias-iw-card-title">AI Workflow Launchpad</div>
+              <div class="ias-iw-card-body">Workflow audit + 3 custom AI workflows built + SOPs + live training session. Practical, documented, and yours to keep. Founding-client pricing available for a limited time.</div>
+            </div>
+            <div class="ias-iw-card">
+              <div class="ias-iw-card-label">Built for</div>
+              <div class="ias-iw-card-title">Contractors &amp; Trades</div>
+              <div class="ias-iw-card-body">Proposals, follow-ups, and job notes — documented and repeatable.</div>
+            </div>
+            <div class="ias-iw-card">
+              <div class="ias-iw-card-label">Built for</div>
+              <div class="ias-iw-card-title">Service Businesses</div>
+              <div class="ias-iw-card-body">Client onboarding, scheduling, and follow-through on autopilot.</div>
+            </div>
+            <div class="ias-iw-card">
+              <div class="ias-iw-card-label">Built for</div>
+              <div class="ias-iw-card-title">Bookkeepers &amp; Realtors</div>
+              <div class="ias-iw-card-body">Document prep, intake forms, and client update templates that actually get used.</div>
+            </div>
+            <div class="ias-iw-card">
+              <div class="ias-iw-card-label">Always included</div>
+              <div class="ias-iw-card-title">Real Training</div>
+              <div class="ias-iw-card-body">You and your team learn to run it. No black box. No tool abandoned in month two.</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>

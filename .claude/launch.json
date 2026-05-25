@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "landing",
-      "runtimeExecutable": "/usr/bin/python3",
-      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "landing"],
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "landing", "-l", "8080", "--no-clipboard"],
       "port": 8080
     },
     {

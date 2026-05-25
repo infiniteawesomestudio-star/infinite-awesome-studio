@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Workflow Launchpad for Small Businesses | Infinite Awesome Studio</title>
+<meta name="description" content="I help small business owners get AI workflows that actually get used — practical, documented, built around the way your business actually works. Based in Waldorf, Maryland.">
+<link rel="canonical" href="https://infiniteawesomestudio.com/infinite-workflows">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ====================================================
+   IAS Brand Tokens
+   ==================================================== */
+:root {
+  --mint: #00C47A;
+  --ink: #1A1A1A;
+  --warm-neutral: #F5F5F2;
+  --white: #FFFFFF;
+  --deep-forest: #002E1D;
+  --sunshine-gold: #F7D154;
+  --light-gray: #F0EFE9;
+  --mint-wash: #E5FBF2;
+  --ink-70: rgba(26,26,26,0.70);
+  --ink-55: rgba(26,26,26,0.55);
+  --ink-40: rgba(26,26,26,0.40);
+  --ink-12: rgba(26,26,26,0.12);
+  --ink-08: rgba(26,26,26,0.08);
+  --gold-wash: rgba(247,209,84,0.10);
+  --gold-border: rgba(247,209,84,0.50);
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --max: 1100px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--warm-neutral);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: var(--max); margin: 0 auto; padding: 0 36px; }
+section { padding: 80px 0; }
+
+/* ===== SKIP LINK ===== */
+.ias-skip-link {
+  position: absolute; top: -100%; left: 16px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  padding: 10px 18px; border-radius: 8px;
+  background: var(--mint); color: var(--deep-forest);
+  z-index: 999; text-decoration: none; transition: top 0.2s;
+}
+.ias-skip-link:focus { top: 16px; }
+
+/* ===== NAV ===== */
+.ias-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 36px;
+  border-bottom: 1px solid var(--ink-08);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(245,245,242,0.92);
+  backdrop-filter: blur(10px);
+}
+.ias-logo { display: flex; align-items: center; text-decoration: none; }
+.ias-logo img { height: 56px; width: auto; display: block; }
+.ias-nav-links { display: flex; gap: 28px; list-style: none; }
+.ias-nav-links a {
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  color: var(--ink-55); text-decoration: none; letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+.ias-nav-links a:hover { color: var(--ink); }
+.ias-nav-links a.back-link { color: var(--ink-40); }
+.ias-nav-links a.back-link:hover { color: var(--mint); }
+.ias-nav-cta {
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  padding: 9px 20px; border: none; border-radius: 40px;
+  color: var(--deep-forest); background: var(--sunshine-gold);
+  text-decoration: none; white-space: nowrap; transition: all 0.2s;
+}
+.ias-nav-cta:hover { background: #f0c800; transform: translateY(-1px); }
+
+/* ===== MOBILE NAV ===== */
+.ias-mobile-toggle {
+  display: none; background: none; border: none;
+  color: var(--ink); cursor: pointer; padding: 8px; border-radius: 8px;
+}
+.ias-mobile-toggle:hover { background: var(--ink-08); }
+.ias-mobile-menu {
+  display: none; flex-direction: column; gap: 4px;
+  padding: 12px 20px 20px;
+  background: rgba(245,245,242,0.98); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ink-08);
+  position: sticky; top: 100px; z-index: 99;
+}
+.ias-mobile-menu.open { display: flex; }
+.ias-mobile-menu a {
+  font-family: var(--font-body); font-size: 15px; font-weight: 500;
+  color: var(--ink-55); text-decoration: none;
+  padding: 10px 8px; border-radius: 8px; transition: all 0.15s;
+}
+.ias-mobile-menu a:hover { color: var(--ink); background: var(--ink-08); }
+.ias-mobile-cta {
+  margin-top: 8px; text-align: center;
+  background: var(--sunshine-gold) !important; color: var(--deep-forest) !important;
+  font-weight: 600 !important; border-radius: 40px !important;
+  padding: 12px 20px !important;
+}
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb {
+  background: var(--warm-neutral); padding: 12px 36px;
+  border-bottom: 1px solid var(--ink-08);
+  font-size: 12px; color: var(--ink-40); font-family: var(--font-body);
+}
+.breadcrumb a { color: var(--ink-55); text-decoration: none; transition: color 0.15s; }
+.breadcrumb a:hover { color: var(--mint); }
+.breadcrumb span { margin: 0 6px; }
+
+/* ===== SHARED ===== */
+.section-label {
+  font-family: var(--font-body); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--mint); margin-bottom: 16px;
+}
+.section-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15;
+  color: var(--deep-forest); max-width: 640px; margin-bottom: 48px;
+}
+.btn-primary {
+  display: inline-block; background: var(--mint); color: var(--deep-forest);
+  padding: 14px 28px; border-radius: 40px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 700;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-primary:hover { background: #00a866; transform: translateY(-1px); }
+.btn-ghost-forest {
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  color: var(--deep-forest); text-decoration: none;
+  border-bottom: 1px solid rgba(0,46,29,0.25); padding-bottom: 2px;
+  transition: border-color 0.15s;
+}
+.btn-ghost-forest:hover { border-color: var(--deep-forest); }
+
+/* ===== PULL QUOTE ===== */
+.pullquote {
+  border-left: 4px solid var(--sunshine-gold);
+  background: var(--gold-wash);
+  border-radius: 0 8px 8px 0;
+  padding: 22px 28px; margin: 56px 0;
+  max-width: 680px;
+}
+.pullquote p {
+  font-family: var(--font-display); font-size: 19px; font-weight: 500;
+  color: var(--deep-forest); line-height: 1.45; font-style: italic;
+}
+
+/* ===== HERO ===== */
+.hero { background: var(--warm-neutral); padding: 72px 0 64px; }
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 380px;
+  gap: 64px; align-items: center;
+}
+.hero-tag {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-40); margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(34px, 4.5vw, 52px); line-height: 1.1;
+  color: var(--deep-forest); margin-bottom: 24px; max-width: 600px;
+}
+.hero-sub {
+  font-family: var(--font-body); font-size: 18px; color: var(--ink-55);
+  line-height: 1.7; max-width: 520px; margin-bottom: 36px;
+}
+.hero-cta-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.hero-note {
+  font-family: var(--font-body); font-size: 13px; color: var(--ink-40);
+  margin-bottom: 40px;
+}
+.hero-trust {
+  display: flex; gap: 0; flex-direction: column; gap: 8px;
+  padding-top: 32px; border-top: 1px solid var(--ink-08);
+}
+.hero-trust-item {
+  font-family: var(--font-body); font-size: 13px; color: var(--ink-55);
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-trust-item::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--mint); flex-shrink: 0;
+}
+.hero-photo-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.hero-photo {
+  width: 100%; aspect-ratio: 3/4; max-height: 460px;
+  background: var(--light-gray); border-radius: 16px;
+  border: 1px solid var(--ink-08);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-body); font-size: 13px; color: var(--ink-40);
+  text-align: center; line-height: 1.5; overflow: hidden;
+}
+.hero-photo-caption {
+  font-family: var(--font-body); font-size: 12px; color: var(--ink-40);
+  text-align: center; font-style: italic;
+}
+
+/* ===== RESONANCE / PROBLEMS ===== */
+.problems { background: var(--ink); color: var(--warm-neutral); }
+.problems .section-label { color: rgba(0,196,122,0.75); }
+.problems .section-title { color: var(--warm-neutral); max-width: 640px; }
+.resonance-intro {
+  font-family: var(--font-body); font-size: 16px;
+  color: rgba(245,245,242,0.55); margin-bottom: 36px; max-width: 560px;
+  line-height: 1.65;
+}
+.problems-list {
+  list-style: none; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0; border: 1px solid rgba(245,245,242,0.06);
+  border-radius: 12px; overflow: hidden;
+}
+.problems-list li {
+  padding: 20px 24px; border-bottom: 1px solid rgba(245,245,242,0.06);
+  font-family: var(--font-body); font-size: 15px;
+  color: rgba(245,245,242,0.7);
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.problems-list li:last-child { border-bottom: none; }
+.problems-list li::before { content: '→'; color: var(--sunshine-gold); flex-shrink: 0; margin-top: 2px; }
+.resonance-close {
+  margin-top: 36px; font-family: var(--font-display);
+  font-size: 18px; font-weight: 600; color: var(--warm-neutral);
+}
+.resonance-close span { color: var(--sunshine-gold); }
+
+/* ===== ABOUT / TY ===== */
+.about { background: var(--light-gray); }
+.about-grid {
+  display: grid; grid-template-columns: 220px 1fr;
+  gap: 56px; align-items: start; max-width: 900px;
+}
+.about-photo {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.about-photo-img {
+  width: 220px; aspect-ratio: 1;
+  background: var(--ink-08); border-radius: 12px;
+  border: 1px solid var(--ink-12);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-body); font-size: 13px;
+  color: var(--ink-40); text-align: center;
+}
+.about-photo-name {
+  font-family: var(--font-body); font-size: 12px;
+  color: var(--ink-40); text-align: center; font-style: italic;
+}
+.about h2 {
+  font-family: var(--font-display); font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700; color: var(--deep-forest); line-height: 1.2;
+  margin-bottom: 20px; max-width: 520px;
+}
+.about p {
+  font-family: var(--font-body); font-size: 15px;
+  color: var(--ink-55); line-height: 1.75; margin-bottom: 14px;
+}
+.about-gold-callout {
+  background: var(--gold-wash); border-left: 3px solid var(--sunshine-gold);
+  border-radius: 0 8px 8px 0; padding: 16px 20px;
+  margin: 20px 0 24px;
+}
+.about-gold-callout p {
+  font-family: var(--font-display); font-size: 16px; font-weight: 600;
+  color: var(--deep-forest); line-height: 1.4; margin: 0; font-style: italic;
+}
+.about-creds { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.about-cred {
+  font-family: var(--font-body); font-size: 13px; color: var(--ink);
+  display: flex; gap: 10px; align-items: center;
+}
+.about-cred::before {
+  content: ''; width: 5px; height: 5px; background: var(--mint);
+  border-radius: 50%; flex-shrink: 0;
+}
+
+/* ===== WORKFLOWS ===== */
+.workflows { background: var(--warm-neutral); }
+.workflows-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.workflow-card {
+  background: var(--white); border: 1px solid var(--ink-12);
+  border-top: 3px solid var(--sunshine-gold);
+  border-radius: 12px; padding: 28px; transition: box-shadow 0.2s;
+}
+.workflow-card:hover { box-shadow: 0 4px 20px rgba(26,26,26,0.06); }
+.workflow-tag {
+  font-family: var(--font-body); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-40); margin-bottom: 10px;
+}
+.workflow-card h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 700;
+  color: var(--deep-forest); margin-bottom: 10px;
+}
+.workflow-card p {
+  font-family: var(--font-body); font-size: 14px;
+  color: var(--ink-55); line-height: 1.65;
+}
+.workflow-time {
+  display: inline-block; margin-top: 14px;
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  color: var(--mint); letter-spacing: 0.06em;
+}
+
+/* ===== HOW IT WORKS ===== */
+.how { background: var(--light-gray); }
+.steps { display: flex; flex-direction: column; max-width: 680px; }
+.step {
+  display: flex; gap: 28px; padding: 32px 0;
+  border-bottom: 1px solid var(--ink-08);
+}
+.step:last-child { border-bottom: none; }
+.step-number {
+  font-family: var(--font-display); font-size: 32px; font-weight: 700;
+  color: var(--sunshine-gold); line-height: 1; flex-shrink: 0;
+  width: 40px; text-align: right; padding-top: 4px;
+}
+.step-content h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 700;
+  color: var(--deep-forest); margin-bottom: 8px;
+}
+.step-content p {
+  font-family: var(--font-body); font-size: 15px;
+  color: var(--ink-55); line-height: 1.65;
+}
+
+/* ===== WHO IT'S FOR (compact) ===== */
+.for-you { background: var(--warm-neutral); }
+.for-you-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+.for-you-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 16px 18px; background: var(--white);
+  border: 1px solid var(--ink-08); border-radius: 10px;
+}
+.for-you-item::before {
+  content: ''; width: 6px; height: 6px; background: var(--mint);
+  border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+}
+.for-you-item span {
+  font-family: var(--font-body); font-size: 14px;
+  font-weight: 500; color: var(--ink);
+}
+
+/* ===== OFFER ===== */
+.offer {
+  background: var(--deep-forest);
+}
+.offer-inner {
+  background: rgba(245,245,242,0.04);
+  border: 1px solid rgba(245,245,242,0.1);
+  border-radius: 16px; padding: 48px; max-width: 780px;
+}
+.offer-badge {
+  display: inline-block; background: var(--sunshine-gold);
+  color: var(--deep-forest); font-family: var(--font-body);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 5px 14px;
+  border-radius: 40px; margin-bottom: 24px;
+}
+.offer-inner h2 {
+  font-family: var(--font-display); font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700; color: var(--warm-neutral); margin-bottom: 12px;
+}
+.offer-desc {
+  font-family: var(--font-body); font-size: 15px;
+  color: rgba(245,245,242,0.55); margin-bottom: 32px; line-height: 1.7;
+}
+.offer-includes {
+  list-style: none; margin-bottom: 32px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px;
+}
+.offer-includes li {
+  font-family: var(--font-body); font-size: 14px;
+  color: rgba(245,245,242,0.80);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.offer-includes li::before { content: '✓'; color: var(--mint); font-weight: 700; flex-shrink: 0; }
+.offer-price-row {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.offer-price {
+  font-family: var(--font-display); font-size: 36px;
+  font-weight: 700; color: var(--sunshine-gold);
+}
+.offer-strike {
+  font-size: 18px; color: rgba(245,245,242,0.30);
+  text-decoration: line-through;
+}
+.offer-price-note {
+  font-family: var(--font-body); font-size: 13px;
+  color: rgba(245,245,242,0.40);
+}
+.offer-spots {
+  font-family: var(--font-body); font-size: 13px;
+  font-weight: 700; color: #f87171; margin-bottom: 28px;
+}
+.btn-offer {
+  display: inline-block; background: var(--mint); color: var(--deep-forest);
+  padding: 14px 28px; border-radius: 40px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 700;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-offer:hover { background: #00a866; transform: translateY(-1px); }
+
+/* ===== CTA / BOOK ===== */
+.cta-section { background: var(--warm-neutral); text-align: center; padding: 80px 0; }
+.cta-section h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(26px, 3.5vw, 38px); color: var(--deep-forest);
+  max-width: 560px; margin: 0 auto 16px; line-height: 1.15;
+}
+.cta-section p {
+  font-family: var(--font-body); font-size: 17px;
+  color: var(--ink-55); margin-bottom: 36px; line-height: 1.65;
+}
+.contact-row {
+  display: flex; gap: 16px; justify-content: center;
+  flex-wrap: wrap; margin-top: 20px;
+}
+.contact-link {
+  font-family: var(--font-body); color: var(--mint);
+  text-decoration: none; font-size: 14px;
+  border-bottom: 1px solid rgba(0,196,122,0.3); padding-bottom: 2px;
+  transition: opacity 0.15s;
+}
+.contact-link:hover { opacity: 0.7; }
+
+/* ===== FOOTER ===== */
+.ias-footer {
+  padding: 32px 36px;
+  border-top: 1px solid var(--ink-08);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; background: var(--ink);
+}
+.ias-footer-left {
+  font-family: var(--font-body); font-size: 12px;
+  color: rgba(245,245,242,0.35);
+}
+.ias-footer-left a { color: inherit; }
+.ias-footer-links { display: flex; gap: 20px; list-style: none; }
+.ias-footer-links a {
+  font-family: var(--font-body); font-size: 12px;
+  color: rgba(245,245,242,0.35); text-decoration: none; transition: color 0.15s;
+}
+.ias-footer-links a:hover { color: var(--mint); }
+.ias-footer-tag {
+  font-family: var(--font-body); font-size: 12px;
+  color: rgba(245,245,242,0.25); font-style: italic;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-photo-wrap { order: -1; }
+  .hero-photo { max-height: 280px; aspect-ratio: 4/3; }
+  .about-grid { grid-template-columns: 1fr; gap: 28px; }
+  .about-photo-img { width: 140px; }
+}
+@media (max-width: 760px) {
+  .ias-nav-links { display: none; }
+  .ias-nav-cta { display: none; }
+  .ias-mobile-toggle { display: block; }
+  .ias-nav { padding: 18px 20px; }
+  .container { padding: 0 20px; }
+  .breadcrumb { padding: 12px 20px; }
+  section { padding: 60px 0; }
+  .offer-includes { grid-template-columns: 1fr; }
+  .ias-footer { padding: 28px 20px; }
+  .ias-footer-tag { display: none; }
+  .pullquote p { font-size: 17px; }
+}
+@media (max-width: 480px) {
+  .hero-cta-row { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="ias-skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav class="ias-nav" aria-label="Main navigation">
+  <a href="../" class="ias-logo" aria-label="Infinite Awesome Studio home">
+    <img src="../assets/ias-logo.png" alt="Infinite Awesome Studio" />
+  </a>
+  <ul class="ias-nav-links">
+    <li><a href="#workflows">Workflows</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#offer">The Offer</a></li>
+    <li><a href="#about">About Ty</a></li>
+    <li><a href="../" class="back-link">← Main Site</a></li>
+  </ul>
+  <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-nav-cta">Book a Free Review</a>
+</nav>
+
+<!-- Mobile menu -->
+<div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="#workflows" onclick="closeMobileNav()">Workflows</a>
+  <a href="#how" onclick="closeMobileNav()">How It Works</a>
+  <a href="#offer" onclick="closeMobileNav()">The Offer</a>
+  <a href="#about" onclick="closeMobileNav()">About Ty</a>
+  <a href="../" onclick="closeMobileNav()">← Back to Infinite Awesome Studio</a>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-mobile-cta" onclick="closeMobileNav()">Book a Free Review</a>
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../">Infinite Awesome Studio</a>
+  <span>›</span>
+  Infinite Workflows
+</div>
+
+<main id="main-content">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-tag">AI Workflow Launchpad · Waldorf, Maryland</p>
+          <h1>Your business already has workflows. They just live in your head.</h1>
+          <p class="hero-sub">I help small business owners get those workflows out of their head and into AI tools that actually use them — saving hours every week on admin work that shouldn't take this long.</p>
+          <div class="hero-cta-row">
+            <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="btn-primary">Book a Free 15-Minute Review</a>
+            <a href="#how" class="btn-ghost-forest">See how it works</a>
+          </div>
+          <p class="hero-note">No pitch. No pressure. Just a real conversation.</p>
+          <div class="hero-trust">
+            <div class="hero-trust-item">25 years in small business operations</div>
+            <div class="hero-trust-item">Based in Waldorf, Maryland · Serving small businesses nationwide</div>
+            <div class="hero-trust-item">Founding-client spots available now</div>
+          </div>
+        </div>
+        <div class="hero-photo-wrap">
+          <div class="hero-photo" role="img" aria-label="Photo of Ty Mosher">
+            Photo<br/>placeholder
+          </div>
+          <p class="hero-photo-caption">Ty Mosher · Founder, Infinite Awesome Studio</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESONANCE / PROBLEMS -->
+  <section class="problems" id="problems">
+    <div class="container">
+      <div class="section-label">Does This Sound Like You?</div>
+      <h2 class="section-title">You're not bad at admin. You're doing it without any help.</h2>
+      <p class="resonance-intro">Most small business owners have tried AI at least once, got a generic answer, and went back to doing it themselves. That's not a you problem. That's a setup problem.</p>
+      <ul class="problems-list">
+        <li>Quotes go cold because follow-up keeps slipping to tomorrow</li>
+        <li>Invoices sit unpaid because chasing clients feels awkward</li>
+        <li>Social media stays quiet because there's never time to write anything</li>
+        <li>New employees get inconsistent onboarding because nothing is written down</li>
+        <li>Meeting notes become action items no one follows up on</li>
+        <li>Documents pile up unread because summarizing them takes an hour</li>
+        <li>You tried ChatGPT once, got a generic answer, went back to doing it yourself</li>
+        <li>Your business has workflows — they just live in your head, and that's a problem</li>
+      </ul>
+      <p class="resonance-close">If you're nodding at three or more of those — <span>keep reading.</span></p>
+    </div>
+  </section>
+
+  <!-- ABOUT TY (moved up — credibility before product) -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-photo">
+          <div class="about-photo-img" role="img" aria-label="Photo of Ty Mosher">
+            Photo<br/>placeholder
+          </div>
+          <p class="about-photo-name">Ty Mosher</p>
+        </div>
+        <div class="about-content">
+          <div class="section-label">About Ty</div>
+          <h2>I've spent 25 years inside the operations that small businesses depend on.</h2>
+          <p>I started at Horizon Blue Cross Blue Shield — a decade in benefits operations, coding benefit structures, leading system implementations, doing the work that keeps things running. Then 15 years working directly with business owners and HR teams as a benefits consultant and broker.</p>
+          <p>I've watched small businesses lose hours every week to admin work that shouldn't take that long. And I've watched the same owners try AI tools, get a generic result, and give up — convinced it isn't for them.</p>
+          <div class="about-gold-callout">
+            <p>"The gap isn't curiosity. It's the specific, practical, hands-on help to connect a real workflow to a real tool and make it stick. That's what I do."</p>
+          </div>
+          <div class="about-creds">
+            <div class="about-cred">10 years in Benefits Operations at Horizon BCBS NJ</div>
+            <div class="about-cred">15 years in HR, brokerage, and benefits consulting</div>
+            <div class="about-cred">Health &amp; Life Producer License — MD, VA, DC</div>
+            <div class="about-cred">CEBS/GBA candidate</div>
+            <div class="about-cred">Based in Waldorf, Maryland</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOWS -->
+  <section class="workflows" id="workflows">
+    <div class="container">
+      <div class="section-label">Example Workflows</div>
+      <h2 class="section-title">What we actually build in the launchpad.</h2>
+
+      <div class="pullquote">
+        <p>"AI drafts. You review. You send. That took about 90 seconds. That's what a well-built workflow does."</p>
+      </div>
+
+      <div class="workflows-grid">
+        <div class="workflow-card">
+          <div class="workflow-tag">Best for Contractors</div>
+          <h3>Quote Follow-Up Assistant</h3>
+          <p>Paste in the customer name, quote details, and date sent. Get a ready-to-send follow-up email in under 30 seconds. Every open quote gets followed up within 48 hours.</p>
+          <span class="workflow-time">Under 2 minutes to run</span>
+        </div>
+        <div class="workflow-card">
+          <div class="workflow-tag">Best for Consultants &amp; Nonprofits</div>
+          <h3>Meeting Notes to Action Plan</h3>
+          <p>Paste in raw meeting notes. Get a structured summary with key decisions, assigned action items, and deadlines — ready to share or drop into your project tracker.</p>
+          <span class="workflow-time">Under 3 minutes to run</span>
+        </div>
+        <div class="workflow-card">
+          <div class="workflow-tag">Best for Local Brands</div>
+          <h3>Content Repurposing Engine</h3>
+          <p>Describe a completed job, a tip, or a recent win. Get three to five ready-to-post social captions in your voice. One conversation becomes a week of content.</p>
+          <span class="workflow-time">Under 5 minutes to run</span>
+        </div>
+        <div class="workflow-card">
+          <div class="workflow-tag">Best for Any Business</div>
+          <h3>Document Organizer</h3>
+          <p>Paste in any long document — contract, lease, benefit summary. Get the plain-English version with key terms, deadlines, and action items flagged in 60 seconds.</p>
+          <span class="workflow-time">Under 2 minutes to run</span>
+        </div>
+        <div class="workflow-card">
+          <div class="workflow-tag">Best for Small Employers</div>
+          <h3>Employee FAQ Builder</h3>
+          <p>Answer five questions about your business. Get a complete staff FAQ document. New hires stop asking you the same ten questions every week.</p>
+          <span class="workflow-time">10–15 minutes, one time</span>
+        </div>
+        <div class="workflow-card">
+          <div class="workflow-tag">Best for Service Businesses</div>
+          <h3>Invoice Reminder Sequence</h3>
+          <p>Three ready-to-send messages — friendly, firm, final. Generated from the client name, invoice amount, and due date. Chasing payments becomes a 60-second task.</p>
+          <span class="workflow-time">Under 2 minutes to run</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-label">How the Launchpad Works</div>
+      <h2 class="section-title">Five steps. One focused engagement. Three working workflows.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Workflow Audit — 60 minutes</h3>
+            <p>We map where your time actually goes. I ask about your biggest admin bottlenecks, your current tools, and what you wish an assistant could handle. You leave with a clear picture of your top three workflows ranked by impact and ease.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>AI Toolkit Setup</h3>
+            <p>I walk you through everything you need to get your AI tools configured correctly — what to use, what to connect, and what not to put in without a process. No guessing, no YouTube rabbit holes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Build Three Workflows</h3>
+            <p>We build your top three workflows together — not templates, but working processes built around your real business, your actual documents, and your language. Each one gets a reusable prompt and a one-page SOP.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Train You and Your Team</h3>
+            <p>A focused 60-minute training session where you and your team run each workflow, ask questions, and practice until it's second nature. The goal is confidence, not dependency.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Seven-Day Follow-Up</h3>
+            <p>A week after the launchpad, I check back in. We troubleshoot, adjust, and make sure the workflows are actually being used. If something isn't working, we fix it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pullquote">
+        <p>"You're not getting a demo. You're getting three workflows that work in your business, documented so you can run them without me in the room."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR (compact list) -->
+  <section class="for-you" id="for-you">
+    <div class="container">
+      <div class="section-label">Who This Is For</div>
+      <h2 class="section-title">Built for small businesses stretched thin on admin.</h2>
+      <div class="for-you-grid">
+        <div class="for-you-item"><span>Contractors &amp; Home Services</span></div>
+        <div class="for-you-item"><span>Bookkeepers &amp; Tax Preparers</span></div>
+        <div class="for-you-item"><span>Real Estate Agents</span></div>
+        <div class="for-you-item"><span>Property Managers</span></div>
+        <div class="for-you-item"><span>Local Consultants &amp; Coaches</span></div>
+        <div class="for-you-item"><span>Small Employers</span></div>
+        <div class="for-you-item"><span>Nonprofits</span></div>
+        <div class="for-you-item"><span>Marketing Agencies &amp; Web Designers</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section class="offer" id="offer">
+    <div class="container">
+      <div class="offer-inner">
+        <div class="offer-badge">Founding Client Offer</div>
+        <h2>Three discounted launchpad spots. Limited availability.</h2>
+        <p class="offer-desc">I'm working with a small group of businesses to validate this service, gather real-world feedback, and build case studies. In exchange for your time and an honest testimonial, you get the full engagement at a significant discount.</p>
+        <ul class="offer-includes">
+          <li>60-minute workflow audit</li>
+          <li>AI toolkit readiness check</li>
+          <li>Three practical AI workflows, built</li>
+          <li>Reusable prompts, saved and named</li>
+          <li>One-page SOP for each workflow</li>
+          <li>60-minute training session</li>
+          <li>7-day follow-up support</li>
+          <li>Optional testimonial request</li>
+        </ul>
+        <div class="offer-price-row">
+          <span class="offer-price">$750–$1,000</span>
+          <span class="offer-strike">$1,500–$2,500</span>
+          <span class="offer-price-note">founding client pricing</span>
+        </div>
+        <p class="offer-spots">⚑ Only 3 spots available — 0 filled so far</p>
+        <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="btn-offer">Book Your Free 15-Minute Review</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / BOOK -->
+  <section class="cta-section" id="book">
+    <div class="container">
+      <h2>Let's figure out if this is the right fit.</h2>
+      <p>Book a free 15-minute AI Workflow Review. No pitch. No pressure.<br>Just a real conversation about your business and where AI can actually help.</p>
+      <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="btn-primary">Book a 15-Minute AI Workflow Review</a>
+      <div class="contact-row">
+        <a href="mailto:ty@infiniteawesomestudio.com" class="contact-link">ty@infiniteawesomestudio.com</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="ias-footer">
+  <div class="ias-footer-left">
+    © 2026 Infinite Awesome Studio · <a href="mailto:ty@infiniteawesomestudio.com">ty@infiniteawesomestudio.com</a>
+  </div>
+  <ul class="ias-footer-links">
+    <li><a href="../">Home</a></li>
+    <li><a href="../#benebots">BeneBots</a></li>
+    <li><a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer">Book a Review</a></li>
+  </ul>
+  <div class="ias-footer-tag">Every benefit. Every penny. Delivered awesomely.</div>
+</footer>
+
+<script>
+function toggleMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  var open=m.classList.toggle('open');
+  b.setAttribute('aria-expanded',open);
+  b.setAttribute('aria-label',open?'Close menu':'Open menu');
+}
+function closeMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  m.classList.remove('open');
+  b.setAttribute('aria-expanded','false');
+  b.setAttribute('aria-label','Open menu');
+}
+</script>
+
+</body>
+</html>
