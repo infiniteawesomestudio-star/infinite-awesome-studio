@@ -67,7 +67,7 @@ section { padding: 80px 0; }
   backdrop-filter: blur(10px);
 }
 .ias-logo { display: flex; align-items: center; text-decoration: none; }
-.ias-logo img { height: 56px; width: auto; display: block; }
+.ias-logo img { height: 80px; width: auto; display: block; }
 .ias-nav-links { display: flex; gap: 28px; list-style: none; }
 .ias-nav-links a {
   font-family: var(--font-body); font-size: 13px; font-weight: 500;
@@ -164,8 +164,7 @@ section { padding: 80px 0; }
 /* ===== HERO ===== */
 .hero { background: var(--warm-neutral); padding: 72px 0 64px; }
 .hero-grid {
-  display: grid; grid-template-columns: 1fr 380px;
-  gap: 64px; align-items: center;
+  display: block;
 }
 .hero-tag {
   font-family: var(--font-body); font-size: 12px; font-weight: 600;
@@ -175,11 +174,11 @@ section { padding: 80px 0; }
 .hero h1 {
   font-family: var(--font-display); font-weight: 700;
   font-size: clamp(34px, 4.5vw, 52px); line-height: 1.1;
-  color: var(--deep-forest); margin-bottom: 24px; max-width: 600px;
+  color: var(--deep-forest); margin-bottom: 24px; max-width: 760px;
 }
 .hero-sub {
   font-family: var(--font-body); font-size: 18px; color: var(--ink-55);
-  line-height: 1.7; max-width: 520px; margin-bottom: 36px;
+  line-height: 1.7; max-width: 660px; margin-bottom: 36px;
 }
 .hero-cta-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
 .hero-note {
@@ -475,9 +474,7 @@ section { padding: 80px 0; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 860px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-photo-wrap { order: -1; }
-  .hero-photo { max-height: 280px; aspect-ratio: 4/3; }
+
   .about-grid { grid-template-columns: 1fr; gap: 28px; }
   .about-photo-img { width: 140px; }
 }
@@ -562,14 +559,8 @@ section { padding: 80px 0; }
             <div class="hero-trust-item">Founding-client spots available now</div>
           </div>
         </div>
-        <div class="hero-photo-wrap">
-          <div class="hero-photo" role="img" aria-label="Photo of Ty Mosher">
-            Photo<br/>placeholder
-          </div>
-          <p class="hero-photo-caption">Ty Mosher · Founder, Infinite Awesome Studio</p>
         </div>
       </div>
-    </div>
   </section>
 
   <!-- RESONANCE / PROBLEMS -->
