@@ -1,65 +1,62 @@
 # Session 14 Handoff — IAS Platform
 **Date:** 2026-05-25
-**Session Focus:** IAS brand identity restructure, IW About Ty reframe, logo updates, privacy policy, Claims Compass, trust bullet fix
+**Session Focus:** IAS brand identity restructure, IW reframe, logo transparency, badge copy, bot grid, privacy policy, Claims Compass
 **Branch:** main | **Deploy:** Cloudflare Pages (auto on push)
-**Commit:** TBD (this session)
+**Final commit:** `afc9385`
 
 ---
 
 ## What Was Completed
 
 ### 1. IW About Ty — Large-Org Reframe
-Updated `landing/infinite-workflows/index.html` About Ty h2 from vague small-business framing to:
+Updated `landing/infinite-workflows/index.html` About Ty h2:
 > "I spent a decade inside how large organizations actually operate. This is me handing you the same playbook scaled to your business, not their overhead."
 
 ### 2. IW Hero Trust Bullet Fix
-Updated hero trust bullet from "25 years in small business operations" (conflicted with new large-org framing) to:
-> "25 years in business operations at scale"
+> "25 years in small business operations" → "25 years in business operations at scale"
 
 ### 3. IAS Homepage — Full Brand Restructure
 Updated `landing/index.html`:
-- **Title/Meta:** Updated to reflect full IAS scope, not just benefits
-- **Hero badge:** `HERE'S A SHOVEL` (matching BeneBots shovel analogy)
+- **Title/Meta:** Updated to reflect full IAS scope
 - **Hero H1:** "I Build AI Tools For the Work That *Shouldn't Take This Long.*"
-- **Hero sub:** 25 years large-org + consulting framing, serves HR depts and small business
-- **Bento grid:** Replaced 4 benefits-cards with 3 product-audience cards (HR/Benefits → BeneBots, Small Business → IW, Advisory/Consulting)
-- **Problem section:** New H2 + 2 paragraphs (Fortune 500 reference, no bullet list, no CTA)
-- **IW section:** Visual weight upgrade — `background: var(--light-gray)`, `border-top: 3px solid var(--sunshine-gold)`, section header extracted above 2-column layout
+- **Hero sub:** 25 years large-org + consulting framing
+- **Bento grid:** 3 product-audience cards (HR+BeneBots, Small Biz+IW, Advisory)
+- **Problem section:** New H2 + 2 paragraphs, Fortune 500 framing
+- **IW section:** Visual weight upgrade (light-gray bg, gold border-top, header extracted)
 - **Claims Compass (BOT 06):** Added to bot grid; "Five bots" → "Six bots. One platform."
 
-### 4. Logo Updates
-- New transparent IAS logo (cream bg, blends with warm-neutral theme) copied to:
-  - `landing/assets/ias-logo.png`
-  - `benebots/public/ias-logo.png`
-- Logo size maximized: IAS 80→100px, IW 80→100px, BeneBots Navbar h-20→h-24 (nav container also h-16→h-24)
+### 4. Logo Transparency — All 3 Sites
+- BFS flood-fill background removal applied to both logo files
+- **Light logo** (`landing/assets/ias-logo.png`): cream background removed → fully transparent, blends with warm-neutral IAS/IW theme
+- **Dark logo** (`benebots/public/ias-logo-dark.png`): near-black background removed → fully transparent, blends with BeneBots dark theme
+- BeneBots `Navbar.tsx` updated: `src="/ias-logo.png"` → `src="/ias-logo-dark.png"`
+- Logo size maximized: IAS/IW 100px, BeneBots Navbar h-24
 
-### 5. Privacy Policy — New Page
-Created `landing/privacy-policy.html` — full branded privacy page covering IAS, IW, and Cloudflare/Calendly third-party use.
+### 5. Badge Copy — Consistent Shovel Analogy
+- **IAS page:** `"HERE'S A SHOVEL"` → `"Stop Digging With Your Hands"` (IAS-specific framing)
+- **IW page:** `"AI Workflow Launchpad"` → `"Here's the shovel"` (matches BeneBots exactly, renders uppercase via CSS)
+- **BeneBots:** `"Here's the shovel"` — unchanged, canonical reference
+
+### 6. Bot Grid Layout Fix (IAS Landing)
+- Default grid: `repeat(5,1fr)` → `repeat(3,1fr)` with `gap:16px`
+- Now renders clean 3×2 grid (BOT 01–03 top row, BOT 04–06 bottom row)
+- Removed redundant 1040px breakpoint override
+
+### 7. Privacy Policy — New Page
+Created `landing/privacy-policy.html` — full branded privacy page covering IAS, IW, Cloudflare, Calendly.
 - Footer links added to IAS landing and IW pages
-- BeneBots already had `Privacy.tsx` + route + Footer link — no changes needed
+- BeneBots `Privacy.tsx` already existed — no changes needed
 
-### 6. launch.json Path Fix
-Fixed typo in `.claude/launch.json`: all paths "Inifinte Awesome Studio" → "Infinite Awesome Studio"
-
----
-
-## Pending / Blocked
-
-### BeneBots Dark Logo — BLOCKED (user action needed)
-BeneBots uses a dark theme — the cream-bg transparent logo looks wrong on it.
-User provided a dark/neon version in chat but it can't be saved from a chat image.
-**Action required:** Save the dark neon logo to `infinite-awesome-studio/benebots/public/ias-logo.png` (replace the current file).
-Navbar.tsx already points to `/ias-logo.png` — no code change needed after file replacement.
+### 8. launch.json Path Fix
+Fixed typo: "Inifinte Awesome Studio" → "Infinite Awesome Studio" across all entries
 
 ---
 
 ## Open — Carry Forward
 
 ### BeneBots
-- [ ] IW link in BeneBots Navbar.tsx (ClickUp 86ba3vkk9)
-- [ ] IW link in BeneBots Footer.tsx (ClickUp 86ba3vkk9)
+- [ ] IW link in BeneBots Navbar.tsx + Footer.tsx (ClickUp 86ba3vkk9)
 - [ ] Claims Compass demo page (`src/demo/ClaimsCompassDemo.tsx`)
-- [ ] Replace dark logo once user saves file to `benebots/public/ias-logo.png`
 - [ ] FAQ arrow-key a11y fix
 
 ### IAS / IW
@@ -79,13 +76,14 @@ Navbar.tsx already points to `/ias-logo.png` — no code change needed after fil
 ## Key Files Modified This Session
 
 ```
-landing/index.html                          — IAS home (hero, bento, problem, IW section, Claims Compass)
-landing/infinite-workflows/index.html       — IW page (About Ty h2, trust bullet)
-landing/assets/ias-logo.png                 — New transparent logo
+landing/index.html                          — IAS home (restructure, Claims Compass, badge, bot grid)
+landing/infinite-workflows/index.html       — IW page (About Ty h2, trust bullet, badge)
+landing/assets/ias-logo.png                 — Transparent light logo (BFS bg removal)
 landing/privacy-policy.html                 — NEW: IAS/IW privacy policy page
-benebots/src/components/Navbar.tsx          — Logo height h-20→h-24, nav h-16→h-24
-benebots/public/ias-logo.png               — New transparent logo (cream bg — dark logo still pending)
-.claude/launch.json                         — Fixed "Inifinte" typo in all paths
+benebots/src/components/Navbar.tsx          — Dark logo ref, logo h-24, nav h-24
+benebots/public/ias-logo-dark.png           — NEW: Transparent dark/neon logo (BFS bg removal)
+benebots/public/ias-logo.png               — Removed (replaced by ias-logo-dark.png)
+.claude/launch.json                         — Fixed "Inifinte" typo
 ```
 
 ---
@@ -94,6 +92,6 @@ benebots/public/ias-logo.png               — New transparent logo (cream bg �
 - Never use: "powerful," "seamless," "innovative," "game-changer," "revolutionary," "transformative"
 - No em dashes anywhere
 - No AI tool names in IW copy
-- Shovel analogy is the through-line across IAS + BeneBots
+- Shovel analogy through-line: IAS = "Stop Digging With Your Hands" | IW + BeneBots = "Here's the shovel"
 - IW tone: warm, neighbor, problem-first
-- Large-org framing is now consistent across IW hero, About Ty, and IAS homepage
+- Large-org framing consistent across IW hero, About Ty, and IAS homepage
