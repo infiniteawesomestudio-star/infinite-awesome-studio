@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import { Send, Copy, Check } from 'lucide-react'
+import { Send, Copy, Check, Download } from 'lucide-react'
 
 const CONTACT_EMAIL = 'ty@infiniteawesomestudio.com'
 
@@ -191,9 +191,16 @@ function EmailCapture() {
         <div className="w-12 h-12 rounded-full bg-mint/10 border border-mint/30 flex items-center justify-center mx-auto mb-4">
           <Check size={20} className="text-mint" />
         </div>
-        <p className="font-display font-bold text-dark-text text-lg mb-1">You're in.</p>
-        <p className="text-sm font-body text-dark-muted max-w-sm mx-auto">
-          Check your inbox — the PDF is on its way. If you don't see it within a few minutes, check your spam folder.
+        <p className="font-display font-bold text-dark-text text-lg mb-2">You're in.</p>
+        <a
+          href="/BeneBots-Prompt-Library.pdf"
+          download="BeneBots-Prompt-Library.pdf"
+          className="inline-flex items-center gap-2 bg-mint text-deep-forest font-display font-semibold py-2.5 px-5 rounded-xl hover:bg-[#00a868] transition-colors text-sm mb-3"
+        >
+          <Download size={14} /> Download the PDF
+        </a>
+        <p className="text-xs font-body text-dark-muted">
+          We'll also send new prompts to your email as we add them.
         </p>
       </div>
     )
@@ -234,7 +241,7 @@ function EmailCapture() {
         disabled={loading}
         className="w-full inline-flex items-center justify-center gap-2 bg-mint text-deep-forest font-display font-semibold py-3 px-5 rounded-xl hover:bg-[#00a868] transition-colors shadow-lg shadow-mint/20 text-sm disabled:opacity-70 disabled:cursor-not-allowed"
       >
-        {loading ? 'Sending…' : <><Send size={15} /> Send me the PDF</>}
+        {loading ? 'One sec…' : <><Download size={15} /> Get the PDF</>}
       </button>
       <p className="text-[11px] font-body text-dark-muted text-center">
         No spam. Just the PDF and occasional benefits intel worth having.
@@ -275,8 +282,8 @@ export default function PromptLibrary() {
             <span className="text-[10px] font-body font-semibold uppercase tracking-widest text-mint mb-3 block">Free Download</span>
             <h2 className="font-display font-bold text-xl text-dark-text mb-2">Get the full library as a PDF.</h2>
             <p className="text-sm font-body text-dark-muted leading-relaxed">
-              All {PROMPTS.length} prompts, formatted and print-ready. Drop it in your team's shared drive.
-              We'll also send new prompts as we add them.
+              All {PROMPTS.length} prompts, formatted and print-ready. Enter your email and download instantly.
+              We'll also notify you when new prompts drop.
             </p>
           </div>
           <EmailCapture />
