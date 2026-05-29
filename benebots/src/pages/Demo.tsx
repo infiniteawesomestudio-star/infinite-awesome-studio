@@ -6,6 +6,7 @@ import StewardshipDemo from '../demo/StewardshipDemo'
 import PlanCompareDemo from '../demo/PlanCompareDemo'
 import OECoachDemo from '../demo/OECoachDemo'
 import LOANavigatorDemo from '../demo/LOANavigatorDemo'
+import ClaimsCompassDemo from '../demo/ClaimsCompassDemo'
 
 const BOT_META: Record<string, { name: string; color: string; tagline: string; image: string }> = {
   ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in Acme\'s plans', image: '/HSABot_TP.png' },
@@ -13,6 +14,7 @@ const BOT_META: Record<string, { name: string; color: string; tagline: string; i
   'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with Acme\'s actual numbers', image: '/CompareBot_TP.png' },
   'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans', image: '/OEBot_TP.png' },
   'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave', image: '/LOABot_TP2.png' },
+  'claims-compass': { name: 'Claims Compass', color: '#F97316', tagline: 'EOB denials, prior auth appeals, No Surprises Act', image: '/ClaimBot_TP.png' },
 }
 
 export default function Demo() {
@@ -78,6 +80,7 @@ export default function Demo() {
           {botId === 'plan-compare' && <PlanCompareDemo />}
           {botId === 'oe-coach' && <OECoachDemo />}
           {botId === 'loa-navigator' && <LOANavigatorDemo />}
+          {botId === 'claims-compass' && <ClaimsCompassDemo />}
         </div>
       </main>
     </div>

@@ -102,7 +102,6 @@ const bots: Bot[] = [
       'HR admin vs employee mode',
     ],
     slug: 'claims-compass',
-    comingSoon: true,
   },
 ]
 

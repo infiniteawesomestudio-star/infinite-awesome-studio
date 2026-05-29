@@ -113,12 +113,11 @@ async function generateDraft(section: Section): Promise<string> {
     // Return canned demo draft
     return DRAFTS[section]
   }
-  const systemPrompt = `You are Stewardship Studio, a benefits consulting AI for ${ACME_PROFILE.companyName}. Generate a professional stewardship report section in Markdown. Use the plan data and claims data provided. Be specific, cite numbers, write like a senior benefits consultant.`
   const userMsg = `Generate the "${section}" section of the stewardship report for Acme Industries. Claims data: ${JSON.stringify(ACME_CLAIMS)}. Plan data: ${JSON.stringify(ACME_PROFILE)}. Keep it to 300-400 words.`
   const res = await fetch(WORKER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${WORKER_TOKEN}` },
-    body: JSON.stringify({ system: systemPrompt, messages: [{ role: 'user', content: userMsg }], maxTokens: 1024 }),
+    body: JSON.stringify({ botId: 'stewardship', messages: [{ role: 'user', content: userMsg }], maxTokens: 1024 }),
   })
   if (!res.ok) return DRAFTS[section]
   const data = await res.json()

@@ -103,11 +103,13 @@ const faqs: FAQItem[] = [
   },
 ]
 
-function FAQItem({ item, isOpen, onToggle, index }: {
+function FAQItem({ item, isOpen, onToggle, index, buttonRef, onKeyDown }: {
   item: FAQItem
   isOpen: boolean
   onToggle: () => void
   index: number
+  buttonRef: React.RefObject<HTMLButtonElement>
+  onKeyDown: (e: React.KeyboardEvent) => void
 }) {
   const Icon = item.botIcon
   return (
@@ -116,7 +118,9 @@ function FAQItem({ item, isOpen, onToggle, index }: {
       style={{ transitionDelay: `${index * 0.07}s` }}
     >
       <button
+        ref={buttonRef}
         onClick={onToggle}
+        onKeyDown={onKeyDown}
         className="w-full flex items-start gap-4 p-5 text-left bg-dark-card hover:bg-dark-card-hover transition-colors"
         aria-expanded={isOpen}
         aria-controls={`faq-answer-${index}`}
@@ -166,6 +170,9 @@ function FAQItem({ item, isOpen, onToggle, index }: {
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   const sectionRef = useRef<HTMLElement>(null)
+  const buttonRefs = useRef<React.RefObject<HTMLButtonElement>[]>(
+    faqs.map(() => ({ current: null } as React.RefObject<HTMLButtonElement>))
+  )
 
   useEffect(() => {
     const el = sectionRef.current
@@ -178,6 +185,22 @@ export default function FAQ() {
     items.forEach(i => io.observe(i))
     return () => io.disconnect()
   }, [])
+
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      buttonRefs.current[Math.min(index + 1, faqs.length - 1)]?.current?.focus()
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      buttonRefs.current[Math.max(index - 1, 0)]?.current?.focus()
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      buttonRefs.current[0]?.current?.focus()
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      buttonRefs.current[faqs.length - 1]?.current?.focus()
+    }
+  }
 
   return (
     <section ref={sectionRef} id="faq" className="py-24 px-4 sm:px-6 max-w-4xl mx-auto" aria-labelledby="faq-heading">
@@ -195,7 +218,7 @@ export default function FAQ() {
       </div>
 
       {/* FAQ list */}
-      <div className="space-y-3">
+      <div className="space-y-3" role="list">
         {faqs.map((item, i) => (
           <FAQItem
             key={item.question}
@@ -203,6 +226,8 @@ export default function FAQ() {
             index={i}
             isOpen={openIndex === i}
             onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            buttonRef={buttonRefs.current[i]}
+            onKeyDown={(e) => handleKeyDown(e, i)}
           />
         ))}
       </div>

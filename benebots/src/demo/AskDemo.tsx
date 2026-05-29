@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send } from 'lucide-react'
-import { ACME_PROFILE } from '../data/acmeProfile'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -14,65 +13,55 @@ const SUGGESTED = [
   "When is open enrollment?",
 ]
 
-const SYSTEM_PROMPT = `You are Ask BeneBot, an AI benefits assistant for ${ACME_PROFILE.companyName} employees during plan year ${ACME_PROFILE.planYear}. You know this company's benefits inside out. Answer every question using the actual plan data below. Cite the specific plan when relevant. If the answer isn't in the plan data, say so clearly and never guess.
+const FOLLOW_UPS: { keywords: string[]; suggestions: string[] }[] = [
+  {
+    keywords: ['hdhp', 'ppo', 'deductible', 'plan', 'coinsurance', 'oopm', 'out-of-pocket'],
+    suggestions: ["How much does Acme put in my HSA?", "Which plan is better if I barely use healthcare?", "What's the out-of-pocket max on the PPO?"],
+  },
+  {
+    keywords: ['hsa', 'health savings', 'contribution', 'seed', 'limit'],
+    suggestions: ["Can I use my HSA for dental and vision?", "What happens to my HSA if I switch to the PPO?", "What's the HSA family limit for 2026?"],
+  },
+  {
+    keywords: ['fsa', 'flexible spending', 'carryover', 'dependent care'],
+    suggestions: ["Can I have both an HSA and FSA?", "What can I spend my FSA on?", "When does my FSA carryover expire?"],
+  },
+  {
+    keywords: ['baby', 'newborn', 'birth', 'parental', 'maternity', 'paternity', 'child'],
+    suggestions: ["How long is Acme's paid parental leave?", "When do I need to add my baby to insurance?", "Does FMLA run at the same time as parental leave?"],
+  },
+  {
+    keywords: ['cobra', 'lose coverage', 'leaving', 'job loss', 'continuation'],
+    suggestions: ["How long does COBRA coverage last?", "How much does COBRA cost?", "Are there alternatives to COBRA?"],
+  },
+  {
+    keywords: ['open enrollment', 'oe', 'enroll', 'election', 'change plan'],
+    suggestions: ["What if I miss open enrollment?", "When does open enrollment happen at Acme?", "Can I change my HSA election during the year?"],
+  },
+  {
+    keywords: ['401k', 'retirement', 'match', 'roth', 'contribution'],
+    suggestions: ["What's Acme's 401(k) match?", "Is there a Roth 401(k) option?", "When am I vested in the match?"],
+  },
+  {
+    keywords: ['dental', 'vision', 'vsp', 'delta', 'orthodont'],
+    suggestions: ["Does dental cover orthodontics?", "What's the annual dental maximum?", "Is vision included with medical or separate?"],
+  },
+]
 
-Company: ${ACME_PROFILE.companyName} (${ACME_PROFILE.companySize})
-
-MEDICAL PLANS:
-1. ${ACME_PROFILE.medical.hdhp.name}
-   - Individual deductible: $${ACME_PROFILE.medical.hdhp.deductible.individual.toLocaleString()}
-   - Family deductible: $${ACME_PROFILE.medical.hdhp.deductible.family.toLocaleString()}
-   - Individual OOPM: $${ACME_PROFILE.medical.hdhp.oopm.individual.toLocaleString()}
-   - Family OOPM: $${ACME_PROFILE.medical.hdhp.oopm.family.toLocaleString()}
-   - Coinsurance: ${ACME_PROFILE.medical.hdhp.coinsurance}
-   - Employer HSA seed: $${ACME_PROFILE.medical.hdhp.employerHsaSeed.toLocaleString()}/year
-
-2. ${ACME_PROFILE.medical.ppo.name}
-   - Individual deductible: $${ACME_PROFILE.medical.ppo.deductible.individual.toLocaleString()}
-   - Family deductible: $${ACME_PROFILE.medical.ppo.deductible.family.toLocaleString()}
-   - Individual OOPM: $${ACME_PROFILE.medical.ppo.oopm.individual.toLocaleString()}
-   - Family OOPM: $${ACME_PROFILE.medical.ppo.oopm.family.toLocaleString()}
-   - Primary care copay: $${ACME_PROFILE.medical.ppo.primaryCareCopay}
-   - Specialist copay: $${ACME_PROFILE.medical.ppo.specialistCopay}
-   - Coinsurance: ${ACME_PROFILE.medical.ppo.coinsurance}
-
-DENTAL: ${ACME_PROFILE.dental.carrier}
-   - Preventive: ${ACME_PROFILE.dental.preventive} (no deductible)
-   - Basic: ${ACME_PROFILE.dental.basic}
-   - Major: ${ACME_PROFILE.dental.major}
-   - Ortho: ${ACME_PROFILE.dental.ortho}
-   - Annual max: $${ACME_PROFILE.dental.annualMax.toLocaleString()}
-
-VISION: ${ACME_PROFILE.vision.carrier}
-
-HSA (for HDHP enrollees):
-   - ${ACME_PROFILE.planYear} individual limit: $${ACME_PROFILE.hsa.limit2026Individual.toLocaleString()}
-   - ${ACME_PROFILE.planYear} family limit: $${ACME_PROFILE.hsa.limit2026Family.toLocaleString()}
-   - Catch-up (55+): additional $${ACME_PROFILE.hsa.catchUp55.toLocaleString()}
-   - Employer seed: $${ACME_PROFILE.hsa.employerSeed.toLocaleString()}
-
-FSA:
-   - Health FSA limit: $${ACME_PROFILE.fsa.healthFsa.limit.toLocaleString()} (carryover: $${ACME_PROFILE.fsa.healthFsa.carryover})
-   - Limited-purpose FSA: available for HDHP/HSA enrollees
-   - Dependent care FSA: $${ACME_PROFILE.fsa.dependentCareFsa.limit.toLocaleString()}
-
-401(k): ${ACME_PROFILE.retirement.match}. Roth option: yes. SECURE 2.0 catch-up: yes.
-
-LEAVE:
-   - FMLA: covered
-   - Parental leave: ${ACME_PROFILE.loa.companyParentalLeave}
-   - STD/LTD carrier: ${ACME_PROFILE.loa.stdCarrier}
-   - State leave coverage: ${ACME_PROFILE.loa.stateLeaveJurisdictions.join(', ')}
-   - LOA contact: ${ACME_PROFILE.loa.loaAdministrator}
-
-COBRA: Administered by ${ACME_PROFILE.cobra.administrator}. Election window: ${ACME_PROFILE.cobra.qualifyingEventWindow} days from qualifying event.
-
-Keep answers direct and plain. Use real benefit terms because employees trust specifics. Short paragraphs. If a question needs a follow-up clarification, ask one question. This is a demo, and you are showing what a real deployed Ask BeneBot looks like for an actual client.`
+function getFollowUps(lastReply: string): string[] {
+  const lower = lastReply.toLowerCase()
+  for (const group of FOLLOW_UPS) {
+    if (group.keywords.some(k => lower.includes(k))) {
+      return group.suggestions
+    }
+  }
+  return ["What other benefits does Acme offer?", "How does the HSA work?", "What happens during open enrollment?"]
+}
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL as string | undefined
 const WORKER_TOKEN = import.meta.env.VITE_WORKER_TOKEN as string | undefined
 
-async function callWorker(messages: Message[], system: string): Promise<string> {
+async function callWorker(messages: Message[]): Promise<string> {
   if (!WORKER_URL || !WORKER_TOKEN) {
     throw new Error('WORKER_NOT_CONFIGURED')
   }
@@ -82,7 +71,7 @@ async function callWorker(messages: Message[], system: string): Promise<string> 
       'Content-Type': 'application/json',
       Authorization: `Bearer ${WORKER_TOKEN}`,
     },
-    body: JSON.stringify({ system, messages, maxTokens: 1024 }),
+    body: JSON.stringify({ botId: 'ask', messages, maxTokens: 1024 }),
   })
   if (!res.ok) throw new Error(`Worker error ${res.status}`)
   const data = await res.json()
@@ -94,6 +83,7 @@ export default function AskDemo() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [followUps, setFollowUps] = useState<string[]>([])
   const bottomRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
@@ -108,11 +98,13 @@ export default function AskDemo() {
     const next = [...messages, userMsg]
     setMessages(next)
     setInput('')
+    setFollowUps([])
     setLoading(true)
     setError(null)
     try {
-      const reply = await callWorker(next, SYSTEM_PROMPT)
+      const reply = await callWorker(next)
       setMessages(m => [...m, { role: 'assistant', content: reply }])
+      setFollowUps(getFollowUps(reply))
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'unknown'
       if (msg.includes('429')) {
@@ -209,6 +201,22 @@ export default function AskDemo() {
 
           <div ref={bottomRef} />
         </div>
+
+        {/* Follow-up suggestions */}
+        {followUps.length > 0 && !loading && (
+          <div className="border-t border-dark-border px-4 pt-3 pb-1 flex flex-wrap gap-2">
+            {followUps.map(q => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => send(q)}
+                className="text-xs font-body text-dark-muted border border-dark-border rounded-full px-3 py-1.5 hover:border-[#00C47A]/40 hover:text-[#00C47A] transition-all bg-dark-base"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Input */}
         <div className="border-t border-dark-border p-4">

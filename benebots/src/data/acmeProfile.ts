@@ -65,4 +65,16 @@ export const ACME_PROFILE = {
     administrator: "WEX Benefits",
     qualifyingEventWindow: 60,
   },
+
+  claims: {
+    medicalCarrier: "Aetna",
+    memberServicesPhone: "1-800-872-3862",
+    memberPortal: "aetna.com/member",
+    appealDeadlineDays: 180,
+    externalReviewAvailable: true,
+    priorAuthList: "Available on the Aetna provider portal and aetna.com/member",
+    nsaCompliant: true,
+    ideoContractStatus: "Acme's Aetna network is a fully credentialed PPO. Balance billing protections apply for emergency services and non-emergency care at in-network facilities.",
+    hrClaimsContact: "Acme HR, hr@acme-demo.com",
+  },
 } as const
