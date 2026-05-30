@@ -17,12 +17,85 @@
   },
   "posts": [
     {
+      "id": "post-2026-05-30-92-of-companies-are-betting-",
+      "title": "92% of Companies Are Betting on AI. Only 1% Know What They're Doing.",
+      "slug": "92-of-companies-are-betting-on-ai-only-1-know-what-theyre-doing",
+      "excerpt": "McKinsey's 2025 workplace AI report lands with a number that should stop every HR leader mid-scroll: nearly every company is increasing AI investment, but almost none have figured out how to make it work at scale.",
+      "body": "Nearly every company is doubling down on AI. Almost none of them are ready for it.\n\nMcKinsey's 2025 AI in the Workplace report puts the gap in plain terms: 92% of organizations plan to increase AI investment over the next three years. Only 1% describe themselves as mature in how they deploy it. That's not a technology problem. That's an execution problem.\n\nThe productivity numbers are real, but they come with a catch. Employees using AI tools on specific tasks like drafting documents, pulling data and writing code are reporting 20–30% efficiency gains. That's meaningful. The problem is those gains rarely show up in firm-wide output without deliberate workflow redesign. Individual wins don't automatically become organizational wins. Someone still has to do the plumbing.\n\nFor HR and benefits teams, this matters more than most departments want to admit. A lot of the work that buries admins...summarizing plan documents, answering routine enrollment questions, scheduling and basic analysis falls squarely in what McKinsey estimates as 60–70% of employee time currently spent on tasks generative AI can handle. That's not a threat. That's a description of work that shouldn't take this long.\n\nBut here's where the report gets honest in a way that a lot of AI vendors won't be: 65% of organizations have piloted AI. Fewer than 25% have scaled past the pilot stage. McKinsey calls this the capability trap. You run a proof of concept, it works well enough, and then it stalls because you don't have the internal talent to build on it, because people weren't brought along on the change or because no one can clearly measure what success looks like.\n\nBenefits administration is a regulated, high-trust environment. Skepticism about AI here isn't paranoia and it's appropriate. Errors in this space have real consequences for real people. The capability trap is especially dangerous when teams feel pressure to adopt tools quickly without thinking through what happens when the tool gets something wrong.\n\nThe practical read for HR and benefits professionals: the question isn't whether to use AI. The question is whether your organization is doing the unsexy work, defining the right use cases, redesigning the workflows, measuring the right things that actually makes AI useful rather than just present.\n\nMost companies are buying shovels and leaving them in the shed.\n\nThe 1% who describe themselves as mature aren't smarter. They just started doing the unglamorous work earlier. It's worth asking what that work looks like for your team specifically and whether the tools you're being handed were actually built for the job you're trying to do.",
+      "tags": [
+        "AI in HR",
+        "Benefits Administration",
+        "Workforce Technology"
+      ],
+      "source": "McKinsey & Company",
+      "sourceUrl": "https://news.google.com/read/CBMi2AFBVV95cUxQNHluenp6NE4teVg3bTJiWG9VZk81dDQwcDBJcmVJWlBHdWhIYWRSYTNWX052aHVZdjhfdmxXNk9mTENURGRzdURmMExpTm5VazdfTWZpcUxTV21TcThJbHc2cFluMmRjMXdVeE80ZDhBR0JUWUhJcHJiX2Rva1lGT2tfMDNEOHZzRkJwSUpoM3FwZjh1RU56aXcxclFqNnRyVkRBVkJIbUkyaloxWGpscjJTZ2hYVkNxX0g2d2liUm41MlhaZDQwcl9JTlFtcWVGd3d0Vzg5V3Y?hl=en-US&gl=US&ceid=US%3Aen",
+      "date": "2026-05-30",
+      "readMinutes": 2,
+      "status": "published"
+    },
+    {
+      "id": "post-2026-05-30-the-real-reason-ai-stalls-in",
+      "title": "The Real Reason AI Stalls in Healthcare Has Nothing to Do with the Technology",
+      "slug": "the-real-reason-ai-stalls-in-healthcare-has-nothing-to-do-with-the-tec",
+      "excerpt": "Everyone assumes AI adoption in healthcare slows down because the tools aren't good enough yet. Twenty-five years in benefits tells a different story.",
+      "body": "Everyone assumes AI adoption in healthcare slows down because the tools aren't good enough yet. Fix the accuracy. Improve the interface. Add more training data. Then people will trust it.\n\nThat's not what the evidence shows.\n\nA 2023 Nature Medicine study found that even when AI diagnostic tools outperformed clinicians in accuracy, adoption rates stayed low. Researchers gave it a name: algorithm aversion. See one AI mistake, and the distrust sticks, even if the human error rate is higher. That's not a technology problem. That's a psychology problem.\n\nAnd it runs in both directions. The WHO flagged this in 2021, what they called automation bias. Some clinicians over-trust AI outputs and stop questioning them. Others reject AI reflexively. Neither response is driven by evidence. Both are driven by how we're wired.\n\nA 2023 Wolters Kluwer survey put numbers to the skepticism. Sixty-one percent of physicians worried AI would make clinical errors. Only 38% felt confident they could even interpret AI-generated recommendations. That's not a training gap you close with a product demo. That's a trust gap built over decades of how medicine has taught people to think about authority and error.\n\nHere's the part worth sitting with: the barrier isn't confidence in AI. It's confidence in themselves while using AI.\n\nNEJM Catalyst found something useful here. Patient willingness to accept AI-assisted diagnoses jumped from 38% to 62% when a human clinician was described as overseeing the AI. Same tool. Same output. Different framing. The technology didn't change. The story around it did.\n\nThat should matter to everyone working in HR and benefits, not just health systems. We're in the same trust landscape. The people we serve...employees, plan members, HR admins are skeptical of automated tools for the same reasons clinicians are. They've seen a chatbot give bad information. They've watched a system fail a colleague. One bad experience overwrites a hundred good ones.\n\nSo the question isn't how do we build better AI. The question is how do we build better context around AI.\n\nThat means being honest about what the tool does and doesn't do. It means keeping a human in the loop, not as a disclaimer, but as a real part of the design. It means treating transparency as a feature, not an afterthought.\n\nMy shovel analogy holds true here. A good shovel doesn't replace the person digging. It just means the work that shouldn't take this long, doesn't. But if the person holding the shovel doesn't trust it, doesn't understand it, or got hit with it once...they're going to use their hands instead.\n\nThat's where most AI adoption efforts get stuck. Not in the algorithm. In the room where the person decides whether to pick up the tool at all.\n\nWhat's your experience been, when skepticism about AI tools comes up with your team or your employees, what's actually underneath it?",
+      "tags": [
+        "AI Adoption",
+        "Benefits Technology",
+        "HR Strategy"
+      ],
+      "source": "HR Executive",
+      "sourceUrl": "https://news.google.com/read/CBMigAFBVV95cUxQQ0xfb0dDRkstU2RjOWlLdmh6T1BMNGVXSWlnenFMUktpTVRZZG42M2NlOV9DTmZhMlFFSUliUEUwdVVwN0oxa1BYRWZHcml4b3RydFljTDBydTJkTFVub1laMUJ0enNnUEQ0ZFVnNG1kNWNaMkVFa0g1cGFLc1dKaA?hl=en-US&gl=US&ceid=US%3Aen",
+      "date": "2026-05-30",
+      "readMinutes": 2,
+      "status": "published"
+    },
+    {
+      "id": "post-2026-05-30-youre-spending-thousands-per",
+      "title": "You're Spending Thousands Per Employee on Education Benefits. Do You Know If It's Working?",
+      "slug": "youre-spending-thousands-per-employee-on-education-benefits-do-you-kno",
+      "excerpt": "U.S. employers collectively spend $28 billion a year on tuition assistance. Most have no idea what they're getting for it.",
+      "body": "Here's the question most benefits teams never get asked: what actually happened to the employees who used your tuition benefit last year?\n\nNot whether they submitted receipts. Not whether the vendor processed the reimbursement. What happened to them? Did they finish the degree, did they stay, did the work get better?\n\nFor most companies, nobody knows.\n\nA Lumina Foundation study found fewer than 25% of employers systematically track whether employees complete degrees or how education affects performance. This, despite U.S. employers spending roughly $28 billion a year on tuition assistance programs. That's not a rounding error. That's a significant line item with almost no feedback loop attached to it.\n\nThe Cigna retention finding gets cited constantly in this space, employees using tuition benefits had 8x lower turnover than non-participants. It's a striking number. But the reason it keeps getting cited is that it's unusual. Most companies never ran that analysis. Cigna did the work. Almost everyone else is just guessing.\n\nThe root cause isn't laziness. It's structure. Tuition reimbursement often lives in finance, or gets handed off to a third-party vendor, completely separate from the systems where HR tracks performance and retention. There's no natural junction where the data meets. Linkage analysis isn't just hard...it's architecturally blocked.\n\nSo benefits teams end up knowing that money went out the door, but not much else.\n\nThe participation picture is equally murky. EdAssist surveys consistently show only 2% to 5% of eligible employees actually use tuition benefits in a given year. That's a very low number for a benefit companies spend real money to offer. And most employers can't explain it. They don't know if the process is too complicated, if employees don't know the benefit exists, or if the eligible population just isn't interested.\n\nYou can't fix what you can't see.\n\nThis is exactly the kind of problem that shouldn't require a data science team to solve. The data exists...in reimbursement records, in HRIS systems, in performance reviews. The gap is that nobody has connected it and nobody has built a simple way to ask the questions.\n\nFor a benefits or HR admin, the practical starting point is small. Pull last year's tuition reimbursement list. Cross-reference it against your retention data. See if the people who used the benefit are still with the company. That one query won't give you a Cigna-level study, but it'll tell you more than you knew yesterday.\n\nFrom there, the question becomes whether your systems can even support that kind of look-back and if not, that's worth surfacing. Because right now, a lot of organizations are essentially writing checks into the dark.\n\nTwenty-eight billion dollars is a lot of shovels to hand out without ever checking whether anyone dug anything.",
+      "tags": [
+        "Education Benefits",
+        "Tuition Assistance",
+        "HR Analytics",
+        "Employee Retention"
+      ],
+      "source": "Employee Benefit News",
+      "sourceUrl": "https://news.google.com/read/CBMiigFBVV95cUxOX0p0OGoyYVFnMHBRVG5mMEFPRXlhcEVTNE8ycV9CMVZWaXFjUWVrS0ROaVU1Q3FGYlF5YUp3SS0wRmNnazV6T05JdGtYQzgyZnVvVnYwTERLSmFvZmdpNVgtaUxNUFQ1SVFSUFNZY0czaXFpZzR1YTZHSmRNd2MtSlRfTkV0a1g0eHc?hl=en-US&gl=US&ceid=US%3Aen",
+      "date": "2026-05-30",
+      "readMinutes": 2,
+      "status": "published"
+    },
+    {
+      "id": "post-2026-05-30-the-science-behind-ai-person",
+      "title": "The Science Behind AI-Personalized Benefits: What the Research Actually Shows",
+      "slug": "the-science-behind-ai-personalized-benefits-what-the-research-actually",
+      "excerpt": "Marsh is making the case that AI can move benefits from one-size-fits-all to genuinely tailored. The data backing that claim is worth a closer look.",
+      "body": "Most employees pick their benefits the same way they pick a streaming show...scroll a little, get overwhelmed, default to what they had last year.\n\nThat's not a character flaw. It's a design problem. And it's one that AI is starting to solve in ways that are measurable, not just theoretical.\n\nMarsh recently published a piece on using AI to enhance benefits insights, focusing on the science behind personalization. The core argument: when employees get recommendations built around their actual situation, demographics, claims history, life stage, they make better decisions. Better for them, and better for the organizations paying the bills.\n\nThe numbers support that argument. A Deloitte study found that 80% of employees who received personalized benefits recommendations reported higher satisfaction. Companies using AI-driven benefits platforms saw up to a 13% reduction in healthcare costs through better plan matching. That second number matters. It's not about cutting benefits. It's about helping people choose the right ones.\n\nHere's the part that should get any benefits professional's attention. Only 34% of employees fully understand their benefits package, according to SHRM data. That's not a new problem — we've known this for years. What's new is that organizations deploying AI-powered decision-support tools are seeing comprehension scores improve by up to 40%. Higher comprehension connects directly to better voluntary benefits participation and fewer mid-year coverage gaps. The tool does the work that a one-hour enrollment meeting never could.\n\nThe machine learning piece is worth understanding, not just accepting. Models trained on claims data, demographics and behavioral patterns can predict individual benefits utilization with 85–90% accuracy, per McKinsey Health Institute research. That means the system isn't guessing. It's identifying likely needs before open enrollment closes...proactively, not reactively.\n\nThere's also a behavioral economics angle here. Thaler and Sunstein's nudge theory is genuinely embedded in how good AI personalization engines work. When employees see a short list of tailored, simplified options instead of a full catalog, they're three times more likely to select the plan that actually fits them. The architecture of the choice matters as much as the content of the choices.\n\nFor benefits administrators, this reframes the job slightly. You're not just building a plan portfolio. You're building a decision environment. AI helps you make that environment work for the person sitting in front of the screen at 9pm trying to figure out whether they need the HSA-eligible plan.\n\nA few honest caveats. The statistics above come from multiple sources with different methodologies and study years — verify them against primary research before citing them in client-facing materials. And AI tools are only as good as the data they're trained on. Garbage in, garbage out still applies.\n\nBut the direction is clear. The tools exist to close the comprehension gap, improve plan selection and reduce unnecessary cost, not by restricting access, but by matching people to what they actually need.\n\nThe shovel has been here. The question is whether benefits teams are ready to pick it up.\n\nWhat's the biggest barrier you're seeing to AI adoption in your benefits process...the technology, the data, or getting leadership to prioritize it?",
+      "tags": [
+        "AI in Benefits",
+        "Benefits Personalization",
+        "HR Technology"
+      ],
+      "source": "Marsh",
+      "sourceUrl": "https://news.google.com/read/CBMirwFBVV95cUxPZ1pzbnM5VzNkTkdDUll6OG1nYmxQS3A2RmY5SFBmOUlQT2FXeEhKT1BLMTNPZDNQZFpzdVNCU1E5bi04YTVBZ1BMREhzV2t1dFdWQ0M2UXlvTWNoSGJQekpQTGNjMFUwSm04cnBZSHpsRXFCWjZOQWdHa0hJUS1tXzRJWk01UXpZempHbDA5Um5OblZ1VGFNeVE0b2VYUWdiTHNRZUZ1US1oeG4wYmJJ?hl=en-US&gl=US&ceid=US%3Aen",
+      "date": "2026-05-30",
+      "readMinutes": 3,
+      "status": "published"
+    },
+    {
       "id": "post-2026-05-29-ai-benefits-admin",
       "title": "The benefits admin work nobody wants to do is exactly what AI is good at",
       "slug": "ai-and-the-benefits-admin-pile",
       "excerpt": "The repetitive parts of benefits administration aren't going away. But they no longer have to eat your week.",
       "body": "Every benefits team I've worked with has the same pile. The renewal spreadsheet rebuilt from scratch every year. The same fifteen enrollment questions answered over and over. The stewardship report that takes three days to assemble and gets skimmed in five minutes.\n\nNone of that work is hard. That's the frustrating part. It's just slow, repetitive, and relentless.\n\nThis is the exact shape of work that AI handles well. Not the judgment calls. Not the carrier negotiation. Not the conversation with an employee who just got a scary diagnosis. The pattern work underneath all of it.\n\nA few examples from the last year of building tools for this:\n\nOpen enrollment questions. The top twenty questions are the same at almost every employer. A well-scoped assistant trained on your plan documents can answer them accurately, around the clock, and hand the genuinely complex ones to a human.\n\nStewardship reporting. Pulling claims data, formatting it, writing the narrative summary. The data still has to be right and a human still has to sign off, but the assembly is automatable.\n\nDocument lookups. \"Is this covered?\" \"What's my deductible?\" \"When is the COBRA deadline?\" These don't require a person. They require fast, accurate access to a document.\n\nThe point isn't to remove people from benefits. It's to stop spending their time on the work that never needed a person in the first place.\n\nStart with one task. The one you dread most this quarter. That's usually the one worth automating first.",
-      "tags": ["AI", "Benefits Admin", "Automation"],
+      "tags": [
+        "AI",
+        "Benefits Admin",
+        "Automation"
+      ],
       "source": "Original",
       "sourceUrl": null,
       "date": "2026-05-29",
@@ -35,7 +108,12 @@
       "slug": "why-hr-is-slow-to-adopt-ai",
       "excerpt": "The skepticism in benefits and HR is rational. The answer isn't more hype. It's proof.",
       "body": "There's a story floating around that HR is behind on AI. That benefits teams are dragging their feet while the rest of the world moves on.\n\nI don't buy it.\n\nHR and benefits sit on top of the most sensitive data in a company. Health conditions. Salaries. Leave reasons. Protected information governed by HIPAA, ERISA, and a stack of state laws. When a marketing team's AI experiment goes wrong, someone gets a weird email. When a benefits team's AI experiment goes wrong, someone's medical information leaks.\n\nSo the caution is rational. The skepticism is earned. And the answer to it is not louder hype.\n\nThe answer is proof. Narrow, demonstrable, low-stakes proof.\n\nDon't start by putting AI between an employee and their health plan. Start with the internal work. The report nobody likes building. The first draft of a benefits guide. The follow-up email sequence after open enrollment. Things where a mistake is a typo, not a breach.\n\nShow the team it works on the safe stuff. Build trust the way you build it anywhere, by being right, repeatedly, when the cost of being wrong is low.\n\nThen, and only then, you've earned the right to move closer to the sensitive work.\n\nThe industry isn't slow. It's careful. There's a difference, and the people building tools for this space would do well to respect it.",
-      "tags": ["AI", "HR", "Adoption", "Trust"],
+      "tags": [
+        "AI",
+        "HR",
+        "Adoption",
+        "Trust"
+      ],
       "source": "Original",
       "sourceUrl": null,
       "date": "2026-05-28",
