@@ -153,9 +153,9 @@ const DEFAULT_CFG = {
   workerToken: "",
   postsUrl: "https://infiniteawesomestudio.com/blog-posts.json",
   guidelines: DEFAULT_GUIDELINES,
-  fetchActor: "crawlerbros/google-news-scraper",
+  fetchActor: "data_xplorer/google-news-scraper-fast",
   fetchQueries: "AI in employee benefits\nAI automation HR benefits\nHR technology automation\nbenefits administration AI",
-  fetchDateRange: "1m",
+  fetchDateRange: "7d",
   fetchMax: 12,
   fetchSite: "",
 };
@@ -165,7 +165,15 @@ const DEFAULT_CFG = {
 // ============================================================
 let state = {
   tab: "queue",
-  cfg: { ...DEFAULT_CFG, ...(JSON.parse(localStorage.getItem("ias_blog_cfg") || "null") || {}) },
+  cfg: (() => {
+    const c = { ...DEFAULT_CFG, ...(JSON.parse(localStorage.getItem("ias_blog_cfg") || "null") || {}) };
+    // Migrate off the broken crawlerbros actor (returns 0 results) to data_xplorer.
+    if (typeof c.fetchActor === "string" && c.fetchActor.includes("crawlerbros")) {
+      c.fetchActor = DEFAULT_CFG.fetchActor;
+      if (!["1h","1d","7d","1y","all"].includes(c.fetchDateRange)) c.fetchDateRange = "7d";
+    }
+    return c;
+  })(),
   queue: JSON.parse(localStorage.getItem("ias_blog_queue") || "[]"),
   drafts: JSON.parse(localStorage.getItem("ias_blog_drafts") || "[]"),
   importedPublished: JSON.parse(localStorage.getItem("ias_blog_imported") || "[]"),
@@ -363,18 +371,22 @@ async function importExisting() {
 // ============================================================
 async function runFetch(opts) {
   if (!state.cfg.workerToken) { setState({ tab:"setup", modal:null }); alert("Add your worker token in Setup first."); return; }
-  const queries = opts.queries.split("\n").map(s=>s.trim()).filter(Boolean);
-  if (!queries.length) { alert("Add at least one search query."); return; }
+  let keywords = opts.queries.split("\n").map(s=>s.trim()).filter(Boolean);
+  if (!keywords.length) { alert("Add at least one search query."); return; }
+  // Site filter uses Google News' "site:" operator appended to each keyword.
+  if (opts.site) keywords = keywords.map(k => `${k} site:${opts.site}`);
+  const maxArticles = Math.max(1, Math.min(50, parseInt(opts.max) || 12));
   const input = {
-    queries,
-    maxResultsPerQuery: Math.max(1, Math.min(50, parseInt(opts.max) || 12)),
-    language: "en", country: "US",
-    dateRange: opts.dateRange || "1m",
-    extractFullText: false, includeImages: false,
+    keywords,
+    maxArticles,
+    timeframe: opts.dateRange || "7d",
+    region_language: "US:en",
+    extractDescriptions: true,
+    decodeUrls: true,
+    extractImages: false,
   };
-  if (opts.site) input.siteFilter = opts.site;
   // persist last-used fetch settings
-  state.cfg = { ...state.cfg, fetchQueries:opts.queries, fetchDateRange:opts.dateRange, fetchMax:input.maxResultsPerQuery, fetchSite:opts.site, fetchActor:opts.actor||state.cfg.fetchActor };
+  state.cfg = { ...state.cfg, fetchQueries:opts.queries, fetchDateRange:opts.dateRange, fetchMax:maxArticles, fetchSite:opts.site, fetchActor:opts.actor||state.cfg.fetchActor };
   setState({ modal: null, isRunning: true });
   try {
     const res = await fetch(state.cfg.workerUrl, {
@@ -454,7 +466,7 @@ function buildHTML(){
 
 function buildFetchModal(){
   const c = state.cfg;
-  const ranges = [["1d","Past day"],["7d","Past week"],["1m","Past month"],["1y","Past year"],["any","Any time"]];
+  const ranges = [["1h","Past hour"],["1d","Past day"],["7d","Past week"],["1y","Past year"],["all","Any time"]];
   return `
     <div class="modal-overlay" id="ov">
       <div class="modal">
