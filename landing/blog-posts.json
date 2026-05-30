@@ -1,0 +1,46 @@
+{
+  "_schema": {
+    "note": "Source of truth for the IAS blog. Consumed by landing/articles.html (full list + reader) and landing/index.html (Latest Insights teaser shows the 3 most recent where status=published). The Blog Studio appends/edits entries here on Approve.",
+    "fields": {
+      "id": "stable unique string",
+      "title": "headline, plain text",
+      "slug": "url-safe id used as #anchor on articles.html",
+      "excerpt": "1-2 sentence teaser, plain text",
+      "body": "article body; paragraphs separated by \\n\\n",
+      "tags": "array of short topic strings",
+      "source": "publication the original was scraped from, or 'Original'",
+      "sourceUrl": "link to the original article, or null",
+      "date": "ISO yyyy-mm-dd publish date",
+      "readMinutes": "integer estimate",
+      "status": "published | draft"
+    }
+  },
+  "posts": [
+    {
+      "id": "post-2026-05-29-ai-benefits-admin",
+      "title": "The benefits admin work nobody wants to do is exactly what AI is good at",
+      "slug": "ai-and-the-benefits-admin-pile",
+      "excerpt": "The repetitive parts of benefits administration aren't going away. But they no longer have to eat your week.",
+      "body": "Every benefits team I've worked with has the same pile. The renewal spreadsheet rebuilt from scratch every year. The same fifteen enrollment questions answered over and over. The stewardship report that takes three days to assemble and gets skimmed in five minutes.\n\nNone of that work is hard. That's the frustrating part. It's just slow, repetitive, and relentless.\n\nThis is the exact shape of work that AI handles well. Not the judgment calls. Not the carrier negotiation. Not the conversation with an employee who just got a scary diagnosis. The pattern work underneath all of it.\n\nA few examples from the last year of building tools for this:\n\nOpen enrollment questions. The top twenty questions are the same at almost every employer. A well-scoped assistant trained on your plan documents can answer them accurately, around the clock, and hand the genuinely complex ones to a human.\n\nStewardship reporting. Pulling claims data, formatting it, writing the narrative summary. The data still has to be right and a human still has to sign off, but the assembly is automatable.\n\nDocument lookups. \"Is this covered?\" \"What's my deductible?\" \"When is the COBRA deadline?\" These don't require a person. They require fast, accurate access to a document.\n\nThe point isn't to remove people from benefits. It's to stop spending their time on the work that never needed a person in the first place.\n\nStart with one task. The one you dread most this quarter. That's usually the one worth automating first.",
+      "tags": ["AI", "Benefits Admin", "Automation"],
+      "source": "Original",
+      "sourceUrl": null,
+      "date": "2026-05-29",
+      "readMinutes": 3,
+      "status": "published"
+    },
+    {
+      "id": "post-2026-05-28-why-hr-is-slow",
+      "title": "HR isn't slow to adopt AI because it's behind. It's slow because the stakes are real.",
+      "slug": "why-hr-is-slow-to-adopt-ai",
+      "excerpt": "The skepticism in benefits and HR is rational. The answer isn't more hype. It's proof.",
+      "body": "There's a story floating around that HR is behind on AI. That benefits teams are dragging their feet while the rest of the world moves on.\n\nI don't buy it.\n\nHR and benefits sit on top of the most sensitive data in a company. Health conditions. Salaries. Leave reasons. Protected information governed by HIPAA, ERISA, and a stack of state laws. When a marketing team's AI experiment goes wrong, someone gets a weird email. When a benefits team's AI experiment goes wrong, someone's medical information leaks.\n\nSo the caution is rational. The skepticism is earned. And the answer to it is not louder hype.\n\nThe answer is proof. Narrow, demonstrable, low-stakes proof.\n\nDon't start by putting AI between an employee and their health plan. Start with the internal work. The report nobody likes building. The first draft of a benefits guide. The follow-up email sequence after open enrollment. Things where a mistake is a typo, not a breach.\n\nShow the team it works on the safe stuff. Build trust the way you build it anywhere, by being right, repeatedly, when the cost of being wrong is low.\n\nThen, and only then, you've earned the right to move closer to the sensitive work.\n\nThe industry isn't slow. It's careful. There's a difference, and the people building tools for this space would do well to respect it.",
+      "tags": ["AI", "HR", "Adoption", "Trust"],
+      "source": "Original",
+      "sourceUrl": null,
+      "date": "2026-05-28",
+      "readMinutes": 3,
+      "status": "published"
+    }
+  ]
+}

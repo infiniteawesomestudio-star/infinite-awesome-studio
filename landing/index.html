@@ -893,6 +893,7 @@ html,body{background:var(--warm-neutral);}
       <li><a href="#mybenefitsguy" class="ias-nav-featured">MyBenefitsGuy</a></li>
       <li><a href="#benebots">BeneBots</a></li>
       <li><a href="#infinite-workflows">Infinite Workflows</a></li>
+      <li><a href="/articles">Insights</a></li>
       <li><a href="#about">About</a></li>
     </ul>
     <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
@@ -907,6 +908,7 @@ html,body{background:var(--warm-neutral);}
     <a href="#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
     <a href="#benebots" onclick="closeMobileNav()">BeneBots</a>
     <a href="#infinite-workflows" onclick="closeMobileNav()">Infinite Workflows</a>
+    <a href="/articles" onclick="closeMobileNav()">Insights</a>
     <a href="#about" onclick="closeMobileNav()">About</a>
     <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-mobile-cta" onclick="closeMobileNav()">Let's Talk</a>
   </div>
@@ -979,14 +981,12 @@ html,body{background:var(--warm-neutral);}
     </div>
 
     <div class="ias-card">
-      <div class="ias-card-tag">Advisory</div>
-      <div class="ias-card-icon ias-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/><path d="M12 12h.01"/></svg></div>
-      <div class="ias-card-title">Fractional Benefits Consulting</div>
-      <div class="ias-card-body">Senior-level benefits strategy on demand, including renewal prep, stewardship reports, self-funded analysis, and carrier negotiation.</div>
-      <div class="ias-pill-row" style="margin-top:14px;">
-        <span class="ias-pill ias-pill-blue">On demand</span>
-        <span class="ias-pill ias-pill-blue">Benefits</span>
-      </div>
+      <div class="ias-card-tag">Insights</div>
+      <div class="ias-card-icon ias-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <div class="ias-card-title">Latest Insights</div>
+      <div class="ias-card-body">What's actually happening with AI and automation in the benefits and HR space.</div>
+      <ul id="ias-latest-insights" class="ias-insights-list" style="list-style:none;margin:14px 0 0;padding:0;"></ul>
+      <a href="/articles" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore the blog →</a>
     </div>
 
   </div>
@@ -1285,6 +1285,25 @@ function closeMobileNav(){
   b.setAttribute('aria-expanded','false');
   b.setAttribute('aria-label','Open menu');
 }
+
+// Populate the Latest Insights card with the 3 most recent published posts.
+(function(){
+  var el=document.getElementById('ias-latest-insights');
+  if(!el)return;
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  fetch('blog-posts.json',{cache:'no-cache'})
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(data){
+      if(!data||!data.posts)return;
+      var posts=data.posts.filter(function(p){return p.status==='published';})
+        .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
+        .slice(0,3);
+      el.innerHTML=posts.map(function(p){
+        return '<li style="margin-top:10px;line-height:1.4;"><a href="/articles#'+esc(p.slug)+'" style="text-decoration:none;color:var(--ink-70,#555);font-size:13px;font-weight:500;display:block;transition:color .15s;" onmouseover="this.style.color=\'var(--mint)\'" onmouseout="this.style.color=\'var(--ink-70,#555)\'">'+esc(p.title)+'</a></li>';
+      }).join('');
+    })
+    .catch(function(){});
+})();
 </script>
 </body>
 </html>

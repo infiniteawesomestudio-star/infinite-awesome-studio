@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insights · Infinite Awesome Studio</title>
+<meta name="description" content="Notes on AI and automation in the benefits and HR space, from a 25-year benefits veteran building practical tools.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+  --mint: #00C47A;
+  --ink: #1A1A1A;
+  --warm-neutral: #F5F5F2;
+  --white: #FFFFFF;
+  --ink-blue: #0B4FBB;
+  --mint-wash: #E5FBF2;
+  --deep-forest: #002E1D;
+  --sunshine-gold: #F7D154;
+  --ink-70: rgba(26,26,26,0.70);
+  --ink-55: rgba(26,26,26,0.55);
+  --ink-40: rgba(26,26,26,0.40);
+  --ink-12: rgba(26,26,26,0.12);
+  --ink-08: rgba(26,26,26,0.08);
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--warm-neutral);color:var(--ink);font-family:var(--font-body);min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+
+.ias-skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:100;}
+.ias-skip-link:focus{left:16px;top:16px;}
+
+/* NAV */
+.ias-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:1140px;margin:0 auto;position:relative;z-index:20;}
+.ias-logo img{height:34px;width:auto;display:block;}
+.ias-nav-links{display:flex;gap:26px;list-style:none;}
+.ias-nav-links a{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-70);text-decoration:none;transition:color .15s;}
+.ias-nav-links a:hover,.ias-nav-links a.active{color:var(--ink);}
+.ias-nav-featured{color:var(--mint)!important;font-weight:600;}
+.ias-nav-cta{background:var(--ink);color:#fff;font-family:var(--font-body);font-size:14px;font-weight:600;padding:9px 18px;border-radius:9px;text-decoration:none;transition:background .15s;}
+.ias-nav-cta:hover{background:var(--deep-forest);}
+.ias-mobile-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);}
+
+@media(max-width:760px){
+  .ias-nav-links,.ias-nav-cta{display:none;}
+  .ias-mobile-toggle{display:block;}
+}
+.ias-mobile-menu{display:none;flex-direction:column;gap:4px;padding:0 32px 18px;max-width:1140px;margin:0 auto;}
+.ias-mobile-menu.open{display:flex;}
+.ias-mobile-menu a{padding:12px 14px;border-radius:9px;text-decoration:none;color:var(--ink-70);font-weight:500;font-size:15px;}
+.ias-mobile-menu a:hover{background:var(--white);color:var(--ink);}
+
+/* LAYOUT */
+.wrap{max-width:1140px;margin:0 auto;padding:24px 32px 80px;}
+.page-head{max-width:720px;margin:28px 0 44px;}
+.eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:700;line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px;}
+.page-sub{font-size:17px;line-height:1.6;color:var(--ink-70);}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;}
+.card{background:var(--white);border:1px solid var(--ink-08);border-radius:16px;padding:26px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;display:flex;flex-direction:column;}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(26,26,26,0.08);border-color:var(--ink-12);}
+.card-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-40);margin-bottom:14px;}
+.card-source{color:var(--mint);font-weight:600;}
+.card-title{font-family:var(--font-display);font-size:21px;font-weight:700;line-height:1.22;letter-spacing:-0.01em;margin-bottom:12px;}
+.card-excerpt{font-size:15px;line-height:1.6;color:var(--ink-70);flex:1;}
+.card-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;}
+.tag{font-size:11px;font-weight:600;color:var(--ink-blue);background:rgba(11,79,187,0.07);padding:4px 10px;border-radius:20px;}
+.card-cta{margin-top:18px;font-size:14px;font-weight:600;color:var(--mint);}
+
+/* READER */
+.reader{max-width:680px;margin:0 auto;display:none;}
+.reader.show{display:block;}
+.grid-view.hide{display:none;}
+.head-view.hide{display:none;}
+.back-link{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--ink-70);text-decoration:none;margin:14px 0 30px;transition:color .15s;}
+.back-link:hover{color:var(--mint);}
+.reader-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-40);margin-bottom:18px;}
+.reader h1{font-family:var(--font-display);font-size:clamp(28px,4.5vw,40px);font-weight:700;line-height:1.12;letter-spacing:-0.02em;margin-bottom:22px;}
+.reader-body p{font-size:18px;line-height:1.72;color:var(--ink);margin-bottom:22px;}
+.reader-tags{display:flex;flex-wrap:wrap;gap:8px;margin:34px 0 24px;}
+.source-note{border-top:1px solid var(--ink-08);padding-top:20px;margin-top:34px;font-size:14px;color:var(--ink-55);}
+.source-note a{color:var(--mint);font-weight:600;text-decoration:none;}
+.source-note a:hover{text-decoration:underline;}
+
+/* STATES */
+.state{text-align:center;padding:80px 0;color:var(--ink-40);}
+.state .ico{font-size:40px;margin-bottom:14px;}
+
+/* FOOTER */
+.ias-footer{max-width:1140px;margin:0 auto;padding:32px;border-top:1px solid var(--ink-08);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;}
+.ias-footer-left{font-family:var(--font-body);font-size:13px;color:var(--ink-55);}
+.ias-footer-left a{color:inherit;}
+.ias-footer-tag{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--mint);}
+.ias-footer a.privacy{font-family:var(--font-body);font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;}
+.ias-footer a.privacy:hover{color:var(--mint);}
+</style>
+</head>
+<body>
+<a href="#main" class="ias-skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav class="ias-nav" aria-label="Main navigation">
+  <a class="ias-logo" href="/" aria-label="Infinite Awesome Studio home">
+    <img src="assets/ias-logo.png" alt="Infinite Awesome Studio" />
+  </a>
+  <ul class="ias-nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#mybenefitsguy" class="ias-nav-featured">MyBenefitsGuy</a></li>
+    <li><a href="/#benebots">BeneBots</a></li>
+    <li><a href="/#infinite-workflows">Infinite Workflows</a></li>
+    <li><a href="/articles" class="active">Insights</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+  <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-nav-cta">Let's Talk</a>
+</nav>
+<div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="/#services" onclick="closeMobileNav()">Services</a>
+  <a href="/#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
+  <a href="/#benebots" onclick="closeMobileNav()">BeneBots</a>
+  <a href="/#infinite-workflows" onclick="closeMobileNav()">Infinite Workflows</a>
+  <a href="/articles" onclick="closeMobileNav()">Insights</a>
+  <a href="/#about" onclick="closeMobileNav()">About</a>
+</div>
+
+<main id="main" class="wrap">
+  <div class="page-head head-view">
+    <div class="eyebrow">Insights</div>
+    <h1 class="page-title">Notes from the benefits trenches.</h1>
+    <p class="page-sub">What's actually happening with AI and automation in the benefits and HR space.</p>
+  </div>
+
+  <div id="grid" class="grid grid-view"></div>
+  <article id="reader" class="reader" aria-live="polite"></article>
+</main>
+
+<footer class="ias-footer">
+  <div class="ias-footer-left">© 2026 Infinite Awesome Studio · <a href="mailto:ty@infiniteawesomestudio.com">ty@infiniteawesomestudio.com</a></div>
+  <div class="ias-footer-tag">Every benefit. Every penny. Delivered awesomely.</div>
+  <a href="/privacy-policy" class="privacy">Privacy Policy</a>
+</footer>
+
+<script>
+function toggleMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  var open=m.classList.toggle('open');
+  b.setAttribute('aria-expanded',open);
+  b.setAttribute('aria-label',open?'Close menu':'Open menu');
+}
+function closeMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  m.classList.remove('open');
+  b.setAttribute('aria-expanded','false');
+  b.setAttribute('aria-label','Open menu');
+}
+
+var POSTS = [];
+
+function esc(s){
+  return String(s==null?'':s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+function fmtDate(iso){
+  try{
+    return new Date(iso+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }catch(e){return iso;}
+}
+
+function renderGrid(){
+  var grid=document.getElementById('grid');
+  var published=POSTS.filter(function(p){return p.status==='published';})
+    .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  if(!published.length){
+    grid.innerHTML='<div class="state"><div class="ico">✍️</div><div>No articles published yet. Check back soon.</div></div>';
+    return;
+  }
+  grid.innerHTML=published.map(function(p){
+    return '<div class="card" data-slug="'+esc(p.slug)+'" role="link" tabindex="0">'+
+      '<div class="card-meta"><span class="card-source">'+esc(p.source||'Original')+'</span><span>·</span><span>'+esc(fmtDate(p.date))+'</span>'+(p.readMinutes?'<span>·</span><span>'+esc(p.readMinutes)+' min read</span>':'')+'</div>'+
+      '<div class="card-title">'+esc(p.title)+'</div>'+
+      '<div class="card-excerpt">'+esc(p.excerpt)+'</div>'+
+      (p.tags&&p.tags.length?'<div class="card-tags">'+p.tags.map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div>':'')+
+      '<div class="card-cta">Read →</div>'+
+    '</div>';
+  }).join('');
+  Array.prototype.forEach.call(grid.querySelectorAll('.card'),function(c){
+    c.addEventListener('click',function(){location.hash=c.dataset.slug;});
+    c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();location.hash=c.dataset.slug;}});
+  });
+}
+
+function renderReader(post){
+  var reader=document.getElementById('reader');
+  var paras=String(post.body||'').split(/\n\n+/).map(function(p){return '<p>'+esc(p)+'</p>';}).join('');
+  var src='';
+  if(post.sourceUrl){
+    src='<div class="source-note">Inspired by reporting from '+esc(post.source||'the original source')+'. <a href="'+esc(post.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Read the original →</a></div>';
+  }else if(post.source&&post.source!=='Original'){
+    src='<div class="source-note">Source: '+esc(post.source)+'</div>';
+  }
+  reader.innerHTML=
+    '<a href="#" class="back-link" id="backlink">← All insights</a>'+
+    '<div class="reader-meta"><span class="card-source">'+esc(post.source||'Original')+'</span><span>·</span><span>'+esc(fmtDate(post.date))+'</span>'+(post.readMinutes?'<span>·</span><span>'+esc(post.readMinutes)+' min read</span>':'')+'</div>'+
+    '<h1>'+esc(post.title)+'</h1>'+
+    '<div class="reader-body">'+paras+'</div>'+
+    (post.tags&&post.tags.length?'<div class="reader-tags">'+post.tags.map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div>':'')+
+    src;
+  document.getElementById('backlink').addEventListener('click',function(e){e.preventDefault();location.hash='';});
+}
+
+function route(){
+  var slug=decodeURIComponent((location.hash||'').replace(/^#/,''));
+  var grid=document.getElementById('grid');
+  var reader=document.getElementById('reader');
+  var head=document.querySelector('.head-view');
+  var post=slug?POSTS.filter(function(p){return p.slug===slug&&p.status==='published';})[0]:null;
+  if(post){
+    renderReader(post);
+    grid.classList.add('hide');head.classList.add('hide');reader.classList.add('show');
+    window.scrollTo(0,0);
+    document.title=post.title+' · Infinite Awesome Studio';
+  }else{
+    grid.classList.remove('hide');head.classList.remove('hide');reader.classList.remove('show');
+    document.title='Insights · Infinite Awesome Studio';
+    if(slug){location.hash='';}
+  }
+}
+
+fetch('blog-posts.json',{cache:'no-cache'})
+  .then(function(r){if(!r.ok)throw new Error('load failed');return r.json();})
+  .then(function(data){
+    POSTS=(data&&data.posts)||[];
+    renderGrid();
+    route();
+  })
+  .catch(function(){
+    document.getElementById('grid').innerHTML='<div class="state"><div class="ico">⚠️</div><div>Couldn\'t load articles right now.</div></div>';
+  });
+
+window.addEventListener('hashchange',route);
+</script>
+</body>
+</html>
