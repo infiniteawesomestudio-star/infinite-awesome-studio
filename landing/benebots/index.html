@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeneBots · Character-led education assets · Infinite Awesome Studio</title>
+<meta name="description" content="BeneBots are Infinite Awesome Studio's cast of plain-English explainers that make complex benefits and HR topics easier to teach, remember, and reuse. General education only.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root{
+  --mint:#00C47A;
+  --ink:#1A1A1A;
+  --warm-neutral:#F5F5F2;
+  --white:#FFFFFF;
+  --ink-blue:#0B4FBB;
+  --deep-forest:#002E1D;
+  --sunshine-gold:#F7D154;
+  --ink-70:rgba(26,26,26,0.70);
+  --ink-55:rgba(26,26,26,0.55);
+  --ink-40:rgba(26,26,26,0.40);
+  --ink-12:rgba(26,26,26,0.12);
+  --ink-08:rgba(26,26,26,0.08);
+  --font-display:'Space Grotesk',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--warm-neutral);color:var(--ink);font-family:var(--font-body);min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+.ias-skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:100;}
+.ias-skip-link:focus{left:16px;top:16px;}
+
+/* NAV */
+.ias-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:1140px;margin:0 auto;position:relative;z-index:20;}
+.ias-logo img{height:34px;width:auto;display:block;}
+.ias-nav-links{display:flex;gap:26px;list-style:none;}
+.ias-nav-links a{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-70);text-decoration:none;transition:color .15s;}
+.ias-nav-links a:hover,.ias-nav-links a.active{color:var(--ink);}
+.ias-nav-featured{color:var(--mint)!important;font-weight:600;}
+.ias-nav-cta{background:var(--ink);color:#fff;font-family:var(--font-body);font-size:14px;font-weight:600;padding:9px 18px;border-radius:9px;text-decoration:none;transition:background .15s;}
+.ias-nav-cta:hover{background:var(--deep-forest);}
+.ias-mobile-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);}
+@media(max-width:760px){.ias-nav-links,.ias-nav-cta{display:none;}.ias-mobile-toggle{display:block;}}
+.ias-mobile-menu{display:none;flex-direction:column;gap:4px;padding:0 32px 18px;max-width:1140px;margin:0 auto;}
+.ias-mobile-menu.open{display:flex;}
+.ias-mobile-menu a{padding:12px 14px;border-radius:9px;text-decoration:none;color:var(--ink-70);font-weight:500;font-size:15px;}
+.ias-mobile-menu a:hover{background:var(--white);color:var(--ink);}
+
+.wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
+.eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:14px;}
+.section-title{font-family:var(--font-display);font-size:clamp(26px,4vw,38px);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:14px;}
+.section-sub{font-size:16px;line-height:1.6;color:var(--ink-70);max-width:680px;}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1.2fr 0.8fr;gap:40px;align-items:center;padding:34px 0 18px;}
+.hero h1{font-family:var(--font-display);font-size:clamp(32px,5.2vw,52px);font-weight:700;line-height:1.04;letter-spacing:-0.02em;margin-bottom:18px;}
+.hero p{font-size:18px;line-height:1.6;color:var(--ink-70);margin-bottom:24px;}
+.hero-art{display:flex;align-items:center;justify-content:center;}
+.hero-art img{max-width:100%;height:auto;display:block;filter:drop-shadow(0 18px 36px rgba(0,0,0,0.16));}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;}
+.btn-primary{background:var(--mint);color:#06281c;font-weight:700;font-size:15px;padding:13px 22px;border-radius:11px;text-decoration:none;transition:transform .15s,box-shadow .15s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,196,122,0.3);}
+.btn-ghost{border:1.5px solid var(--ink-12);color:var(--ink);font-weight:600;font-size:15px;padding:12px 20px;border-radius:11px;text-decoration:none;transition:border-color .15s,color .15s;}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint);}
+
+section{padding:46px 0;}
+.section-head{margin-bottom:30px;}
+
+/* TWO LANES */
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.lane{background:var(--white);border:1px solid var(--ink-08);border-radius:18px;padding:28px;}
+.lane h3{font-family:var(--font-display);font-size:19px;font-weight:700;margin-bottom:6px;}
+.lane .lane-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:12px;}
+.lane ul{list-style:none;margin-top:14px;}
+.lane li{font-size:14px;line-height:1.5;color:var(--ink-70);padding:7px 0 7px 22px;position:relative;}
+.lane li::before{content:'→';position:absolute;left:0;color:var(--mint);font-weight:700;}
+
+/* ROSTER */
+.roster{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.bot{background:var(--white);border:1px solid var(--ink-08);border-radius:18px;padding:24px;display:flex;gap:20px;align-items:flex-start;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.bot:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(26,26,26,0.08);border-color:var(--ink-12);}
+.bot-art-wrap{width:104px;height:104px;border-radius:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 16%,white);}
+.bot-art-wrap img{width:90px;height:90px;object-fit:contain;}
+.bot-role{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.bot-h{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:8px;}
+.bot-p{font-size:14px;line-height:1.55;color:var(--ink-70);margin-bottom:12px;}
+.bot-aud{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,white);padding:4px 10px;border-radius:20px;display:inline-block;}
+
+/* SOCIAL FEATURE */
+.social-feature{background:var(--deep-forest);border-radius:24px;padding:42px;display:grid;grid-template-columns:0.8fr 1.2fr;gap:36px;align-items:center;color:var(--white);}
+.social-feature .eyebrow{color:#7ff0c0;}
+.social-feature h2{font-family:var(--font-display);font-size:clamp(24px,3.4vw,32px);font-weight:700;line-height:1.1;margin-bottom:14px;color:var(--white);}
+.social-feature p{font-size:16px;line-height:1.6;color:rgba(245,245,242,0.78);margin-bottom:22px;}
+.social-feature .mbg-art{display:flex;align-items:center;justify-content:center;}
+.social-feature .mbg-art img{max-width:240px;width:100%;height:auto;filter:drop-shadow(0 16px 30px rgba(0,0,0,0.3));}
+.socials{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.socials-label{font-size:13px;font-weight:600;color:rgba(245,245,242,0.85);}
+.social-link{display:inline-flex;align-items:center;font-size:13px;font-weight:600;text-decoration:none;padding:8px 16px;border-radius:999px;color:var(--white);background:rgba(245,245,242,0.08);border:1px solid rgba(245,245,242,0.2);transition:background .15s,border-color .15s;}
+.social-link:hover{background:rgba(0,196,122,0.22);border-color:var(--mint);}
+.cast-row{display:flex;flex-wrap:wrap;gap:18px;margin-top:24px;}
+.cast{display:flex;flex-direction:column;align-items:center;gap:6px;width:84px;text-align:center;}
+.cast img{width:64px;height:64px;object-fit:contain;}
+.cast span{font-size:11px;font-weight:600;color:rgba(245,245,242,0.8);}
+
+/* GUARDRAILS */
+.guard{background:var(--white);border:1px solid var(--ink-08);border-left:4px solid var(--sunshine-gold);border-radius:14px;padding:28px;}
+.guard h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:10px;}
+.guard p{font-size:15px;color:var(--ink-70);margin-bottom:16px;line-height:1.55;}
+.guard-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.guard-grid span{font-size:13px;color:var(--ink-70);background:var(--warm-neutral);border:1px solid var(--ink-08);padding:6px 12px;border-radius:8px;}
+
+/* FINAL CTA */
+.final{text-align:center;padding:56px 0;}
+.final h2{font-family:var(--font-display);font-size:clamp(24px,4vw,34px);font-weight:700;margin-bottom:20px;}
+.final .btn-row{justify-content:center;}
+
+/* FOOTER */
+.ias-footer{max-width:1140px;margin:0 auto;padding:32px;border-top:1px solid var(--ink-08);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;}
+.ias-footer-left{font-family:var(--font-body);font-size:13px;color:var(--ink-55);}
+.ias-footer-left a{color:inherit;}
+.ias-footer-tag{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--mint);}
+.ias-footer-socials{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;font-weight:600;}
+.ias-footer-socials a{color:rgba(26,26,26,0.55);text-decoration:none;}
+.ias-footer-socials a:hover{color:var(--mint);}
+.ias-footer-disclaimer{flex-basis:100%;font-size:11px;line-height:1.55;color:rgba(26,26,26,0.4);}
+.ias-footer a.privacy{font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;}
+.ias-footer a.privacy:hover{color:var(--mint);}
+
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;}
+  .lanes,.roster{grid-template-columns:1fr;}
+  .social-feature{grid-template-columns:1fr;padding:30px;}
+  .bot{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="ias-skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav class="ias-nav" aria-label="Main navigation">
+  <a class="ias-logo" href="/" aria-label="Infinite Awesome Studio home">
+    <img src="../assets/ias-logo.png" alt="Infinite Awesome Studio" />
+  </a>
+  <ul class="ias-nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#mybenefitsguy" class="ias-nav-featured">MyBenefitsGuy</a></li>
+    <li><a href="/benebots/" class="active">BeneBots</a></li>
+    <li><a href="/#infinite-workflows">Infinite Workflows</a></li>
+    <li><a href="/articles">Insights</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+  <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-nav-cta">Book a Workflow Review</a>
+</nav>
+<div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="/#services" onclick="closeMobileNav()">Services</a>
+  <a href="/#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
+  <a href="/benebots/" onclick="closeMobileNav()">BeneBots</a>
+  <a href="/#infinite-workflows" onclick="closeMobileNav()">Infinite Workflows</a>
+  <a href="/articles" onclick="closeMobileNav()">Insights</a>
+  <a href="/#about" onclick="closeMobileNav()">About</a>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" onclick="closeMobileNav()">Book a Workflow Review</a>
+</div>
+
+<main id="main" class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Character-led education &amp; automation</div>
+      <h1>I turn the most confusing topic in business into something anyone gets.</h1>
+      <p>BeneBots are Infinite Awesome Studio's cast of plain-English explainers, built to make complex benefits and HR topics easier to teach, remember, and reuse. The same method behind Infinite Workflows, pointed at the work benefits and HR teams live in. General education only, human-reviewed, never advice.</p>
+      <div class="btn-row">
+        <a href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots%20Education%20Assets" class="btn-primary">Discuss education assets →</a>
+        <a href="https://benebots.pages.dev" target="_blank" rel="noopener noreferrer" class="btn-ghost">View live demo ↗</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img src="../assets/BeneBots-Crew.png" alt="The BeneBots crew" loading="lazy">
+    </div>
+  </section>
+
+  <!-- TWO LANES -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">Two ways BeneBots work</div>
+      <h2 class="section-title">One cast. A public face and a private workhorse.</h2>
+    </div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lane-tag">Public education campaign</div>
+        <h3>Out front with MyBenefitsGuy</h3>
+        <ul>
+          <li>MyBenefitsGuy leads the campaign</li>
+          <li>BeneBots support benefits-literacy content</li>
+          <li>Social posts, carousels, skits, explainers, and storylines</li>
+          <li>General education and entertainment only</li>
+          <li>Drives awareness back to Infinite Awesome Studio</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <div class="lane-tag">Client-facing asset layer</div>
+        <h3>Behind the scenes for benefits &amp; HR teams</h3>
+        <ul>
+          <li>Internal training assets and onboarding explainers</li>
+          <li>Employee FAQ content and knowledge-base drafts</li>
+          <li>Open enrollment and leave-process education</li>
+          <li>Report drafts and leadership summaries</li>
+          <li>Branded content campaigns, plain-English throughout</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROSTER -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">Meet the crew</div>
+      <h2 class="section-title">Six characters. One job: make it make sense.</h2>
+      <p class="section-sub">Every BeneBot works from approved source material and is reviewed by a human before anything ships. They explain, draft, and educate. They never give advice or make plan-specific recommendations.</p>
+    </div>
+    <div class="roster">
+
+      <div class="bot" style="--accent:#00C47A">
+        <div class="bot-art-wrap"><img src="../assets/AskBot_Duo_TP.png" alt="Ask BeneBot" loading="lazy"></div>
+        <div>
+          <div class="bot-role">Employee-facing</div>
+          <div class="bot-h">Ask BeneBot</div>
+          <p class="bot-p">The friendly front desk. Plain-English answers to the questions employees ask over and over, drafted from approved source material so the facts stay straight.</p>
+          <span class="bot-aud">FAQ &amp; education drafts</span>
+        </div>
+      </div>
+
+      <div class="bot" style="--accent:#5B8FFF">
+        <div class="bot-art-wrap"><img src="../assets/ComplianceBot_TP.png" alt="Stewardship Studio" loading="lazy"></div>
+        <div>
+          <div class="bot-role">Consultant-facing</div>
+          <div class="bot-h">Stewardship Studio</div>
+          <p class="bot-p">The quiet workhorse. Turns updates, notes, and metrics into clean report drafts and leadership summaries, so review season stops eating your weekends.</p>
+          <span class="bot-aud">Report drafting</span>
+        </div>
+      </div>
+
+      <div class="bot" style="--accent:#F7D154">
+        <div class="bot-art-wrap"><img src="../assets/CompareBot_TP.png" alt="Plan Compare" loading="lazy"></div>
+        <div>
+          <div class="bot-role">Analyst-facing</div>
+          <div class="bot-h">Plan Compare</div>
+          <p class="bot-p">The honest explainer. General side-by-side comparisons that lay out tradeoffs clearly, without ever telling anyone which plan to pick.</p>
+          <span class="bot-aud">Comparison explainers</span>
+        </div>
+      </div>
+
+      <div class="bot" style="--accent:#FF6F61">
+        <div class="bot-art-wrap"><img src="../assets/OEBot_TP.png" alt="OE Coach" loading="lazy"></div>
+        <div>
+          <div class="bot-role">Employee-facing</div>
+          <div class="bot-h">OE Coach</div>
+          <p class="bot-p">Your open enrollment hype crew. Reminders, glossary content, and questions-to-ask resources that get people ready before the deadline panic.</p>
+          <span class="bot-aud">Open enrollment education</span>
+        </div>
+      </div>
+
+      <div class="bot" style="--accent:#A78BFA">
+        <div class="bot-art-wrap"><img src="../assets/LOABot_TP.png" alt="LOA Navigator" loading="lazy"></div>
+        <div>
+          <div class="bot-role">Dual-audience</div>
+          <div class="bot-h">LOA Navigator</div>
+          <p class="bot-p">The calm guide through the maze. Explains general leave steps, documents, and handoffs from approved materials, so nobody guesses their way through a hard moment.</p>
+          <span class="bot-aud">Leave-process education</span>
+        </div>
+      </div>
+
+      <div class="bot" style="--accent:#F97316">
+        <div class="bot-art-wrap"><img src="../assets/ClaimBot_TP.png" alt="Claims Compass" loading="lazy"></div>
+        <div>
+          <div class="bot-role">Dual-audience</div>
+          <div class="bot-h">Claims Compass</div>
+          <p class="bot-p">The decoder ring. Claims literacy explainers: EOB basics, billing terms, deductible education, and next-step checklists.</p>
+          <span class="bot-aud">Claims literacy</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SOCIAL FEATURE -->
+  <section>
+    <div class="social-feature">
+      <div class="mbg-art">
+        <img src="../assets/MyBenefitsGuy_Full_Transparent.png" alt="MyBenefitsGuy" loading="lazy">
+      </div>
+      <div>
+        <h2>Follow MyBenefitsGuy and the crew.</h2>
+        <p>MyBenefitsGuy is the public face of the BeneBots: the guide who makes the confusing stuff finally make sense. He and the crew teach benefits, workplace money, and plain-English business topics across social, all general education, all in character.</p>
+        <div class="socials">
+          <span class="socials-label">Follow along:</span>
+          <a class="social-link" href="https://instagram.com/mybenefitsguy" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a class="social-link" href="https://www.tiktok.com/@mybenefitsguy" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a class="social-link" href="https://www.facebook.com/mybenefitsguy" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a class="social-link" href="https://www.threads.net/@mybenefitsguy" target="_blank" rel="noopener noreferrer">Threads</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARDRAILS -->
+  <section>
+    <div class="guard">
+      <h2>Disclaimer</h2>
+      <p>BeneBots are character-led education assets, workflow explainers and a lot of fun online. But they are NOT a replacement for a broker, attorney, HR department, carrier or benefits administrator. BeneBots do not provide:</p>
+      <div class="guard-grid">
+        <span>Legal advice</span>
+        <span>Tax advice</span>
+        <span>Medical advice</span>
+        <span>Investment advice</span>
+        <span>Insurance advice</span>
+        <span>Plan-specific recommendations</span>
+        <span>Personalized plan picks</span>
+        <span>Claims appeals representation</span>
+        <span>Carrier negotiation</span>
+        <span>Plan design</span>
+        <span>HR compliance decisions</span>
+        <span>Unsupervised employee-facing guidance</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final">
+    <h2>Need to make complex information easier to explain?</h2>
+    <div class="btn-row">
+      <a href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots%20Education%20Assets" class="btn-primary">Discuss education assets →</a>
+      <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="btn-ghost">Book a Workflow Review</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ias-footer">
+  <div class="ias-footer-left">© 2026 Infinite Awesome Studio · <a href="mailto:ty@infiniteawesomestudio.com">ty@infiniteawesomestudio.com</a></div>
+  <div class="ias-footer-tag">Practical AI workflows. Plain-English education. Built for the little guy.</div>
+  <div class="ias-footer-socials">
+    <a href="https://www.linkedin.com/company/infiniteawesomestudio" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://instagram.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a href="https://www.tiktok.com/@infiniteawesomestudio" target="_blank" rel="noopener noreferrer">TikTok</a>
+    <a href="https://www.facebook.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer">Facebook</a>
+    <a href="https://www.threads.net/@infiniteawesomestudio" target="_blank" rel="noopener noreferrer">Threads</a>
+  </div>
+  <a href="/privacy-policy" class="privacy">Privacy Policy</a>
+  <div class="ias-footer-disclaimer">
+    Infinite Awesome Studio provides AI workflow consulting, education content, prompt systems, SOPs, and creative assets. IAS does not provide legal, tax, medical, investment, insurance, or employee benefits advice. MyBenefitsGuy and BeneBots content is general education only.
+  </div>
+</footer>
+
+<script>
+function toggleMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  var open=m.classList.toggle('open');
+  b.setAttribute('aria-expanded',open);
+  b.setAttribute('aria-label',open?'Close menu':'Open menu');
+}
+function closeMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  m.classList.remove('open');
+  b.setAttribute('aria-expanded','false');
+  b.setAttribute('aria-label','Open menu');
+}
+</script>
+</body>
+</html>
