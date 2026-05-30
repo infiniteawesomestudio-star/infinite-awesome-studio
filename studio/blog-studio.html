@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAS Blog Studio</title>
+<!--
+  INTERNAL TOOL — not part of the public site. Lives outside landing/ so
+  Cloudflare Pages never serves it. Run locally:  npx serve studio -l 8090
+  All Claude calls go through the Cloudflare worker (botId: blog-drafter) so
+  the Anthropic API key stays server-side. Paste the WORKER_TOKEN in Setup.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --bg:#0d130f; --surface:#141c17; --border:#1f2a23; --border2:#2c3a30;
+    --text:#e8f0ea; --muted:#7e8f84; --subtle:#c4d2c9;
+    --mint:#00C47A; --mint2:#3fd99a; --ink-blue:#5b9bff;
+    --gold:#F7D154; --coral:#FF6F61; --red:#da3633;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+  button{font-family:'Inter',sans-serif;cursor:pointer;border:none;}
+  textarea,input{font-family:'DM Mono',monospace;}
+  a{color:var(--mint);}
+
+  .header{border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;background:rgba(13,19,15,.92);backdrop-filter:blur(12px);}
+  .logo{display:flex;align-items:center;gap:12px;}
+  .logo-badge{width:34px;height:34px;border-radius:8px;background:var(--mint);color:#04150d;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:'Space Grotesk';}
+  .logo-text{font-size:14px;font-weight:600;font-family:'Space Grotesk';}
+  .logo-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+  .conn{font-size:11px;font-family:'DM Mono';padding:4px 10px;border-radius:6px;}
+  .conn.ok{background:#0f2e1f;color:var(--mint2);}
+  .conn.bad{background:#2a1414;color:#ff8a80;}
+
+  .tabs{display:flex;gap:4px;}
+  .tab-btn{padding:7px 14px;border-radius:7px;font-size:12.5px;font-weight:500;background:transparent;color:var(--muted);transition:all .15s;border:1px solid transparent;}
+  .tab-btn:hover{color:var(--text);background:var(--surface);}
+  .tab-btn.active{background:var(--mint);color:#04150d;font-weight:600;}
+  .badge{display:inline-block;background:var(--coral);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:5px;}
+
+  .main{padding:28px;max-width:1080px;margin:0 auto;}
+  .page-title{font-size:20px;font-weight:700;margin-bottom:6px;font-family:'Space Grotesk';}
+  .page-sub{font-size:12.5px;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+
+  .btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;transition:all .15s;}
+  .btn-primary{background:var(--mint);color:#04150d;}
+  .btn-primary:hover{background:var(--mint2);}
+  .btn-primary:disabled{background:var(--border2);color:var(--muted);cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2);}
+  .btn-ghost:hover{background:var(--surface);}
+  .btn-danger{background:transparent;color:#ff8a80;border:1px solid #5a2a28;}
+  .btn-danger:hover{background:#2a1414;}
+  .btn-sm{padding:5px 11px;font-size:12px;}
+
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table thead tr{background:var(--surface);}
+  .data-table th{padding:10px 14px;text-align:left;color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+  .data-table td{padding:12px 14px;border-top:1px solid var(--border);vertical-align:top;}
+  .table-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+
+  .pill{padding:3px 9px;border-radius:5px;font-size:11px;font-weight:500;font-family:'DM Mono';}
+  .pill-waiting{background:#1e2620;color:var(--muted);}
+  .pill-drafted{background:#0d1f3c;color:var(--ink-blue);}
+  .pill-approved{background:#0f2e1f;color:var(--mint2);}
+  .pill-published{background:#0f2e1f;color:var(--mint2);}
+
+  .field{background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:9px 12px;font-size:13px;outline:none;width:100%;transition:border-color .2s;}
+  .field:focus{border-color:var(--mint);}
+  .field-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:block;font-family:'Inter';font-weight:600;}
+  .form-group{margin-bottom:16px;}
+  textarea.field{resize:vertical;line-height:1.6;}
+
+  .pipeline-step{border-radius:9px;border:1px solid var(--border);padding:13px 16px;background:var(--surface);}
+  .pipeline-step.done{border-color:rgba(0,196,122,.4);}
+  .pipeline-step.running{border-color:rgba(247,209,84,.45);}
+  .pipeline-step.error{border-color:rgba(218,54,51,.5);}
+  .step-header{display:flex;align-items:center;gap:10px;}
+  .step-label{font-size:13px;font-weight:600;}
+  .step-output{margin-top:9px;margin-left:30px;font-size:12px;color:#9fb0a5;line-height:1.65;white-space:pre-wrap;background:var(--bg);padding:10px 12px;border-radius:6px;max-height:150px;overflow-y:auto;font-family:'DM Mono';}
+
+  .card{border-radius:11px;border:1px solid var(--border);background:var(--surface);overflow:hidden;}
+  .card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:14px;}
+  .card-body{padding:18px;}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .tag{padding:2px 9px;border-radius:5px;font-size:11px;font-family:'DM Mono';background:#0d1f3c;color:var(--ink-blue);}
+  .tag-mint{background:#0f2e1f;color:var(--mint2);}
+  .tag-gray{background:var(--border);color:var(--muted);}
+
+  .empty{text-align:center;padding:60px 0;color:var(--muted);}
+  .empty .ico{font-size:40px;margin-bottom:12px;}
+  .empty .hint{font-size:12px;margin-top:8px;}
+
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#04150d;border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle;}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;}
+  .modal{background:var(--surface);border:1px solid var(--border2);border-radius:13px;padding:24px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto;}
+  .modal-title{font-size:16px;font-weight:700;margin-bottom:18px;font-family:'Space Grotesk';}
+  .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
+
+  .note{font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mint);border-radius:7px;padding:11px 14px;line-height:1.6;}
+  ::-webkit-scrollbar{width:7px;height:7px;}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="module">
+// ============================================================
+// CONSTANTS
+// ============================================================
+const ARTICLE_ANGLES = [
+  { short:"Explainer", name:"Plain-English Explainer",
+    prompt:`Structure as a plain-English explainer:
+- Open with the thing people actually wonder about this topic.
+- Explain what's happening and why it matters, in concrete terms.
+- Give the practical takeaway: what a benefits/HR person should do with this.` },
+  { short:"Contrarian", name:"Grounded Contrarian Take",
+    prompt:`Structure as a grounded contrarian take:
+- State the common assumption everyone repeats about this topic.
+- Push back with what 25 years in the field actually shows.
+- Land on a more useful way to think about it. Earned, not edgy.` },
+  { short:"How-To", name:"Practical How-To",
+    prompt:`Structure as a practical how-to:
+- Name the specific problem this solves for an HR/benefits team.
+- Walk through the approach in clear, ordered steps.
+- End with the first small step the reader can take this week.` },
+  { short:"Analysis", name:"News Analysis",
+    prompt:`Structure as news analysis:
+- Summarize what happened, briefly and accurately.
+- Explain the real-world implication for employers and employees.
+- Give a measured read on what to watch next. No hype, no doom.` },
+];
+
+const DEFAULT_GUIDELINES = `VOICE: A benefits veteran (25 years) who also builds AI tools. Grounded, direct, warm. Talks like a knowledgeable colleague, not a vendor.
+
+STANCE: Pro-AI but honest about the stakes. Validates skepticism in a regulated, high-trust industry. Makes the case with proof, not hype.
+
+STYLE: Spartan. Short sentences. Short paragraphs (1-3 sentences). Lots of white space. Open with a hook, not a throat-clear.
+
+THROUGH-LINE: The "shovel" idea — give people the right tool for the work that shouldn't take this long.
+
+FORMATTING: Plain prose paragraphs separated by blank lines. No markdown headers in the body. End with a thought or light question, not a hard CTA.
+
+NEVER USE: "powerful", "seamless", "innovative", "game-changer", "revolutionize", "unlock", "leverage" (as a verb), "in today's fast-paced world". Use em dashes (—) as sparingly as possible; prefer periods or commas.
+
+FOCUS: AI and automation in the HR/benefits space, written for benefits professionals and HR admins.`;
+
+const DEFAULT_CFG = {
+  workerUrl: "https://benebots-proxy.infiniteawesomestudio.workers.dev",
+  workerToken: "",
+  postsUrl: "https://infiniteawesomestudio.com/blog-posts.json",
+  guidelines: DEFAULT_GUIDELINES,
+  fetchActor: "crawlerbros/google-news-scraper",
+  fetchQueries: "AI in employee benefits\nAI automation HR benefits\nHR technology automation\nbenefits administration AI",
+  fetchDateRange: "1m",
+  fetchMax: 12,
+  fetchSite: "",
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  tab: "queue",
+  cfg: { ...DEFAULT_CFG, ...(JSON.parse(localStorage.getItem("ias_blog_cfg") || "null") || {}) },
+  queue: JSON.parse(localStorage.getItem("ias_blog_queue") || "[]"),
+  drafts: JSON.parse(localStorage.getItem("ias_blog_drafts") || "[]"),
+  importedPublished: JSON.parse(localStorage.getItem("ias_blog_imported") || "[]"),
+  pipeline: [],
+  isRunning: false,
+  conn: "unknown", // unknown | ok | bad
+  modal: null,     // 'addArticle' | {edit: id}
+  draftInput: { headline:"", summary:"", source:"", url:"" },
+  nextId: parseInt(localStorage.getItem("ias_blog_nextid") || "1000"),
+};
+
+function save() {
+  localStorage.setItem("ias_blog_cfg", JSON.stringify(state.cfg));
+  localStorage.setItem("ias_blog_queue", JSON.stringify(state.queue));
+  localStorage.setItem("ias_blog_drafts", JSON.stringify(state.drafts));
+  localStorage.setItem("ias_blog_imported", JSON.stringify(state.importedPublished));
+  localStorage.setItem("ias_blog_nextid", String(state.nextId));
+}
+function setState(patch) {
+  Object.assign(state, typeof patch === "function" ? patch(state) : patch);
+  render(); save();
+}
+
+// ============================================================
+// API — everything routes through the worker (key stays server-side)
+// ============================================================
+async function callClaude(system, user, maxTokens = 1500) {
+  if (!state.cfg.workerToken) throw new Error("No worker token set. Add it in Setup.");
+  const res = await fetch(state.cfg.workerUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + state.cfg.workerToken },
+    body: JSON.stringify({ botId: "blog-drafter", system, messages: [{ role:"user", content:user }], maxTokens }),
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(()=> "");
+    throw new Error(`Worker ${res.status}: ${t.slice(0,200)}`);
+  }
+  const data = await res.json();
+  return (data.content && data.content[0] && data.content[0].text || "").trim();
+}
+
+async function testConnection() {
+  setState({ conn: "unknown" });
+  try {
+    const out = await callClaude("Reply with the single word: ok", "ping", 8);
+    setState({ conn: out.toLowerCase().includes("ok") ? "ok" : "bad" });
+  } catch (e) {
+    setState({ conn: "bad" });
+    alert("Connection failed:\n" + e.message);
+  }
+}
+
+// ============================================================
+// PIPELINE
+// ============================================================
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function step(label, status, output = "") {
+  const i = state.pipeline.findIndex(s => s.label === label);
+  const entry = { label, status, output };
+  state.pipeline = i >= 0
+    ? state.pipeline.map((s, idx) => idx === i ? entry : s)
+    : [...state.pipeline, entry];
+  render();
+}
+function slugify(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-").slice(0,70);
+}
+function readMins(body) { return Math.max(1, Math.round(String(body).split(/\s+/).length / 200)); }
+
+async function generate(article) {
+  if (state.isRunning) return;
+  if (!state.cfg.workerToken) { setState({ tab:"setup" }); alert("Add your worker token in Setup first."); return; }
+  state.isRunning = true; state.pipeline = []; state.tab = "pipeline"; render();
+  try {
+    step("Reading source article", "running");
+    await sleep(300);
+    step("Reading source article", "done", `"${article.headline}"\n${article.source || ""}`);
+
+    step("Generating research angles", "running");
+    const queries = await callClaude(
+      "You generate research angles for a blog post. Output exactly 3 short search queries, one per line, no bullets or numbers, each under 12 words.",
+      `Headline: ${article.headline}\nSummary: ${article.summary}`, 200);
+    step("Generating research angles", "done", queries);
+
+    step("Gathering supporting points", "running");
+    const research = await callClaude(
+      "You are a research aide for a benefits/AI blog. Give 3-4 concise bullet points of real, specific supporting context (data, stats, expert framing) that would strengthen a post on this topic. Be specific with numbers where you can. Under 180 words.",
+      `Topic: ${article.headline}\n${article.summary}\n\nAngles:\n${queries}`, 400);
+    step("Gathering supporting points", "done", research);
+
+    step("Choosing article angle", "running");
+    const angle = ARTICLE_ANGLES[Math.floor(Math.random() * ARTICLE_ANGLES.length)];
+    await sleep(250);
+    step("Choosing article angle", "done", `${angle.name} (${angle.short})`);
+
+    step("Drafting the post (IAS voice)", "running");
+    const raw = await callClaude(
+      `You are an expert blog writer for Infinite Awesome Studio. ${angle.prompt}\n\nFollow these brand guidelines strictly:\n${state.cfg.guidelines}\n\nReturn ONLY valid JSON, no preamble, no code fences, in exactly this shape:\n{"title":"...","excerpt":"one or two sentence teaser","body":"full post; separate paragraphs with \\n\\n","tags":["Tag1","Tag2","Tag3"]}\nThe body should be roughly 350-600 words.`,
+      `Write a blog post based on this source.\nHeadline: ${article.headline}\nSummary: ${article.summary}\nSource: ${article.source || "n/a"}\n\nWeave in this supporting context where natural:\n${research}`,
+      2048);
+    let parsed = parseDraft(raw);
+    step("Drafting the post (IAS voice)", "done", parsed ? parsed.title : "(could not parse JSON — saved raw for editing)");
+
+    const title = parsed?.title || article.headline;
+    const body  = parsed?.body  || raw;
+    const post = {
+      id: state.nextId++,
+      title, slug: slugify(title),
+      excerpt: parsed?.excerpt || "",
+      body,
+      tags: Array.isArray(parsed?.tags) ? parsed.tags.slice(0,4) : [],
+      source: article.source || "Original",
+      sourceUrl: article.url || null,
+      date: new Date().toISOString().slice(0,10),
+      readMinutes: readMins(body),
+      angle: angle.short,
+      status: "draft",
+      _rawIfUnparsed: parsed ? null : raw,
+    };
+    step("Saving draft", "running"); await sleep(250);
+    state.drafts = [post, ...state.drafts];
+    state.queue = state.queue.filter(q => q.id !== article.id);
+    step("Saving draft", "done", `Draft #${post.id} ready — review & approve in Drafts.`);
+  } catch (e) {
+    step("Error", "error", e.message);
+  }
+  state.isRunning = false; render(); save();
+}
+
+function parseDraft(raw) {
+  if (!raw) return null;
+  let txt = raw.trim().replace(/^```(?:json)?/i,"").replace(/```$/,"").trim();
+  const a = txt.indexOf("{"), b = txt.lastIndexOf("}");
+  if (a >= 0 && b > a) txt = txt.slice(a, b+1);
+  try {
+    const o = JSON.parse(txt);
+    if (o && typeof o.body === "string") return o;
+  } catch (e) {}
+  return null;
+}
+
+// ============================================================
+// EXPORT
+// ============================================================
+function buildExport() {
+  const fromStudio = state.drafts
+    .filter(d => d.status === "approved")
+    .map(d => ({
+      id: "post-" + d.date + "-" + d.slug.slice(0,28),
+      title: d.title, slug: d.slug, excerpt: d.excerpt, body: d.body,
+      tags: d.tags, source: d.source, sourceUrl: d.sourceUrl,
+      date: d.date, readMinutes: d.readMinutes, status: "published",
+    }));
+  // Merge with previously published (imported), newest-first, dedupe by slug.
+  const seen = new Set();
+  const merged = [...fromStudio, ...state.importedPublished]
+    .filter(p => { if (seen.has(p.slug)) return false; seen.add(p.slug); return true; })
+    .sort((x,y) => (y.date||"").localeCompare(x.date||""));
+  return {
+    _schema: {
+      note: "Source of truth for the IAS blog. Consumed by landing/articles.html and the homepage Latest Insights card. Generated/updated by the IAS Blog Studio.",
+      fields: {
+        id:"stable unique string", title:"headline", slug:"url-safe #anchor",
+        excerpt:"1-2 sentence teaser", body:"paragraphs split by \\n\\n", tags:"array",
+        source:"publication or 'Original'", sourceUrl:"link or null", date:"yyyy-mm-dd",
+        readMinutes:"integer", status:"published | draft",
+      },
+    },
+    posts: merged,
+  };
+}
+function download(filename, text) {
+  const blob = new Blob([text], { type:"application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+}
+
+async function importExisting() {
+  try {
+    const res = await fetch(state.cfg.postsUrl, { cache:"no-cache" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const pub = (data.posts || []).filter(p => p.status === "published");
+    setState({ importedPublished: pub });
+    alert(`Imported ${pub.length} published post(s) from\n${state.cfg.postsUrl}`);
+  } catch (e) {
+    alert("Could not fetch existing posts:\n" + e.message + "\n\nYou can also paste the JSON manually (Import → Paste).");
+  }
+}
+
+// ============================================================
+// FETCH (Apify scrape via worker)
+// ============================================================
+async function runFetch(opts) {
+  if (!state.cfg.workerToken) { setState({ tab:"setup", modal:null }); alert("Add your worker token in Setup first."); return; }
+  const queries = opts.queries.split("\n").map(s=>s.trim()).filter(Boolean);
+  if (!queries.length) { alert("Add at least one search query."); return; }
+  const input = {
+    queries,
+    maxResultsPerQuery: Math.max(1, Math.min(50, parseInt(opts.max) || 12)),
+    language: "en", country: "US",
+    dateRange: opts.dateRange || "1m",
+    extractFullText: false, includeImages: false,
+  };
+  if (opts.site) input.siteFilter = opts.site;
+  // persist last-used fetch settings
+  state.cfg = { ...state.cfg, fetchQueries:opts.queries, fetchDateRange:opts.dateRange, fetchMax:input.maxResultsPerQuery, fetchSite:opts.site, fetchActor:opts.actor||state.cfg.fetchActor };
+  setState({ modal: null, isRunning: true });
+  try {
+    const res = await fetch(state.cfg.workerUrl, {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "Authorization":"Bearer "+state.cfg.workerToken },
+      body: JSON.stringify({ action:"fetch", actor: state.cfg.fetchActor, input }),
+    });
+    const data = await res.json().catch(()=> ({}));
+    if (!res.ok || data.error) throw new Error(data.error || ("Worker " + res.status));
+    const incoming = (data.items || []);
+    // Dedupe against queue + existing drafts + already-published by URL.
+    const seen = new Set([
+      ...state.queue.map(q=>q.url).filter(Boolean),
+      ...state.drafts.map(d=>d.sourceUrl).filter(Boolean),
+      ...state.importedPublished.map(p=>p.sourceUrl).filter(Boolean),
+    ]);
+    const fresh = [];
+    for (const it of incoming) {
+      if (it.url && seen.has(it.url)) continue;
+      if (it.url) seen.add(it.url);
+      fresh.push({ id: state.nextId++, headline: it.headline, summary: it.summary || it.headline, source: it.source || "", url: it.url || "" });
+    }
+    state.isRunning = false;
+    setState({ queue: [...fresh, ...state.queue] });
+    alert(`Fetched ${incoming.length} article(s), added ${fresh.length} new to the queue` + (incoming.length - fresh.length ? ` (${incoming.length - fresh.length} already seen).` : "."));
+  } catch (e) {
+    state.isRunning = false; render(); save();
+    alert("Fetch failed:\n" + e.message);
+  }
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render(){ document.getElementById("app").innerHTML = buildHTML(); attach(); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function buildHTML(){
+  const q = state.queue.length;
+  const d = state.drafts.filter(x=>x.status==="draft").length;
+  const ap = state.drafts.filter(x=>x.status==="approved").length;
+  const tabs = [
+    { k:"queue",    label:"📰 Queue",    b:q },
+    { k:"pipeline", label:"⚡ Pipeline", b:0 },
+    { k:"drafts",   label:"📝 Drafts",   b:d },
+    { k:"publish",  label:"🚀 Publish",  b:ap },
+    { k:"setup",    label:"⚙️ Setup",    b:0 },
+  ];
+  const connLabel = state.conn==="ok" ? "● worker connected" : state.conn==="bad" ? "● worker error" : "● not tested";
+  const connClass = state.conn==="ok" ? "ok" : state.conn==="bad" ? "bad" : "";
+  return `
+    <div class="header">
+      <div class="logo">
+        <div class="logo-badge">IA</div>
+        <div>
+          <div class="logo-text">IAS Blog Studio</div>
+          <div class="logo-sub">Scrape · Redraft · Approve · Export — internal tool</div>
+        </div>
+      </div>
+      <div class="tabs">
+        ${tabs.map(t=>`<button class="tab-btn ${state.tab===t.k?"active":""}" data-tab="${t.k}">${t.label}${t.b?`<span class="badge">${t.b}</span>`:""}</button>`).join("")}
+      </div>
+      <span class="conn ${connClass}">${connLabel}</span>
+    </div>
+    <div class="main">
+      ${state.tab==="queue"    ? buildQueue()    : ""}
+      ${state.tab==="pipeline" ? buildPipeline() : ""}
+      ${state.tab==="drafts"   ? buildDrafts()   : ""}
+      ${state.tab==="publish"  ? buildPublish()  : ""}
+      ${state.tab==="setup"    ? buildSetup()    : ""}
+    </div>
+    ${state.modal==="addArticle" ? buildAddModal() : ""}
+    ${state.modal==="fetch" ? buildFetchModal() : ""}
+    ${state.modal && state.modal.edit!=null ? buildEditModal(state.modal.edit) : ""}
+  `;
+}
+
+function buildFetchModal(){
+  const c = state.cfg;
+  const ranges = [["1d","Past day"],["7d","Past week"],["1m","Past month"],["1y","Past year"],["any","Any time"]];
+  return `
+    <div class="modal-overlay" id="ov">
+      <div class="modal">
+        <div class="modal-title">⛏ Fetch new articles</div>
+        <div class="note" style="margin-bottom:16px;">Searches Google News via Apify (<code>${esc(c.fetchActor)}</code>) and adds results to the queue. Runs on your Apify account — costs a few cents per run.</div>
+        <div class="form-group"><label class="field-label">Search queries (one per line)</label><textarea class="field" id="f-queries" rows="5">${esc(c.fetchQueries)}</textarea></div>
+        <div style="display:flex;gap:12px;">
+          <div class="form-group" style="flex:1;"><label class="field-label">Recency</label>
+            <select class="field" id="f-range">${ranges.map(r=>`<option value="${r[0]}" ${c.fetchDateRange===r[0]?"selected":""}>${r[1]}</option>`).join("")}</select>
+          </div>
+          <div class="form-group" style="width:140px;"><label class="field-label">Max per query</label><input class="field" id="f-max" type="number" min="1" max="50" value="${esc(c.fetchMax)}" /></div>
+        </div>
+        <div class="form-group"><label class="field-label">Limit to a site (optional, e.g. hrdive.com)</label><input class="field" id="f-site" value="${esc(c.fetchSite)}" placeholder="leave blank for all sources" /></div>
+        <details style="margin-top:4px;"><summary style="font-size:12px;color:var(--muted);cursor:pointer;">Advanced</summary>
+          <div class="form-group" style="margin-top:10px;"><label class="field-label">Apify actor</label><input class="field" id="f-actor" value="${esc(c.fetchActor)}" /></div>
+        </details>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" id="m-cancel">Cancel</button>
+          <button class="btn btn-primary" id="f-run">⛏ Fetch</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildQueue(){
+  return `
+    <div class="page-title">Article Queue</div>
+    <div class="page-sub">Candidate articles to redraft into IAS blog posts. Pull fresh ones with “Fetch new articles” (Google News via Apify), or add manually.</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap;">
+      <div style="font-size:12px;color:var(--muted);">📰 ${state.queue.length} in queue · 📝 ${state.drafts.length} drafted</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary btn-sm" id="btn-fetch" ${state.isRunning?"disabled":""}>${state.isRunning?'<span class="spinner"></span>Fetching…':"⛏ Fetch new articles"}</button>
+        <button class="btn btn-ghost btn-sm" id="btn-add">+ Add article</button>
+      </div>
+    </div>
+    ${state.queue.length===0 ? `
+      <div class="empty"><div class="ico">📰</div><div>Queue is empty.</div><div class="hint">Click “Add article” to paste one in, then Generate.</div></div>
+    ` : `
+      <div class="table-wrap"><table class="data-table">
+        <thead><tr><th>Headline & summary</th><th>Source</th><th style="text-align:right;">Action</th></tr></thead>
+        <tbody>${state.queue.map(a=>`
+          <tr>
+            <td style="max-width:520px;">
+              <div style="font-weight:600;margin-bottom:4px;line-height:1.4;">${esc(a.headline)}</div>
+              <div style="font-size:11.5px;color:var(--muted);line-height:1.5;">${esc((a.summary||"").slice(0,140))}${(a.summary||"").length>140?"…":""}</div>
+              ${a.url?`<div style="font-size:11px;margin-top:4px;"><a href="${esc(a.url)}" target="_blank" rel="noopener">source link ↗</a></div>`:""}
+            </td>
+            <td style="color:var(--muted);font-size:12px;white-space:nowrap;">${esc(a.source||"—")}</td>
+            <td style="text-align:right;white-space:nowrap;">
+              <button class="btn btn-primary btn-sm" data-gen="${a.id}" ${state.isRunning?"disabled":""}>Generate</button>
+              <button class="btn btn-danger btn-sm" data-rmq="${a.id}">✕</button>
+            </td>
+          </tr>`).join("")}</tbody>
+      </table></div>
+    `}
+  `;
+}
+
+function buildPipeline(){
+  return `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <div class="page-title" style="margin-bottom:0;">Pipeline</div>
+      ${state.isRunning?`<span class="pill" style="background:#2a2410;color:var(--gold);"><span class="spinner" style="border-top-color:var(--gold);"></span>Running…</span>`:""}
+    </div>
+    ${state.pipeline.length===0 ? `
+      <div class="empty"><div class="ico">⚡</div><div>No run yet.</div><div class="hint">Queue → Generate to watch the redraft pipeline.</div></div>
+    ` : `
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        ${state.pipeline.map(s=>`
+          <div class="pipeline-step ${s.status}">
+            <div class="step-header">
+              <span>${s.status==="running"?"⏳":s.status==="done"?"✅":"❌"}</span>
+              <span class="step-label" style="color:${s.status==="done"?"var(--mint2)":s.status==="running"?"var(--gold)":s.status==="error"?"#ff8a80":"var(--text)"}">${esc(s.label)}</span>
+            </div>
+            ${s.output?`<div class="step-output">${esc(s.output)}</div>`:""}
+          </div>`).join("")}
+      </div>
+      ${!state.isRunning && state.pipeline.some(s=>s.status==="done")?`<div style="margin-top:20px;text-align:center;"><button class="btn btn-primary" id="btn-go-drafts">📝 Review drafts →</button></div>`:""}
+    `}
+  `;
+}
+
+function buildDrafts(){
+  const ds = state.drafts;
+  return `
+    <div class="page-title">Drafts</div>
+    <div class="page-sub">Review, edit, and approve. Approved drafts get exported to blog-posts.json from the Publish tab.</div>
+    ${ds.length===0 ? `
+      <div class="empty"><div class="ico">📝</div><div>No drafts yet.</div><div class="hint">Generate one from the Queue.</div></div>
+    ` : `<div style="display:flex;flex-direction:column;gap:16px;">${ds.map(buildDraftCard).join("")}</div>`}
+  `;
+}
+
+function buildDraftCard(p){
+  const preview = (p.body||"").slice(0,420);
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:700;font-family:'Space Grotesk';margin-bottom:8px;line-height:1.25;">${esc(p.title)}</div>
+          <div class="tags">
+            ${(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}
+            ${p.angle?`<span class="tag tag-gray">${esc(p.angle)}</span>`:""}
+            <span class="tag tag-gray">${esc(p.readMinutes)} min</span>
+            <span class="tag tag-gray">${esc(p.source)}</span>
+          </div>
+        </div>
+        <span class="pill pill-${p.status}">${p.status==="approved"?"Approved":"Draft"}</span>
+      </div>
+      <div class="card-body">
+        ${p.excerpt?`<div style="font-size:13px;color:var(--subtle);font-style:italic;margin-bottom:12px;">${esc(p.excerpt)}</div>`:""}
+        <div style="font-size:13px;color:#aebbb2;line-height:1.7;white-space:pre-wrap;">${esc(preview)}${(p.body||"").length>420?"…":""}</div>
+        ${p._rawIfUnparsed?`<div class="note" style="margin-top:12px;border-left-color:var(--gold);">⚠ JSON parse failed — the body holds the raw model output. Edit to clean it up.</div>`:""}
+        <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" data-edit="${p.id}">✎ Edit</button>
+          ${p.status==="draft"
+            ? `<button class="btn btn-primary btn-sm" data-approve="${p.id}">✓ Approve</button>`
+            : `<button class="btn btn-ghost btn-sm" data-unapprove="${p.id}">↩ Unapprove</button>`}
+          <button class="btn btn-danger btn-sm" data-del="${p.id}">Delete</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildPublish(){
+  const approved = state.drafts.filter(d=>d.status==="approved");
+  const exp = buildExport();
+  return `
+    <div class="page-title">Publish</div>
+    <div class="page-sub">Export the full blog-posts.json (approved drafts + already-published posts), then drop it into <code>landing/blog-posts.json</code> and push.</div>
+    <div class="note" style="margin-bottom:18px;">
+      <b>Flow:</b> ① Import existing → ② Approve drafts → ③ Download blog-posts.json → ④ replace <code>landing/blog-posts.json</code> in the repo → ⑤ commit &amp; push (Cloudflare Pages auto-deploys).
+    </div>
+    <div style="display:flex;gap:18px;margin-bottom:18px;flex-wrap:wrap;">
+      <div style="font-size:12px;color:var(--muted);">✅ ${approved.length} approved to publish</div>
+      <div style="font-size:12px;color:var(--muted);">📚 ${state.importedPublished.length} already published (imported)</div>
+      <div style="font-size:12px;color:var(--muted);">📄 ${exp.posts.length} total in export</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;">
+      <button class="btn btn-ghost btn-sm" id="btn-import">⤓ Import existing from site</button>
+      <button class="btn btn-ghost btn-sm" id="btn-import-paste">📋 Import by paste</button>
+      <button class="btn btn-primary btn-sm" id="btn-download" ${exp.posts.length?"":"disabled"}>⤓ Download blog-posts.json</button>
+      <button class="btn btn-ghost btn-sm" id="btn-copy" ${exp.posts.length?"":"disabled"}>Copy JSON</button>
+    </div>
+    <div class="field-label">Export preview</div>
+    <textarea class="field" rows="16" readonly>${esc(JSON.stringify(exp, null, 2))}</textarea>
+  `;
+}
+
+function buildSetup(){
+  const c = state.cfg;
+  return `
+    <div class="page-title">Setup</div>
+    <div class="page-sub">Stored locally in this browser only. The worker token is the shared secret that lets this tool call Claude through your proxy.</div>
+    <div style="max-width:640px;">
+      <div class="form-group">
+        <label class="field-label">Worker URL</label>
+        <input class="field" id="cfg-url" value="${esc(c.workerUrl)}" />
+      </div>
+      <div class="form-group">
+        <label class="field-label">Worker token (WORKER_TOKEN secret)</label>
+        <input class="field" id="cfg-token" type="password" value="${esc(c.workerToken)}" placeholder="paste the Bearer token…" />
+      </div>
+      <div class="form-group">
+        <label class="field-label">Existing posts URL (for Import)</label>
+        <input class="field" id="cfg-posts" value="${esc(c.postsUrl)}" />
+      </div>
+      <div class="form-group">
+        <label class="field-label">IAS brand guidelines (injected into every draft)</label>
+        <textarea class="field" id="cfg-guide" rows="14">${esc(c.guidelines)}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary btn-sm" id="btn-save-cfg">Save settings</button>
+        <button class="btn btn-ghost btn-sm" id="btn-test">Test connection</button>
+        <button class="btn btn-ghost btn-sm" id="btn-reset-guide">Reset guidelines</button>
+      </div>
+    </div>
+  `;
+}
+
+function buildAddModal(){
+  const i = state.draftInput;
+  return `
+    <div class="modal-overlay" id="ov">
+      <div class="modal">
+        <div class="modal-title">Add article to queue</div>
+        <div class="form-group"><label class="field-label">Headline *</label><input class="field" id="m-headline" value="${esc(i.headline)}" /></div>
+        <div class="form-group"><label class="field-label">Summary *</label><textarea class="field" id="m-summary" rows="3">${esc(i.summary)}</textarea></div>
+        <div class="form-group"><label class="field-label">Source</label><input class="field" id="m-source" value="${esc(i.source)}" placeholder="e.g. HR Dive" /></div>
+        <div class="form-group"><label class="field-label">Original URL</label><input class="field" id="m-url" value="${esc(i.url)}" placeholder="https://…" /></div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" id="m-cancel">Cancel</button>
+          <button class="btn btn-primary" id="m-add">Add to queue</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildEditModal(id){
+  const p = state.drafts.find(d=>d.id===id); if(!p) return "";
+  return `
+    <div class="modal-overlay" id="ov">
+      <div class="modal">
+        <div class="modal-title">Edit draft</div>
+        <div class="form-group"><label class="field-label">Title</label><input class="field" id="e-title" value="${esc(p.title)}" /></div>
+        <div class="form-group"><label class="field-label">Slug</label><input class="field" id="e-slug" value="${esc(p.slug)}" /></div>
+        <div class="form-group"><label class="field-label">Excerpt</label><textarea class="field" id="e-excerpt" rows="2">${esc(p.excerpt)}</textarea></div>
+        <div class="form-group"><label class="field-label">Body (blank line between paragraphs)</label><textarea class="field" id="e-body" rows="14">${esc(p.body)}</textarea></div>
+        <div class="form-group"><label class="field-label">Tags (comma-separated)</label><input class="field" id="e-tags" value="${esc((p.tags||[]).join(", "))}" /></div>
+        <div style="display:flex;gap:12px;">
+          <div class="form-group" style="flex:1;"><label class="field-label">Source</label><input class="field" id="e-source" value="${esc(p.source)}" /></div>
+          <div class="form-group" style="flex:1;"><label class="field-label">Source URL</label><input class="field" id="e-url" value="${esc(p.sourceUrl||"")}" /></div>
+          <div class="form-group" style="width:120px;"><label class="field-label">Date</label><input class="field" id="e-date" value="${esc(p.date)}" /></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" id="m-cancel">Cancel</button>
+          <button class="btn btn-primary" id="e-save">Save changes</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// LISTENERS
+// ============================================================
+function attach(){
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>setState({tab:b.dataset.tab}));
+
+  const add=document.getElementById("btn-add"); if(add) add.onclick=()=>setState({modal:"addArticle"});
+  const fetchBtn=document.getElementById("btn-fetch"); if(fetchBtn) fetchBtn.onclick=()=>{ if(!state.isRunning) setState({modal:"fetch"}); };
+  const frun=document.getElementById("f-run"); if(frun) frun.onclick=()=>runFetch({
+    queries:val("f-queries"), dateRange:val("f-range"), max:val("f-max"), site:val("f-site"), actor:val("f-actor"),
+  });
+  document.querySelectorAll("[data-gen]").forEach(b=>b.onclick=()=>{ const a=state.queue.find(x=>x.id===+b.dataset.gen); if(a) generate(a); });
+  document.querySelectorAll("[data-rmq]").forEach(b=>b.onclick=()=>setState(s=>({queue:s.queue.filter(x=>x.id!==+b.dataset.rmq)})));
+
+  const goD=document.getElementById("btn-go-drafts"); if(goD) goD.onclick=()=>setState({tab:"drafts"});
+
+  document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>setState({modal:{edit:+b.dataset.edit}}));
+  document.querySelectorAll("[data-approve]").forEach(b=>b.onclick=()=>setState(s=>({drafts:s.drafts.map(d=>d.id===+b.dataset.approve?{...d,status:"approved"}:d)})));
+  document.querySelectorAll("[data-unapprove]").forEach(b=>b.onclick=()=>setState(s=>({drafts:s.drafts.map(d=>d.id===+b.dataset.unapprove?{...d,status:"draft"}:d)})));
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ if(confirm("Delete this draft?")) setState(s=>({drafts:s.drafts.filter(d=>d.id!==+b.dataset.del)})); });
+
+  // add modal
+  const ov=document.getElementById("ov"); if(ov) ov.onclick=e=>{ if(e.target===ov) setState({modal:null}); };
+  const mc=document.getElementById("m-cancel"); if(mc) mc.onclick=()=>setState({modal:null});
+  const ma=document.getElementById("m-add"); if(ma) ma.onclick=()=>{
+    const headline=val("m-headline"), summary=val("m-summary");
+    if(!headline||!summary){ alert("Headline and summary are required."); return; }
+    const a={ id:state.nextId++, headline, summary, source:val("m-source"), url:val("m-url") };
+    setState(s=>({ queue:[a,...s.queue], modal:null, draftInput:{headline:"",summary:"",source:"",url:""} }));
+  };
+
+  // edit modal
+  const es=document.getElementById("e-save"); if(es) es.onclick=()=>{
+    const id=state.modal.edit;
+    const tags=val("e-tags").split(",").map(t=>t.trim()).filter(Boolean).slice(0,4);
+    setState(s=>({ modal:null, drafts:s.drafts.map(d=>d.id===id?{
+      ...d, title:val("e-title"), slug:val("e-slug"), excerpt:val("e-excerpt"),
+      body:val("e-body"), tags, source:val("e-source"), sourceUrl:val("e-url")||null,
+      date:val("e-date"), readMinutes:readMins(val("e-body")), _rawIfUnparsed:null,
+    }:d) }));
+  };
+
+  // publish
+  const imp=document.getElementById("btn-import"); if(imp) imp.onclick=importExisting;
+  const impP=document.getElementById("btn-import-paste"); if(impP) impP.onclick=()=>{
+    const raw=prompt("Paste the contents of blog-posts.json:");
+    if(!raw) return;
+    try{ const d=JSON.parse(raw); const pub=(d.posts||[]).filter(p=>p.status==="published"); setState({importedPublished:pub}); alert(`Imported ${pub.length} published post(s).`); }
+    catch(e){ alert("Invalid JSON."); }
+  };
+  const dl=document.getElementById("btn-download"); if(dl) dl.onclick=()=>download("blog-posts.json", JSON.stringify(buildExport(),null,2));
+  const cp=document.getElementById("btn-copy"); if(cp) cp.onclick=async()=>{ await navigator.clipboard.writeText(JSON.stringify(buildExport(),null,2)); cp.textContent="Copied!"; setTimeout(()=>render(),1200); };
+
+  // setup
+  const sc=document.getElementById("btn-save-cfg"); if(sc) sc.onclick=()=>{
+    setState({ cfg:{ ...state.cfg, workerUrl:val("cfg-url"), workerToken:val("cfg-token"), postsUrl:val("cfg-posts"), guidelines:val("cfg-guide") } });
+    const b=document.getElementById("btn-save-cfg"); if(b){ b.textContent="Saved ✓"; setTimeout(()=>render(),1200); }
+  };
+  const tc=document.getElementById("btn-test"); if(tc) tc.onclick=()=>{
+    setState({ cfg:{ ...state.cfg, workerUrl:val("cfg-url"), workerToken:val("cfg-token") } });
+    testConnection();
+  };
+  const rg=document.getElementById("btn-reset-guide"); if(rg) rg.onclick=()=>{ if(confirm("Reset brand guidelines to default?")) setState({cfg:{...state.cfg, guidelines:DEFAULT_GUIDELINES}}); };
+}
+function val(id){ const el=document.getElementById(id); return el? el.value.trim() : ""; }
+
+// ============================================================
+render();
+</script>
+</body>
+</html>

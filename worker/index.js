@@ -176,6 +176,13 @@ export default {
       return new Response("Too many requests", { status: 429, headers: corsHeaders(request) });
     }
 
+    // On-demand article scrape for the INTERNAL Blog Studio. Calls an Apify
+    // actor server-side (APIFY_TOKEN secret stays off the browser) and returns
+    // normalized article candidates. Already gated by WORKER_TOKEN + rate limit.
+    if (body.action === "fetch") {
+      return handleFetch(body, env, request);
+    }
+
     const { botId, messages, maxTokens } = body;
 
     // Resolve system prompt server-side from botId.
@@ -183,11 +190,27 @@ export default {
     if (!botId || typeof botId !== "string") {
       return new Response("Missing botId", { status: 400, headers: corsHeaders(request) });
     }
-    const botIdentity = BOT_IDENTITIES[botId];
-    if (!botIdentity) {
-      return new Response(`Unknown botId: ${botId}`, { status: 400, headers: corsHeaders(request) });
+    // blog-drafter is the INTERNAL IAS Blog Studio (gated by WORKER_TOKEN, used
+    // only by Ty). Unlike the public demo bots, its prompts aren't secret IP, so
+    // the Studio supplies its own per-step system prompt (research / draft /
+    // classify). The worker's role here is solely to keep the API key off the
+    // browser. No Acme demo context — this writes blog posts, not plan answers.
+    let systemPrompt;
+    if (botId === "blog-drafter") {
+      if (typeof body.system !== "string" || !body.system.trim()) {
+        return new Response("Missing system prompt for blog-drafter", { status: 400, headers: corsHeaders(request) });
+      }
+      if (body.system.length > MAX_MESSAGE_CHARS) {
+        return new Response("System prompt too long", { status: 400, headers: corsHeaders(request) });
+      }
+      systemPrompt = body.system;
+    } else {
+      const botIdentity = BOT_IDENTITIES[botId];
+      if (!botIdentity) {
+        return new Response(`Unknown botId: ${botId}`, { status: 400, headers: corsHeaders(request) });
+      }
+      systemPrompt = `${botIdentity}\n\n${ACME_DEMO_CONTEXT}`;
     }
-    const systemPrompt = `${botIdentity}\n\n${ACME_DEMO_CONTEXT}`;
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return new Response("Missing or empty messages array", { status: 400, headers: corsHeaders(request) });
@@ -235,6 +258,72 @@ export default {
   },
 };
 
+// ─── On-demand Apify scrape (Blog Studio "Fetch new articles") ───────────────
+// Runs an Apify actor synchronously and returns normalized article candidates.
+// Actor + input are supplied by the Studio so it can be swapped without a
+// worker change; defaults to the Google News scraper.
+const DEFAULT_FETCH_ACTOR = "crawlerbros/google-news-scraper";
+
+function jsonResponse(obj, status, request) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: { "Content-Type": "application/json", ...corsHeaders(request) },
+  });
+}
+
+async function handleFetch(body, env, request) {
+  if (!env.APIFY_TOKEN) {
+    return jsonResponse({ error: "APIFY_TOKEN is not configured on the worker." }, 400, request);
+  }
+  const actor = (typeof body.actor === "string" && body.actor.trim()) || DEFAULT_FETCH_ACTOR;
+  const input = (body.input && typeof body.input === "object") ? body.input : {};
+  // Apify path uses ~ instead of / between username and actor name.
+  const actorPath = actor.replace("/", "~");
+  const url = `https://api.apify.com/v2/acts/${encodeURIComponent(actorPath)}/run-sync-get-dataset-items?timeout=120`;
+
+  let upstream;
+  try {
+    upstream = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.APIFY_TOKEN}` },
+      body: JSON.stringify(input),
+    });
+  } catch (e) {
+    return jsonResponse({ error: "Apify request failed: " + (e.message || String(e)) }, 502, request);
+  }
+  if (!upstream.ok) {
+    const t = await upstream.text().catch(() => "");
+    return jsonResponse({ error: `Apify ${upstream.status}: ${t.slice(0, 300)}` }, 502, request);
+  }
+  let items;
+  try { items = await upstream.json(); } catch { items = []; }
+  if (!Array.isArray(items)) items = [];
+  const normalized = items.map(normalizeArticle).filter(a => a.headline && a.url);
+  return jsonResponse({ items: normalized }, 200, request);
+}
+
+// Defensive field mapping — Google News actors vary in their output keys.
+function normalizeArticle(it) {
+  it = it || {};
+  const pick = (...keys) => {
+    for (const k of keys) {
+      const v = it[k];
+      if (typeof v === "string" && v.trim()) return v.trim();
+      if (v && typeof v === "object" && typeof v.name === "string") return v.name.trim();
+    }
+    return "";
+  };
+  let date = pick("date", "publishedAt", "published", "pubDate", "publishedDate", "time", "isoDate");
+  if (date) { const d = new Date(date); if (!isNaN(d.getTime())) date = d.toISOString().slice(0, 10); }
+  return {
+    headline: pick("title", "headline", "name").slice(0, 300),
+    summary: pick("description", "snippet", "summary", "text", "content", "excerpt", "body").slice(0, 800),
+    source: pick("source", "publisher", "sourceName", "site", "domain").slice(0, 120),
+    url: pick("url", "link", "articleUrl", "href").slice(0, 1000),
+    date,
+  };
+}
+
 const ALLOWED_ORIGINS = [
   "https://infiniteawesomestudio.com",
   "https://infinite-awesome-studio.pages.dev",
@@ -243,7 +332,11 @@ const ALLOWED_ORIGINS = [
 
 function corsHeaders(request) {
   const origin = request?.headers?.get("Origin") || "";
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  // Allow the production sites, plus any localhost/127.0.0.1 origin so the
+  // internal Blog Studio works when served locally. The WORKER_TOKEN is still
+  // the real gate — localhost can only be reached from Ty's own machine.
+  const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const allowedOrigin = (ALLOWED_ORIGINS.includes(origin) || isLocal) ? origin : ALLOWED_ORIGINS[0];
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
