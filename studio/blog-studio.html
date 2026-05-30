@@ -156,7 +156,7 @@ const DEFAULT_CFG = {
   fetchActor: "data_xplorer/google-news-scraper-fast",
   fetchQueries: "AI in employee benefits\nAI automation HR benefits\nHR technology automation\nbenefits administration AI",
   fetchDateRange: "7d",
-  fetchMax: 12,
+  fetchMax: 8,
   fetchSite: "",
 };
 
@@ -381,8 +381,11 @@ async function runFetch(opts) {
     maxArticles,
     timeframe: opts.dateRange || "7d",
     region_language: "US:en",
-    extractDescriptions: true,
-    decodeUrls: true,
+    // Both decodeUrls and extractDescriptions do per-article page fetches that
+    // throttle and time out at batch scale. RSS-only keeps fetch fast and
+    // reliable; the redraft pipeline's research step enriches each topic.
+    extractDescriptions: false,
+    decodeUrls: false,
     extractImages: false,
   };
   // persist last-used fetch settings
