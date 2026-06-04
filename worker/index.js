@@ -195,10 +195,14 @@ export default {
     // the Studio supplies its own per-step system prompt (research / draft /
     // classify). The worker's role here is solely to keep the API key off the
     // browser. No Acme demo context — this writes blog posts, not plan answers.
+    // blog-drafter (IAS Blog Studio) and job-analyzer (Infinite Careers internal
+    // live mode) are both INTERNAL tools gated by WORKER_TOKEN. Their prompts
+    // aren't secret IP, so the client supplies its own per-call system prompt;
+    // the worker's only job is keeping the Anthropic key off the browser.
     let systemPrompt;
-    if (botId === "blog-drafter") {
+    if (botId === "blog-drafter" || botId === "job-analyzer") {
       if (typeof body.system !== "string" || !body.system.trim()) {
-        return new Response("Missing system prompt for blog-drafter", { status: 400, headers: corsHeaders(request) });
+        return new Response(`Missing system prompt for ${botId}`, { status: 400, headers: corsHeaders(request) });
       }
       if (body.system.length > MAX_MESSAGE_CHARS) {
         return new Response("System prompt too long", { status: 400, headers: corsHeaders(request) });
