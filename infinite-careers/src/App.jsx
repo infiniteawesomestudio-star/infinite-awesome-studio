@@ -171,7 +171,7 @@ const DEMO_RES = `Data Analyst · 3 years experience\n\nSkills: Python (intermed
 const DEMO_RESULT = {
   fitScore: 64,
   recommendation: "UPSKILL_FIRST",
-  summary: "Strong SQL and reporting foundation with real dashboard experience — but the role's senior bar (advanced Python, the AWS data stack, and production ML) sits ahead of your current level. Close two or three targeted gaps and this becomes a Strong Apply.",
+  summary: "Strong SQL and reporting foundation with real dashboard experience — but the role's senior bar (advanced Python, the AWS data stack and production ML) sits ahead of your current level. Close two or three targeted gaps and this becomes a Strong Apply.",
   careerHealth: { marketDemand: 82, skillCurrency: 61, experienceLevel: 55, networkStrength: 48, learningVelocity: 70, overall: 63 },
   gaps: [
     { skill: "AWS (S3, Redshift, Lambda)", type: "technical", priority: "high", currentLevel: "None", requiredLevel: "Working proficiency" },
@@ -214,11 +214,11 @@ const DEMO_RESULT = {
   },
   interviewQuestions: [
     { category: "technical", question: "Walk me through how you'd design a query to find the top 3 products by revenue per region, including ties.", whyAsked: "Probes real SQL depth beyond SELECT *.", targetGap: "Advanced SQL (a strength — lead with it)", hint: "Window functions: RANK() / DENSE_RANK() partitioned by region." },
-    { category: "technical", question: "You have a 50M-row table that's slow to query in Redshift. What do you check first?", whyAsked: "Tests the AWS/warehouse gap directly.", targetGap: "AWS (S3, Redshift, Lambda)", hint: "Sort/dist keys, column compression, and whether you're scanning unneeded columns." },
+    { category: "technical", question: "You have a 50M-row table that's slow to query in Redshift. What do you check first?", whyAsked: "Tests the AWS/warehouse gap directly.", targetGap: "AWS (S3, Redshift, Lambda)", hint: "Sort/dist keys, column compression and whether you're scanning unneeded columns." },
     { category: "behavioral", question: "Tell me about a time a stakeholder disagreed with your analysis.", whyAsked: "Senior analysts must defend findings and influence decisions.", targetGap: "Stakeholder communication (strength)", hint: "STAR: name the decision at stake and how you used data to align." },
     { category: "behavioral", question: "Describe a project where you had to learn a new tool fast.", whyAsked: "Signals learning velocity — your edge as a career-grower.", targetGap: "Learning velocity", hint: "Pick the Tableau ramp; quantify the time-to-first-dashboard." },
     { category: "situational", question: "Marketing wants a dashboard 'by Friday' but the data is messy. How do you respond?", whyAsked: "Tests prioritization and expectation-setting under pressure.", targetGap: "Senior-level scope", hint: "Scope a v1, flag data caveats, agree on what 'done' means." },
-    { category: "situational", question: "An A/B test shows a 2% lift but isn't statistically significant. What do you tell the team?", whyAsked: "Checks experimentation literacy.", targetGap: "A/B Testing & Experimentation", hint: "Talk power, sample size, and the cost of shipping on noise." },
+    { category: "situational", question: "An A/B test shows a 2% lift but isn't statistically significant. What do you tell the team?", whyAsked: "Checks experimentation literacy.", targetGap: "A/B Testing & Experimentation", hint: "Talk power, sample size and the cost of shipping on noise." },
     { category: "culture", question: "How do you keep your analyses reproducible for teammates?", whyAsked: "Senior work is collaborative and auditable.", targetGap: "Advanced Python / tooling", hint: "Version control, parameterized notebooks/scripts, documented assumptions." },
     { category: "culture", question: "What does 'data-driven' actually mean to you?", whyAsked: "Reveals judgment vs. dashboard-for-dashboard's-sake.", targetGap: "Senior judgment", hint: "Tie metrics to decisions; mention when NOT to trust the number." },
   ],
@@ -301,7 +301,7 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
           <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "clamp(26px,4vw,44px)", letterSpacing: "-0.03em", lineHeight: 1.1, margin: "14px 0 11px" }}>
             Know every dimension of your<br /><span style={{ color: C.teal }}>career fit.</span>
           </h1>
-          <p style={{ color: C.textMuted, fontSize: 14, maxWidth: 480, margin: "0 auto", lineHeight: 1.8 }}>Interview prediction, salary benchmarking, bias detection, career trajectory modeling, and real-time market intelligence — all from one analysis.</p>
+          <p style={{ color: C.textMuted, fontSize: 14, maxWidth: 480, margin: "0 auto", lineHeight: 1.8 }}>Interview prediction, salary benchmarking, bias detection, career trajectory modeling and real-time market intelligence — all from one analysis.</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 18 }}>
           {[{label:"Job Description",I:Briefcase,val:job,set:setJob,ph:"Paste the full job posting…"},{label:"Resume / Skills",I:User,val:res,set:setRes,ph:"Paste your resume or skill list…"}].map(({label,I,val,set,ph}) => {
@@ -505,7 +505,7 @@ function ResumeTab({ jobDesc, resume, atsData }) {
       <Card style={{ textAlign: "center", padding: "40px 28px" }}>
         <div style={{ width: 56, height: 56, borderRadius: "50%", background: C.tealDim, border: `1px solid ${C.teal}30`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px" }}><Sparkles size={24} color={C.teal} /></div>
         <div style={{ fontFamily: "Syne,sans-serif", fontSize: 20, fontWeight: 800, marginBottom: 7, color: C.text }}>AI Resume Optimizer</div>
-        <p style={{ color: C.textMuted, fontSize: 13, maxWidth: 400, margin: "0 auto 20px", lineHeight: 1.75 }}>Claude rewrites your experience section with injected ATS keywords, quantified achievements, and industry-specific language.</p>
+        <p style={{ color: C.textMuted, fontSize: 13, maxWidth: 400, margin: "0 auto 20px", lineHeight: 1.75 }}>Claude rewrites your experience section with injected ATS keywords, quantified achievements and industry-specific language.</p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center", marginBottom: 22 }}>
           {["ATS keyword injection","Achievement quantification","Action verb optimization","Industry language"].map(f => <Chip key={f} text={`✓ ${f}`} color={C.teal} size={11} />)}
         </div>
@@ -685,7 +685,7 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
 
       <BookmarkBadge
         title="Behavioral Question Bank & Video Practice"
-        reason="Full behavioral question bank with 500+ industry-specific questions, video recording + AI analysis of delivery, filler word detection, and confidence scoring require additional infrastructure."
+        reason="Full behavioral question bank with 500+ industry-specific questions, video recording + AI analysis of delivery, filler word detection and confidence scoring require additional infrastructure."
         items={["Video Recording API","Speech Analysis","Confidence Scoring","Question Bank DB"]}
       />
     </div>
@@ -788,7 +788,7 @@ function MarketTab({ d }) {
 
       <BookmarkBadge
         title="Live Salary & Geographic Intelligence"
-        reason="Real-time compensation data, location-based adjustments, and verified market benchmarks require direct API integrations with third-party compensation platforms."
+        reason="Real-time compensation data, location-based adjustments and verified market benchmarks require direct API integrations with third-party compensation platforms."
         items={["Glassdoor API","PayScale API","Levels.fyi API","LinkedIn Salary","Geographic Heatmap"]}
       />
     </div>
@@ -870,7 +870,7 @@ function CompetitiveTab({ d }) {
 
       <BookmarkBadge
         title="Live LinkedIn & Candidate Pool Analysis"
-        reason="Real-time applicant counts, mutual connection identification, industry influence scoring, and actual peer benchmarking require LinkedIn Partner API access and user authentication."
+        reason="Real-time applicant counts, mutual connection identification, industry influence scoring and actual peer benchmarking require LinkedIn Partner API access and user authentication."
         items={["LinkedIn Partner API","Mutual Connections","Peer Benchmarking","Network Strength","Industry Influence Score"]}
       />
     </div>
@@ -964,7 +964,7 @@ function IndustryTab({ d }) {
 
       <BookmarkBadge
         title="Finance Compliance & Healthcare Credentialing"
-        reason="Real-time license verification, regulatory database checks, and certification expiry tracking require integration with industry-specific credentialing APIs."
+        reason="Real-time license verification, regulatory database checks and certification expiry tracking require integration with industry-specific credentialing APIs."
         items={["FINRA Database","State License APIs","DEA Number Verification","CPA Board","Healthcare Credentialing APIs"]}
       />
     </div>
@@ -1062,7 +1062,7 @@ function CareerTab({ d }) {
 
       <BookmarkBadge
         title="Mentor & Peer Network Integration"
-        reason="Connecting with industry professionals, anonymous peer benchmarking, and team bulk-analysis mode require a user database, matching algorithms, and communication infrastructure."
+        reason="Connecting with industry professionals, anonymous peer benchmarking and team bulk-analysis mode require a user database, matching algorithms and communication infrastructure."
         items={["Mentor Matching","Peer Benchmarking DB","Team Bulk Analysis","Career Coach Network"]}
       />
     </div>
@@ -1130,13 +1130,13 @@ function BiasTab({ d }) {
       <Card accent={C.purple}>
         <SLabel color={C.purple}>Non-Traditional Career Path Note</SLabel>
         <p style={{ fontSize: 13, color: C.text, lineHeight: 1.8, margin: 0 }}>
-          This analysis accounts for non-traditional backgrounds: bootcamp graduates, career changers, self-taught practitioners, and candidates with employment gaps. Requirement gaps weighted by <strong style={{ color: C.teal }}>demonstrated skill evidence</strong> rather than credential checklist matching.
+          This analysis accounts for non-traditional backgrounds: bootcamp graduates, career changers, self-taught practitioners and candidates with employment gaps. Requirement gaps weighted by <strong style={{ color: C.teal }}>demonstrated skill evidence</strong> rather than credential checklist matching.
         </p>
       </Card>
 
       <BookmarkBadge
         title="Live Company Diversity Benchmarking"
-        reason="Real diversity metrics, inclusion survey data, and pay equity analysis require access to company HR databases, Glassdoor diversity reports, and government EEO filings."
+        reason="Real diversity metrics, inclusion survey data and pay equity analysis require access to company HR databases, Glassdoor diversity reports and government EEO filings."
         items={["Glassdoor Diversity API","EEO Public Data","Pay Equity Analysis","Company Culture Reviews"]}
       />
     </div>
@@ -1227,7 +1227,7 @@ function DashboardTab({ d }) {
 
       <BookmarkBadge
         title="Mobile Features: Voice Input, OCR & Push Notifications"
-        reason="Voice resume input, photo/scan OCR parsing, and push notification delivery for market alerts require mobile SDK integration, server-side scheduling, and native device APIs."
+        reason="Voice resume input, photo/scan OCR parsing and push notification delivery for market alerts require mobile SDK integration, server-side scheduling and native device APIs."
         items={["Web Speech API","Tesseract OCR","Firebase Push","PWA Service Worker","Mobile App Wrapper"]}
       />
     </div>
@@ -1345,7 +1345,7 @@ export default function App() {
     try {
       const [d1, d2] = await Promise.all([
         callClaude({ system: SYS_CORE, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide thorough career fit analysis.` }] }),
-        callClaude({ system: SYS_INTEL, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide market intelligence, interview questions (8 total across categories), bias analysis, career progression modeling, and industry module analysis.` }] }),
+        callClaude({ system: SYS_INTEL, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide market intelligence, interview questions (8 total across categories), bias analysis, career progression modeling and industry module analysis.` }] }),
       ]);
       clearInterval(iv); setStep(8);
 
