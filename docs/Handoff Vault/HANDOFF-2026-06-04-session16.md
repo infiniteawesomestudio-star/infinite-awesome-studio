@@ -2,15 +2,15 @@
 
 **Date:** 2026-06-04
 **Focus:** Picked IAS.com back up. Audited the vault migration's impact on paths (none), ran a security sweep (clean) and made it recurring, cleared the nav/footer/social polish backlog, then built **Infinite Careers** — the JobAnalyzer artifact turned into a clickable flagship demo on IAS.com plus an internal live tool.
-**Branch:** main · **Deploy:** Cloudflare Pages (auto on push)
-**⚠️ State: 4 commits committed but NOT pushed.** Pushing auto-deploys to production.
+**Branch:** main · **Deploy:** Cloudflare Pages (auto on push) — **PUSHED + deployed. Worker deployed. Internal live mode wired + backend verified.**
 
 ---
 
 ## TL;DR for next session
-1. **Push** (`git push`) when ready → IAS.com goes live with the Infinite Careers card + `/infinite-careers/` demo.
-2. **Worker deploy is pending** (wrangler auth expired) — only needed for *internal live mode*, not the public demo.
-3. **BeneBots-page logo task** intentionally left open — Ty is revamping the logo art.
+1. **Everything from tonight is LIVE** — IAS.com has the Infinite Careers card + `/infinite-careers/` public demo; worker is deployed; internal live mode runs at `localhost:5174`.
+2. **Top fix:** the internal **full analysis returns invalid JSON** (max_tokens:1000 truncation). Bump to 2048 / trim schema. Public demo (canned) is unaffected. → ClickUp `86baa228f`.
+3. **Blocked on Ty's art:** BeneBots-page logo + crew-hero regen.
+4. **New backlog (Ty, 2026-06-04):** IAS design tweaks round 2 (`86baa2293`); document the build for social (`86baa22ee`); resume/LinkedIn refresh post-launch (`86ba8xkpb`).
 
 ---
 
@@ -64,12 +64,28 @@ Commits this session (unpushed): `2ca730b` Infinite Careers · `c68ff38` polish 
 ## Open for Session 17
 | Item | Notes |
 |------|-------|
-| **Push to deploy** | 4 commits ahead; `git push` auto-deploys IAS.com (Infinite Careers card + demo go live). |
-| **Deploy worker** | `wrangler login` → `cd worker && npx wrangler deploy`. Enables internal live mode. |
-| **Test internal live** | `cd infinite-careers` → copy `.env.example` to `.env.local`, set `VITE_WORKER_URL`, `VITE_WORKER_TOKEN` (paste at a hidden prompt / into the file — never on a command line), `VITE_DEMO_MODE=false` → `npm run dev`. |
-| **BeneBots-page logo** | Kept open — Ty revamping the art to match the background. |
-| **5 hardening items** | token-budget input limits · mobile sidebar <768px · interview category fallbacks · disabled-button tooltips · real industry competency scoring (ClickUp 86ba8xkre). Consider capturing a REAL run as `DEMO_RESULT` for fidelity. |
-| Carried | crew hero (+FSABot/new logo) · bento reorder (Ty likes as-is) · first real blog post · DNS Porkbun · replace Acme sample data |
+| **Fix live parse error** ⭐ | `86baa228f` — full analysis returns invalid JSON; `max_tokens:1000` truncates SYS_CORE/SYS_INTEL. Bump to 2048 / trim schema. Demo mode fine. |
+| **IAS design tweaks (round 2)** | `86baa2293` — get Ty's specific change list. |
+| **BeneBots-page logo + crew hero** | Blocked on Ty's new art. |
+| **Document build for social** | `86baa22ee` (build-in-public) + **resume/LinkedIn refresh** post-launch using the demo as proof (`86ba8xkpb`). |
+| **5 hardening items** | token-budget input limits · mobile sidebar <768px · interview category fallbacks · disabled-button tooltips · real industry competency scoring (`86ba8xkre`). Consider capturing a REAL run as `DEMO_RESULT`. |
+| Carried | bento reorder (Ty likes as-is) · first real blog post · DNS Porkbun · replace Acme sample data |
+
+---
+
+## Post-handoff developments (same session, 2026-06-04 evening)
+- **Copy review (Ty):** removed all specific-employer mentions (Horizon BCBS/Blue Cross → "major carrier"); softened the IW pain-point headline ("…not bad at admin" → "The admin isn't the hard part. Doing it all alone is."); removed serial/Oxford commas from list sentences sitewide + the demo app (kept 3 compound-clause exceptions). Commits `8eed41e`, `670d846`.
+- **Pushed + deployed:** all commits pushed → Cloudflare Pages auto-deployed IAS.com (Infinite Careers card + `/infinite-careers/` demo now public).
+- **Worker deployed:** `npx wrangler deploy` (Version `f6210c9a`). First attempt failed with auth **code 10000** (stale OAuth token / clock skew); a fresh `wrangler logout && wrangler login` fixed it. Tip for next time: if deploy 10000s, re-login; if that fails, use an API token via `read -rs CLOUDFLARE_API_TOKEN && export CLOUDFLARE_API_TOKEN`.
+- **Internal live mode wired:** `infinite-careers/.env.local` created (worker URL + token copied from `benebots/.env`, never echoed; `VITE_DEMO_MODE=false`). Dev server live at **localhost:5174**.
+- **Backend verified:** curl to the worker with the token → HTTP 200, Claude (`claude-sonnet-4-6`) replied through the `job-analyzer` route. ✅
+- **Live test surfaced the parse bug** (see top of table) — deferred per Ty.
+
+### Run internal live mode again
+```bash
+cd "…/infinite-awesome-studio/infinite-careers" && npm run dev   # → http://localhost:5174/infinite-careers/
+```
+`.env.local` already has the worker URL + token + `VITE_DEMO_MODE=false`. Worker is deployed, so it works as soon as the parse fix lands.
 
 ## Brand reminders
 - Never: "powerful," "seamless," "innovative," "game-changer." Em dashes sparingly; `·` separators.

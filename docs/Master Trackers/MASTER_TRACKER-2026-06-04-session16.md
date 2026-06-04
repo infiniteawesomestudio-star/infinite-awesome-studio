@@ -1,6 +1,6 @@
 # Master Tracker — Session 16
 **Date:** 2026-06-04 | **Project:** IAS.com polish + Infinite Careers (JobAnalyzer flagship demo)
-**Branch:** main · **4 commits ahead of origin (NOT pushed — push auto-deploys to Cloudflare Pages)**
+**Branch:** main · **PUSHED + auto-deployed to production** (Cloudflare Pages). Worker also deployed. Internal live mode wired + backend verified.
 
 ---
 
@@ -28,18 +28,35 @@ JobAnalyzer v2 React artifact → Vite app `infinite-careers/`, two modes from o
 - [x] Rebrand in-app JobAnalyzer → **Infinite Careers**; tolerant JSON parse; fixed missing lucide `Heart` import
 - [x] Subtle homepage **bento card** "Infinite Careers" → `/infinite-careers/` (no nav change, per Ty)
 - [x] **Verified in preview:** 10 tabs render from canned data, recharts charts OK, 0 console errors, 0 anthropic network calls; build clean (2156 modules)
-- [~] Worker route **code done**; **deploy pending** (wrangler re-auth) — only needed for internal live mode
-- [ ] Internal hardening (ClickUp 86ba8xkre): JSON-parse done; **5 remain** (token-budget input limits, mobile sidebar <768px, interview category fallbacks, disabled-button tooltips, real industry competency scoring)
+- [x] Worker **deployed** (Version `f6210c9a`) — `job-analyzer` route live; verified via curl (HTTP 200 + Claude reply)
+- [x] **Internal live mode wired**: `infinite-careers/.env.local` (worker URL + token from benebots/.env, `VITE_DEMO_MODE=false`); dev server runs at `localhost:5174`
+- [ ] Internal hardening (ClickUp 86ba8xkre): JSON-parse done; **5 remain**
+
+## Copy adjustments (Ty review) — commits `8eed41e`, `670d846`
+- [x] Removed all specific-employer mentions (Horizon BCBS / Blue Cross) → "major carrier" / "one of the country's largest carriers" across homepage + IW (about, credentials, tool copy)
+- [x] Reframed IW pain-point headline: ~~"You're not bad at admin…"~~ → "The admin isn't the hard part. Doing it all alone is."
+- [x] Removed serial (Oxford) comma from list sentences sitewide + demo app (kept it on 3 compound-clause sentences)
+- [x] ("Dumb Questions" was already absent from the live site)
+
+## 🚀 Push + deploy (DONE)
+- [x] Pushed all commits → Cloudflare Pages auto-deployed IAS.com (Infinite Careers card + `/infinite-careers/` demo live)
+- [x] Worker deployed (`wrangler login` re-auth fixed a code-10000 error caused by a stale OAuth token / clock skew)
+
+## ⚠️ Found during live test (2026-06-04) — deferred per Ty
+- [ ] **Live full-analysis returns invalid JSON** ("unexpected format") — `max_tokens:1000` truncating the big SYS_CORE/SYS_INTEL schemas. Fix: bump to 2048 / trim schema. Connectivity is fine (curl OK). Demo mode unaffected. → ClickUp `86baa228f`
+- [ ] **IAS website design tweaks (round 2)** — specifics TBD → ClickUp `86baa2293`
+- [ ] **Document the build for social** (build-in-public) → ClickUp `86baa22ee`
+- [ ] **Resume + LinkedIn refresh** post-launch, alongside docs, using the live demo as proof (note on `86ba8xkpb`)
 
 ---
 
 ## 🔜 Session 17 — Priority Todos
-- [ ] **Push** (4 commits) → auto-deploys IAS.com with Infinite Careers card + demo live
-- [ ] **Deploy worker**: `wrangler login` → `cd worker && npx wrangler deploy` (enables internal live mode)
-- [ ] **Internal live test**: `cd infinite-careers && cp .env.example .env.local`, fill `VITE_WORKER_URL` + `VITE_WORKER_TOKEN` (hidden prompt — never on a command line), `VITE_DEMO_MODE=false`, `npm run dev` → real analysis
-- [ ] BeneBots-page logo revamp (Ty's new art) — un-block the logo task
+- [ ] **Fix live full-analysis parse error** (`86baa228f`) — bump max_tokens→2048 / trim schema (highest priority for internal use)
+- [ ] **IAS website design tweaks (round 2)** (`86baa2293`) — get Ty's specific list
+- [ ] **BeneBots crew hero + BeneBots logo** — blocked on Ty's new art (un-blocks the logo task + crew-hero regen)
+- [ ] **Document the build for social** (`86baa22ee`) + **resume/LinkedIn refresh** post-launch (`86ba8xkpb`)
 - [ ] Finish the 5 hardening items; consider capturing a REAL run as `DEMO_RESULT` for max fidelity
-- [ ] Carried: regenerate BeneBots crew hero (+FSABot, new logo) · bento reorder (Ty likes as-is) · publish first real blog post · DNS Porkbun · replace Acme sample data
+- [ ] Carried: bento reorder (Ty likes as-is) · publish first real blog post · DNS Porkbun · replace Acme sample data
 
 ---
 
