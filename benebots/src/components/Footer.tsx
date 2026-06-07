@@ -247,7 +247,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="reveal sm:col-span-2 lg:col-span-1">
           <a href="/" className="flex items-center gap-2 mb-4" aria-label="BeneBots home">
-            <img src="/benebots-logo-side-tp.png" alt="BeneBots by Infinite Awesome Studio" className="h-10 w-auto" />
+            <img src="/benebots-logo-dark-tp.png" alt="BeneBots by Infinite Awesome Studio" className="h-10 w-auto" />
           </a>
           <p className="text-xs font-body text-dark-muted leading-relaxed max-w-[220px]">
             AI agents for benefits administration. Every benefit. Every penny.

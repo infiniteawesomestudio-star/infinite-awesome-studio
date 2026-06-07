@@ -7,19 +7,49 @@ import PlanCompareDemo from '../demo/PlanCompareDemo'
 import OECoachDemo from '../demo/OECoachDemo'
 import LOANavigatorDemo from '../demo/LOANavigatorDemo'
 import ClaimsCompassDemo from '../demo/ClaimsCompassDemo'
+import { ClientProvider, useClient, useClientControls } from '../client/ClientContext'
+import { CLIENTS } from '../data/demoProfile'
 
 const BOT_META: Record<string, { name: string; color: string; tagline: string; image: string }> = {
-  ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in Acme\'s plans', image: '/HSABot_TP.png' },
-  stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, Acme claims data pre-loaded', image: '/ComplianceBot_TP.png' },
-  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with Acme\'s actual numbers', image: '/CompareBot_TP.png' },
-  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation, Acme plans', image: '/OEBot_TP.png' },
-  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, CA/NY/WA, parental leave', image: '/LOABot_TP2.png' },
+  ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in the client\'s plans', image: '/HSABot_TP.png' },
+  stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, client claims data pre-loaded', image: '/ComplianceBot_TP.png' },
+  'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with the client\'s actual numbers', image: '/CompareBot_TP.png' },
+  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation', image: '/OEBot_TP.png' },
+  'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, state programs, parental leave', image: '/LOABot_TP2.png' },
   'claims-compass': { name: 'Claims Compass', color: '#F97316', tagline: 'EOB denials, prior auth appeals, No Surprises Act', image: '/ClaimBot_TP.png' },
 }
 
+function ClientSwitcher() {
+  const { client, clients, setClientId } = useClientControls()
+  return (
+    <label className="flex items-center gap-2 text-xs font-body text-dark-muted">
+      <span className="hidden sm:inline uppercase tracking-widest text-[10px]">Client</span>
+      <select
+        value={client.id}
+        onChange={e => setClientId(e.target.value)}
+        className="bg-dark-card border border-dark-border rounded-lg px-2.5 py-1.5 text-dark-text text-xs font-body focus:outline-none focus:border-mint/40 cursor-pointer"
+        aria-label="Switch demo client"
+      >
+        {clients.map(c => (
+          <option key={c.id} value={c.id}>{c.companyName}</option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
 export default function Demo() {
+  return (
+    <ClientProvider>
+      <DemoInner />
+    </ClientProvider>
+  )
+}
+
+function DemoInner() {
   const { botId } = useParams<{ botId: string }>()
   const meta = botId ? BOT_META[botId] : undefined
+  const client = useClient()
 
   if (!meta) {
     return (
@@ -37,6 +67,8 @@ export default function Demo() {
   }
 
   const isChat = botId === 'ask'
+  // Ask runs against the live worker (Demo Co context), so it stays single-client.
+  const headerClientName = isChat ? CLIENTS[0].companyName : client.companyName
 
   return (
     <div className="h-screen bg-dark-base text-dark-text flex flex-col overflow-hidden">
@@ -60,15 +92,18 @@ export default function Demo() {
               className="text-[10px] font-body font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full border"
               style={{ backgroundColor: `${meta.color}12`, color: meta.color, borderColor: `${meta.color}33` }}
             >
-              Demo mode | Acme Industries
+              Demo mode | {headerClientName}
             </span>
           </div>
-          <Link
-            to="/"
-            className="text-xs font-body text-dark-muted hover:text-mint transition-colors flex items-center gap-1"
-          >
-            ← Back to BeneBots
-          </Link>
+          <div className="flex items-center gap-4">
+            {!isChat && <ClientSwitcher />}
+            <Link
+              to="/"
+              className="text-xs font-body text-dark-muted hover:text-mint transition-colors flex items-center gap-1"
+            >
+              ← Back to BeneBots
+            </Link>
+          </div>
         </div>
       </div>
 

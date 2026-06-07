@@ -1,9 +1,9 @@
 const MAX_TOKENS_ALLOWED = 2048;
 const MAX_MESSAGE_CHARS = 32_000;
 
-// ─── Acme Industries demo context (injected server-side into every demo bot) ───
-const ACME_DEMO_CONTEXT = `
-CLIENT: Acme Industries | Mid-size employer, ~450 employees | Plan year 2026
+// ─── Demo Co demo context (injected server-side into every demo bot) ───
+const DEMO_CONTEXT = `
+CLIENT: Demo Co | Mid-size employer, ~450 employees | Plan year 2026
 
 MEDICAL PLANS:
 1. HDHP with HSA
@@ -43,7 +43,7 @@ LEAVE:
    - Company parental leave: 6 weeks fully paid (concurrent with FMLA)
    - STD/LTD carrier: The Hartford
    - State leave jurisdictions: CA, NY, WA
-   - LOA administrator: Acme HR, hr@acme-demo.com
+   - LOA administrator: Demo Co HR, hr@democo.example
    - Return-to-work: fitness-for-duty form required
 
 COBRA: Administered by WEX Benefits. Election window: 60 days from qualifying event.
@@ -56,7 +56,7 @@ CLAIMS:
    - External independent review: available
    - Prior auth list: Aetna provider portal
    - NSA compliant: yes
-   - HR claims contact: Acme HR, hr@acme-demo.com
+   - HR claims contact: Demo Co HR, hr@democo.example
 `.trim();
 
 // ─── Bot identity system prompts ─────────────────────────────────────────────
@@ -64,11 +64,11 @@ CLAIMS:
 
 const BOT_IDENTITIES = {
 
-  ask: `You are Ask BeneBot, an AI benefits assistant deployed by MyBenefitsGuy for Acme Industries employees during plan year 2026. You know this company's benefits inside out — medical, dental, vision, HSA, FSA, 401(k), leave, and COBRA. You are friendly, direct, and specific. Employees trust you because you cite real numbers, not guesses.
+  ask: `You are Ask BeneBot, an AI benefits assistant deployed by MyBenefitsGuy for Demo Co employees during plan year 2026. You know this company's benefits inside out — medical, dental, vision, HSA, FSA, 401(k), leave, and COBRA. You are friendly, direct, and specific. Employees trust you because you cite real numbers, not guesses.
 
 BEHAVIORAL RULES:
 - Always answer from the client plan data provided. Cite the specific plan or benefit when relevant.
-- Never guess. If something isn't in the plan data, say so clearly and suggest who to contact (Acme HR or the relevant carrier).
+- Never guess. If something isn't in the plan data, say so clearly and suggest who to contact (Demo Co HR or the relevant carrier).
 - Keep answers short and plain. Use bullet points for multi-step answers. Avoid jargon when plain language works.
 - If a question needs clarification, ask one targeted follow-up — never more than one.
 - Never give tax advice, legal advice, or medical advice. Direct those to the appropriate professional.
@@ -194,7 +194,7 @@ export default {
     // only by Ty). Unlike the public demo bots, its prompts aren't secret IP, so
     // the Studio supplies its own per-step system prompt (research / draft /
     // classify). The worker's role here is solely to keep the API key off the
-    // browser. No Acme demo context — this writes blog posts, not plan answers.
+    // browser. No Demo Co demo context — this writes blog posts, not plan answers.
     // blog-drafter (IAS Blog Studio) and job-analyzer (Infinite Careers internal
     // live mode) are both INTERNAL tools gated by WORKER_TOKEN. Their prompts
     // aren't secret IP, so the client supplies its own per-call system prompt;
@@ -213,7 +213,7 @@ export default {
       if (!botIdentity) {
         return new Response(`Unknown botId: ${botId}`, { status: 400, headers: corsHeaders(request) });
       }
-      systemPrompt = `${botIdentity}\n\n${ACME_DEMO_CONTEXT}`;
+      systemPrompt = `${botIdentity}\n\n${DEMO_CONTEXT}`;
     }
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
@@ -267,6 +267,9 @@ export default {
 // Actor + input are supplied by the Studio so it can be swapped without a
 // worker change; defaults to the Google News scraper.
 const DEFAULT_FETCH_ACTOR = "crawlerbros/google-news-scraper";
+// Least-privilege: only these Apify actors may be invoked through the worker.
+// Prevents a caller from running arbitrary (paid) actors via the proxy.
+const ALLOWED_FETCH_ACTORS = new Set([DEFAULT_FETCH_ACTOR]);
 
 function jsonResponse(obj, status, request) {
   return new Response(JSON.stringify(obj), {
@@ -280,6 +283,9 @@ async function handleFetch(body, env, request) {
     return jsonResponse({ error: "APIFY_TOKEN is not configured on the worker." }, 400, request);
   }
   const actor = (typeof body.actor === "string" && body.actor.trim()) || DEFAULT_FETCH_ACTOR;
+  if (!ALLOWED_FETCH_ACTORS.has(actor)) {
+    return jsonResponse({ error: "Actor not allowed." }, 403, request);
+  }
   const input = (body.input && typeof body.input === "object") ? body.input : {};
   // Apify path uses ~ instead of / between username and actor name.
   const actorPath = actor.replace("/", "~");

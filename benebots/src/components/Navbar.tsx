@@ -30,7 +30,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-24 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center group" aria-label="BeneBots home">
-          <img src="/benebots-logo-side-tp.png" alt="BeneBots by Infinite Awesome Studio" className="h-14 w-auto" />
+          <img src="/benebots-logo-dark-tp.png" alt="BeneBots by Infinite Awesome Studio" className="h-14 w-auto" />
         </Link>
 
         {/* Desktop nav */}

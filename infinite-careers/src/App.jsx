@@ -17,7 +17,10 @@ import {
 // DEMO_MODE (public build): no network calls — renders the baked-in DEMO_RESULT.
 // Live mode (internal): Claude calls route through the benebots-proxy worker so
 // the API key never reaches the browser. Mirrors benebots/src/demo/AskDemo.tsx.
-const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "true";
+// Secure default: canned/public UNLESS a build explicitly opts into live mode
+// with VITE_DEMO_MODE=false (set only in .env.development.local for internal dev).
+// This guarantees a stray/clean build never ships live mode + the worker token.
+const DEMO_MODE = import.meta.env.VITE_DEMO_MODE !== "false";
 const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 const WORKER_TOKEN = import.meta.env.VITE_WORKER_TOKEN;
 const BOOK_CALL_URL = "https://calendly.com/infiniteawesomestudio";

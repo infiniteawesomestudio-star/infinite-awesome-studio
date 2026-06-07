@@ -77,7 +77,7 @@ const faqs: FAQItem[] = [
   {
     question: 'How does BeneBots compare to just using ChatGPT for benefits questions?',
     answer:
-      'ChatGPT answers from generic training data. It doesn\'t know your client\'s actual deductibles, their carrier network, or whether they offer an HSA seed. I\'m trained on your specific plan documents and carrier contracts. That\'s the difference between "typically, a PPO deductible is $X" and "for Acme Industries BlueChoice PPO, your in-network deductible is $1,500 per individual." One is a search engine. The other is a benefits professional who never forgets the plan.',
+      'ChatGPT answers from generic training data. It doesn\'t know your client\'s actual deductibles, their carrier network, or whether they offer an HSA seed. I\'m trained on your specific plan documents and carrier contracts. That\'s the difference between "typically, a PPO deductible is $X" and "for Demo Co BlueChoice PPO, your in-network deductible is $1,500 per individual." One is a search engine. The other is a benefits professional who never forgets the plan.',
     bot: 'Plan Compare',
     botIcon: Scale,
     botColor: '#F7D154',

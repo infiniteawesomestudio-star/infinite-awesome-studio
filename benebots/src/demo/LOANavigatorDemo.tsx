@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { ACME_PROFILE } from '../data/acmeProfile'
+import { useClient } from '../client/ClientContext'
+import type { Client } from '../data/demoProfile'
+import ExportBar from '../components/ExportBar'
 
 type Mode = 'employee' | 'hr'
 type State = 'CA' | 'NY' | 'WA' | 'other'
@@ -25,78 +27,97 @@ const STATE_LEAVE: Record<Exclude<State, 'other'>, { name: string; paidLeave: st
   },
 }
 
-const EMPLOYEE_CONTENT: Record<State, string[]> = {
-  CA: [
-    `Acme offers ${ACME_PROFILE.loa.companyParentalLeave} of fully paid parental leave. This runs concurrently with FMLA (up to 12 weeks) and CFRA.`,
-    `California adds up to 8 weeks of paid CA PFL through the state program, which begins where Acme's paid leave ends.`,
-    `Short-term disability through ${ACME_PROFILE.loa.stdCarrier} covers your income during medical portions of leave (pregnancy recovery, serious health condition).`,
-    `Contact ${ACME_PROFILE.loa.loaAdministrator} to start your leave paperwork. Acme requires the fitness-for-duty form before returning to work.`,
-  ],
-  NY: [
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave stacks with NY PFL (up to 12 weeks at 67% of the statewide average weekly wage).`,
-    `FMLA runs concurrently with NY PFL for qualifying events. You typically only get the longer of the two, not both added together.`,
-    `STD through ${ACME_PROFILE.loa.stdCarrier} covers disability-related absence (pregnancy disability, serious health condition). PFL covers bonding or family care.`,
-    `Start with ${ACME_PROFILE.loa.loaAdministrator}. NY requires 30 days notice when leave is foreseeable.`,
-  ],
-  WA: [
-    `WA Paid Family & Medical Leave provides up to 12 weeks (18 in some cases) at approximately 90% of your wage up to the state average.`,
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently with FMLA and WA PFML.`,
-    `Notify ${ACME_PROFILE.loa.loaAdministrator} as early as possible, ideally 30 days before leave. WA PFML applications go through the WA Employment Security Department directly.`,
-    `Fitness-for-duty form required before returning from medical leave.`,
-  ],
-  other: [
-    `Federal FMLA provides up to 12 weeks of job-protected, unpaid leave for qualifying events (serious health condition, new child, qualifying military exigency).`,
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of fully paid parental leave applies for new child events. This is Acme's policy on top of FMLA.`,
-    `STD/LTD coverage through ${ACME_PROFILE.loa.stdCarrier} provides income replacement during disability-related absences.`,
-    `Contact ${ACME_PROFILE.loa.loaAdministrator} to initiate. Allow 5–7 business days for paperwork processing.`,
-  ],
+function buildEmployeeContent(DEMO_PROFILE: Client): Record<State, string[]> {
+  const co = DEMO_PROFILE.companyName
+  return {
+    CA: [
+      `${co} offers ${DEMO_PROFILE.loa.companyParentalLeave} of fully paid parental leave. This runs concurrently with FMLA (up to 12 weeks) and CFRA.`,
+      `California adds up to 8 weeks of paid CA PFL through the state program, which begins where ${co}'s paid leave ends.`,
+      `Short-term disability through ${DEMO_PROFILE.loa.stdCarrier} covers your income during medical portions of leave (pregnancy recovery, serious health condition).`,
+      `Contact ${DEMO_PROFILE.loa.loaAdministrator} to start your leave paperwork. ${co} requires the fitness-for-duty form before returning to work.`,
+    ],
+    NY: [
+      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of paid parental leave stacks with NY PFL (up to 12 weeks at 67% of the statewide average weekly wage).`,
+      `FMLA runs concurrently with NY PFL for qualifying events. You typically only get the longer of the two, not both added together.`,
+      `STD through ${DEMO_PROFILE.loa.stdCarrier} covers disability-related absence (pregnancy disability, serious health condition). PFL covers bonding or family care.`,
+      `Start with ${DEMO_PROFILE.loa.loaAdministrator}. NY requires 30 days notice when leave is foreseeable.`,
+    ],
+    WA: [
+      `WA Paid Family & Medical Leave provides up to 12 weeks (18 in some cases) at approximately 90% of your wage up to the state average.`,
+      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently with FMLA and WA PFML.`,
+      `Notify ${DEMO_PROFILE.loa.loaAdministrator} as early as possible, ideally 30 days before leave. WA PFML applications go through the WA Employment Security Department directly.`,
+      `Fitness-for-duty form required before returning from medical leave.`,
+    ],
+    other: [
+      `Federal FMLA provides up to 12 weeks of job-protected, unpaid leave for qualifying events (serious health condition, new child, qualifying military exigency).`,
+      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of fully paid parental leave applies for new child events. This is ${co}'s policy on top of FMLA.`,
+      `STD/LTD coverage through ${DEMO_PROFILE.loa.stdCarrier} provides income replacement during disability-related absences.`,
+      `Contact ${DEMO_PROFILE.loa.loaAdministrator} to initiate. Allow 5–7 business days for paperwork processing.`,
+    ],
+  }
 }
 
-const HR_CONTENT: Record<State, string[]> = {
-  CA: [
-    `Designate FMLA and CFRA concurrently where they overlap, but note that Pregnancy Disability Leave (PDL) runs separately from CFRA baby bonding. Total protected leave for a birthing employee can exceed 12 weeks in CA.`,
-    `CA PFL is state-administered. HR does not manage the claims, but must coordinate the leave dates with payroll and the employee.`,
-    `Ensure CFRA and FMLA notices go out within 5 business days of learning of the need for leave. Document the designation in writing.`,
-    `Fitness-for-duty certification is required before reinstatement from medical leave. Do not require it for baby bonding leave. That's a CA CFRA pitfall.`,
-    `Benefits continuation: maintain health coverage during CFRA/FMLA at the same cost as if the employee were actively working.`,
-  ],
-  NY: [
-    `NY PFL and FMLA run concurrently when both apply. Notify the employee of both designations simultaneously.`,
-    `NY PFL claims are submitted by the employee directly to the carrier (the DBL carrier handles NY PFL for most groups). HR's role is to provide the leave dates and return-to-work information.`,
-    `For pregnancy: NY DBL covers the disability period (typically 6–8 weeks for vaginal delivery, 8–10 for C-section). NY PFL baby bonding begins after DBL ends.`,
-    `30-day advance notice requirement for foreseeable leave. Document if the employee gave less notice and why.`,
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently. Coordinate payroll integration carefully since NY PFL is a separate wage benefit.`,
-  ],
-  WA: [
-    `WA PFML is administered by the WA Employment Security Department. Employees apply directly; HR must verify employment and confirm leave dates when contacted.`,
-    `Acme must continue benefits during WA PFML leave and maintain the employee's position (or equivalent) upon return.`,
-    `Track employer contribution requirements. WA PFML has both employee and employer premium shares. Confirm your payroll is remitting correctly.`,
-    `FMLA runs concurrently with WA PFML. Provide both designations in writing.`,
-    `Return-to-work: Acme's fitness-for-duty process applies for medical leaves. Do not apply it to bonding leaves.`,
-  ],
-  other: [
-    `FMLA applies to employers with 50+ employees. Acme meets this threshold. Designate eligible leave within 5 business days.`,
-    `Provide the employee with the FMLA rights notice (WHD Publication 1420) and the designation notice.`,
-    `STD/LTD through ${ACME_PROFILE.loa.stdCarrier} manages income replacement. Coordinate leave dates with the carrier's claim status.`,
-    `Benefits continue during FMLA at the same cost. If the employee fails to return, you may recover the employer's share of premiums paid.`,
-    `Acme's ${ACME_PROFILE.loa.companyParentalLeave} paid parental leave policy runs concurrently with FMLA for qualifying events. Document both.`,
-  ],
+function buildHrContent(DEMO_PROFILE: Client): Record<State, string[]> {
+  const co = DEMO_PROFILE.companyName
+  return {
+    CA: [
+      `Designate FMLA and CFRA concurrently where they overlap, but note that Pregnancy Disability Leave (PDL) runs separately from CFRA baby bonding. Total protected leave for a birthing employee can exceed 12 weeks in CA.`,
+      `CA PFL is state-administered. HR does not manage the claims, but must coordinate the leave dates with payroll and the employee.`,
+      `Ensure CFRA and FMLA notices go out within 5 business days of learning of the need for leave. Document the designation in writing.`,
+      `Fitness-for-duty certification is required before reinstatement from medical leave. Do not require it for baby bonding leave. That's a CA CFRA pitfall.`,
+      `Benefits continuation: maintain health coverage during CFRA/FMLA at the same cost as if the employee were actively working.`,
+    ],
+    NY: [
+      `NY PFL and FMLA run concurrently when both apply. Notify the employee of both designations simultaneously.`,
+      `NY PFL claims are submitted by the employee directly to the carrier (the DBL carrier handles NY PFL for most groups). HR's role is to provide the leave dates and return-to-work information.`,
+      `For pregnancy: NY DBL covers the disability period (typically 6–8 weeks for vaginal delivery, 8–10 for C-section). NY PFL baby bonding begins after DBL ends.`,
+      `30-day advance notice requirement for foreseeable leave. Document if the employee gave less notice and why.`,
+      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently. Coordinate payroll integration carefully since NY PFL is a separate wage benefit.`,
+    ],
+    WA: [
+      `WA PFML is administered by the WA Employment Security Department. Employees apply directly; HR must verify employment and confirm leave dates when contacted.`,
+      `${co} must continue benefits during WA PFML leave and maintain the employee's position (or equivalent) upon return.`,
+      `Track employer contribution requirements. WA PFML has both employee and employer premium shares. Confirm your payroll is remitting correctly.`,
+      `FMLA runs concurrently with WA PFML. Provide both designations in writing.`,
+      `Return-to-work: ${co}'s fitness-for-duty process applies for medical leaves. Do not apply it to bonding leaves.`,
+    ],
+    other: [
+      `FMLA applies to employers with 50+ employees. ${co} meets this threshold. Designate eligible leave within 5 business days.`,
+      `Provide the employee with the FMLA rights notice (WHD Publication 1420) and the designation notice.`,
+      `STD/LTD through ${DEMO_PROFILE.loa.stdCarrier} manages income replacement. Coordinate leave dates with the carrier's claim status.`,
+      `Benefits continue during FMLA at the same cost. If the employee fails to return, you may recover the employer's share of premiums paid.`,
+      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} paid parental leave policy runs concurrently with FMLA for qualifying events. Document both.`,
+    ],
+  }
 }
 
-const ASK_HR_CHECKLIST = [
-  "How do I start my leave paperwork?",
-  "Will my benefits continue during leave?",
-  "How does my salary get covered? Is it STD, state leave, or Acme's policy?",
-  "Can I take leave in increments, or does it have to be continuous?",
-  "What do I need to provide before I can return?",
-]
+function buildAskHrChecklist(DEMO_PROFILE: Client): string[] {
+  return [
+    'How do I start my leave paperwork?',
+    'Will my benefits continue during leave?',
+    `How does my salary get covered? Is it STD, state leave, or ${DEMO_PROFILE.companyName}'s policy?`,
+    'Can I take leave in increments, or does it have to be continuous?',
+    'What do I need to provide before I can return?',
+  ]
+}
 
 export default function LOANavigatorDemo() {
+  const DEMO_PROFILE = useClient()
   const [mode, setMode] = useState<Mode>('employee')
   const [state, setState] = useState<State>('CA')
 
-  const content = mode === 'employee' ? EMPLOYEE_CONTENT[state] : HR_CONTENT[state]
+  const content = mode === 'employee' ? buildEmployeeContent(DEMO_PROFILE)[state] : buildHrContent(DEMO_PROFILE)[state]
   const stateInfo = state !== 'other' ? STATE_LEAVE[state] : null
+  const askHrChecklist = buildAskHrChecklist(DEMO_PROFILE)
+
+  const buildMarkdown = () => {
+    const stateLabel = state === 'other' ? 'Other state (federal)' : state
+    const overview = stateInfo
+      ? `## ${stateInfo.name} leave overview\n- Paid leave: ${stateInfo.paidLeave}\n- Duration: ${stateInfo.duration}\n\n> ${stateInfo.note}\n\n`
+      : ''
+    const heading = mode === 'employee' ? 'What this means for you' : 'HR admin checklist'
+    return `# ${DEMO_PROFILE.companyName} — LOA Navigator (${mode === 'employee' ? 'Employee' : 'HR Admin'} mode · ${stateLabel})\n\n${overview}## ${heading}\n${content.map(c => `- ${c}`).join('\n')}\n\n_Education only. Eligibility determinations belong with HR and legal counsel._\n`
+  }
 
   return (
     <div className="space-y-5">
@@ -131,6 +152,13 @@ export default function LOANavigatorDemo() {
             </button>
           ))}
         </div>
+
+        <ExportBar
+          getContent={buildMarkdown}
+          filename={`${DEMO_PROFILE.companyName.replace(/\s+/g, '-')}-loa-${mode}-${state}.md`}
+          accent="#A78BFA"
+          className="ml-auto"
+        />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5">
@@ -175,32 +203,32 @@ export default function LOANavigatorDemo() {
         {/* Sidebar */}
         <div className="space-y-4">
           <div className="bg-dark-card border border-dark-border rounded-2xl p-4">
-            <p className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-3">Acme leave summary</p>
+            <p className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-3">{DEMO_PROFILE.companyName} leave summary</p>
             <div className="space-y-2 text-xs font-body">
               <div className="flex justify-between gap-2">
                 <span className="text-dark-muted">Parental leave</span>
-                <span className="text-dark-text font-semibold text-right">{ACME_PROFILE.loa.companyParentalLeave}</span>
+                <span className="text-dark-text font-semibold text-right">{DEMO_PROFILE.loa.companyParentalLeave}</span>
               </div>
               <div className="flex justify-between gap-2">
                 <span className="text-dark-muted">STD carrier</span>
-                <span className="text-dark-text">{ACME_PROFILE.loa.stdCarrier}</span>
+                <span className="text-dark-text">{DEMO_PROFILE.loa.stdCarrier}</span>
               </div>
               <div className="flex justify-between gap-2">
                 <span className="text-dark-muted">LTD carrier</span>
-                <span className="text-dark-text">{ACME_PROFILE.loa.ltdCarrier}</span>
+                <span className="text-dark-text">{DEMO_PROFILE.loa.ltdCarrier}</span>
               </div>
               <div className="flex justify-between gap-2">
                 <span className="text-dark-muted">State coverage</span>
-                <span className="text-dark-text">{ACME_PROFILE.loa.stateLeaveJurisdictions.join(', ')}</span>
+                <span className="text-dark-text">{DEMO_PROFILE.loa.stateLeaveJurisdictions.join(', ')}</span>
               </div>
               <div className="flex justify-between gap-2">
                 <span className="text-dark-muted">Return to work</span>
-                <span className="text-dark-text text-right">{ACME_PROFILE.loa.returnToWorkProcess}</span>
+                <span className="text-dark-text text-right">{DEMO_PROFILE.loa.returnToWorkProcess}</span>
               </div>
             </div>
             <div className="border-t border-dark-border mt-3 pt-3">
               <p className="text-[10px] text-dark-muted mb-1 uppercase tracking-widest">LOA contact</p>
-              <p className="text-xs text-dark-text">{ACME_PROFILE.loa.loaAdministrator}</p>
+              <p className="text-xs text-dark-text">{DEMO_PROFILE.loa.loaAdministrator}</p>
             </div>
           </div>
 
@@ -208,7 +236,7 @@ export default function LOANavigatorDemo() {
             <div className="bg-dark-card border border-dark-border rounded-2xl p-4">
               <p className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted mb-3">What to ask HR</p>
               <ul className="space-y-2">
-                {ASK_HR_CHECKLIST.map((q, i) => (
+                {askHrChecklist.map((q, i) => (
                   <li key={i} className="flex items-start gap-2 text-xs font-body text-dark-muted">
                     <span className="w-4 h-4 rounded bg-[#A78BFA]/10 border border-[#A78BFA]/30 flex items-center justify-center flex-shrink-0 text-[#A78BFA] font-bold text-[10px]">{i + 1}</span>
                     {q}

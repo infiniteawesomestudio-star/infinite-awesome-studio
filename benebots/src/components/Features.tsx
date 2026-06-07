@@ -189,7 +189,7 @@ export default function Features() {
         </h2>
         <p className="reveal text-base font-body text-dark-muted max-w-xl mx-auto leading-relaxed" style={{ transitionDelay: '0.2s' }}>
           Each agent handles a specific function, grounded in your client's actual plan data, not generic insurance content.
-          Click any card to see a live demo with Acme Industries data.
+          Click any card to see a live demo with Demo Co data.
         </p>
       </div>
 

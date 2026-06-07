@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { ACME_PROFILE } from '../data/acmeProfile'
+import { useClient } from '../client/ClientContext'
+import type { Client } from '../data/demoProfile'
+import ExportBar from '../components/ExportBar'
 
 type Step = 'q1' | 'q2' | 'q3' | 'q4' | 'result'
 type CareLevel = 'low' | 'moderate' | 'high'
@@ -14,19 +16,19 @@ interface Answers {
   budget: BudgetPreference
 }
 
-function getRecommendation(a: Answers) {
+function getRecommendation(DEMO_PROFILE: Client, a: Answers) {
   const isHDHP =
     a.care === 'low' ||
     (a.care === 'moderate' && a.hsa === 'yes' && a.budget === 'lower-now')
 
-  const plan = isHDHP ? ACME_PROFILE.medical.hdhp : ACME_PROFILE.medical.ppo
+  const plan = isHDHP ? DEMO_PROFILE.medical.hdhp : DEMO_PROFILE.medical.ppo
   const hsaNote = isHDHP
-    ? `Open an HSA. Acme seeds $${ACME_PROFILE.hsa.employerSeed.toLocaleString()}. That's free money in your account on day one. You can contribute up to $${
+    ? `Open an HSA. Demo Co seeds $${DEMO_PROFILE.hsa.employerSeed.toLocaleString()}. That's free money in your account on day one. You can contribute up to $${
         a.family === 'family'
-          ? ACME_PROFILE.hsa.limit2026Family.toLocaleString()
-          : ACME_PROFILE.hsa.limit2026Individual.toLocaleString()
-      } total for ${ACME_PROFILE.planYear}.`
-    : `You can't pair an HSA with the PPO, but a Dependent Care FSA (up to $${ACME_PROFILE.fsa.dependentCareFsa.limit.toLocaleString()}) and a Health FSA (up to $${ACME_PROFILE.fsa.healthFsa.limit.toLocaleString()}) are still available.`
+          ? DEMO_PROFILE.hsa.limit2026Family.toLocaleString()
+          : DEMO_PROFILE.hsa.limit2026Individual.toLocaleString()
+      } total for ${DEMO_PROFILE.planYear}.`
+    : `You can't pair an HSA with the PPO, but a Dependent Care FSA (up to $${DEMO_PROFILE.fsa.dependentCareFsa.limit.toLocaleString()}) and a Health FSA (up to $${DEMO_PROFILE.fsa.healthFsa.limit.toLocaleString()}) are still available.`
 
   const tradeoff = isHDHP
     ? `You're betting that your actual care costs stay below the deductible. The HSA seed and tax savings make that bet favorable for most ${a.care === 'low' ? 'low utilizers' : 'moderate utilizers who plan ahead'}.`
@@ -35,13 +37,32 @@ function getRecommendation(a: Answers) {
   const dontForget = [
     isHDHP ? `Enroll in the HSA. It doesn't open automatically` : `Check if a Limited Purpose FSA is available alongside the PPO`,
     a.family === 'family' ? `Review the family deductible: $${plan.deductible.family.toLocaleString()} for ${plan.name}` : `Your individual OOPM is $${plan.oopm.individual.toLocaleString()}`,
-    `Dental: ${ACME_PROFILE.dental.carrier}. Preventive is 100%, no deductible`,
+    `Dental: ${DEMO_PROFILE.dental.carrier}. Preventive is 100%, no deductible`,
   ]
 
   return { plan, hsaNote, tradeoff, dontForget, isHDHP }
 }
 
+function buildOEMarkdown(rec: ReturnType<typeof getRecommendation>, a: Answers): string {
+  return `# Demo Co — Open Enrollment Recommendation
+
+**Recommended plan:** ${rec.plan.name} (${rec.isHDHP ? 'HDHP + HSA pair' : 'Traditional PPO'})
+
+## HSA / FSA strategy
+${rec.hsaNote}
+
+## Don't forget
+${rec.dontForget.map(d => `- ${d}`).join('\n')}
+
+## The trade-off you're making
+${rec.tradeoff}
+
+_Based on your answers — care: ${a.care}, coverage: ${a.family}, HSA comfort: ${a.hsa}, budget: ${a.budget}. Demo mode; not a substitute for a licensed benefits advisor._
+`
+}
+
 export default function OECoachDemo() {
+  const DEMO_PROFILE = useClient()
   const [step, setStep] = useState<Step>('q1')
   const [answers, setAnswers] = useState<Partial<Answers>>({})
 
@@ -62,7 +83,7 @@ export default function OECoachDemo() {
   }
 
   const rec = step === 'result' && answers.care && answers.family && answers.hsa && answers.budget
-    ? getRecommendation(answers as Answers)
+    ? getRecommendation(DEMO_PROFILE, answers as Answers)
     : null
 
   return (
@@ -156,18 +177,25 @@ export default function OECoachDemo() {
               <p className="text-sm font-body text-dark-muted leading-relaxed italic">{rec.tradeoff}</p>
             </div>
 
-            <button
-              onClick={reset}
-              className="text-sm font-body text-dark-muted hover:text-[#FF6F61] transition-colors"
-            >
-              ← Start over
-            </button>
+            <div className="flex items-center justify-between gap-4 flex-wrap border-t border-dark-border pt-4">
+              <button
+                onClick={reset}
+                className="text-sm font-body text-dark-muted hover:text-[#FF6F61] transition-colors"
+              >
+                ← Start over
+              </button>
+              <ExportBar
+                getContent={() => buildOEMarkdown(rec, answers as Answers)}
+                filename="Demo-Co-oe-recommendation.md"
+                accent="#FF6F61"
+              />
+            </div>
           </div>
         )}
       </div>
 
       <p className="text-[10px] font-body text-dark-muted text-center">
-        Demo mode. Recommendations based on Acme Industries plan data. Not a substitute for a licensed benefits advisor.
+        Demo mode. Recommendations based on {DEMO_PROFILE.companyName} plan data. Not a substitute for a licensed benefits advisor.
       </p>
     </div>
   )
