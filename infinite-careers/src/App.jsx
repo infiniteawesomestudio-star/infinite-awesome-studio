@@ -46,14 +46,14 @@ async function callClaude({ system, messages, maxTokens = 1000 }) {
 
 // ── TOKENS ──────────────────────────────────────────────────────────────────
 const C = {
-  bg: "#05080e", card: "#0b1422", elevated: "#0f1d33", border: "rgba(255,255,255,0.06)",
-  teal: "#00d4a8", tealDim: "rgba(0,212,168,0.08)", tealGlow: "rgba(0,212,168,0.22)",
+  bg: "#04130C", card: "#0A1F15", elevated: "#143424", border: "rgba(255,255,255,0.06)",
+  teal: "#00C47A", tealDim: "rgba(0,196,122,0.08)", tealGlow: "rgba(0,196,122,0.22)",
   purple: "#9d7cf8", purpleDim: "rgba(157,124,248,0.08)",
-  amber: "#f59e0b", amberDim: "rgba(245,158,11,0.08)",
-  coral: "#ff6b6b", coralDim: "rgba(255,107,107,0.08)",
+  amber: "#F7D154", amberDim: "rgba(247,209,84,0.08)",
+  coral: "#FF6F61", coralDim: "rgba(255,111,97,0.08)",
   blue: "#3b9eff", blueDim: "rgba(59,158,255,0.08)",
   green: "#22c55e", red: "#ef4444",
-  text: "#ecf2ff", textMuted: "#7a90b8", textDim: "#2e4060",
+  text: "#F2F7F4", textMuted: "#8FA89B", textDim: "#3E5C4B",
 };
 
 // ── PRIMITIVES ───────────────────────────────────────────────────────────────
@@ -74,7 +74,7 @@ const Divider = () => <div style={{ height: 1, background: C.border, margin: "16
 
 // Bookmark badge for features needing live API integrations
 const BookmarkBadge = ({ title, reason, items = [] }) => (
-  <div style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.06), rgba(59,158,255,0.06))", border: `1px solid ${C.amber}28`, borderRadius: 12, padding: "16px 18px", marginBottom: 14 }}>
+  <div style={{ background: "linear-gradient(135deg, rgba(247,209,84,0.06), rgba(59,158,255,0.06))", border: `1px solid ${C.amber}28`, borderRadius: 12, padding: "16px 18px", marginBottom: 14 }}>
     <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 8 }}>
       <BookMarked size={14} color={C.amber} />
       <span style={{ fontSize: 12, fontWeight: 700, color: C.amber }}>INTEGRATION BOOKMARKED</span>
@@ -123,7 +123,7 @@ function CircleScore({ score, size = 140, label = "Fit Score" }) {
           style={{ transition: "stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)", filter: `drop-shadow(0 0 8px ${col}80)` }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: size * 0.24, color: col, lineHeight: 1 }}>{score}</div>
+        <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: size * 0.24, color: col, lineHeight: 1 }}>{score}</div>
         <div style={{ fontSize: 10, color: C.textMuted, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
       </div>
     </div>
@@ -139,12 +139,12 @@ const LOAD_STEPS = [
 ];
 function LoadingScreen({ step }) {
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif" }}>
       <style>{`@keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}} @keyframes dot{from{transform:translateY(0)}to{transform:translateY(-5px)}}`}</style>
       <div style={{ width: 72, height: 72, borderRadius: "50%", background: C.tealDim, border: `1px solid ${C.teal}40`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 28, animation: "pulse 2s ease-in-out infinite" }}>
         <Brain size={30} color={C.teal} />
       </div>
-      <div style={{ fontFamily: "Syne,sans-serif", fontSize: 22, fontWeight: 800, color: C.text, marginBottom: 5 }}>Building your intelligence report…</div>
+      <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 22, fontWeight: 700, color: C.text, marginBottom: 5 }}>Building your intelligence report…</div>
       <div style={{ color: C.textMuted, fontSize: 13, marginBottom: 40 }}>Dual AI analysis running in parallel</div>
       <div style={{ width: 360, display: "flex", flexDirection: "column", gap: 6 }}>
         {LOAD_STEPS.map(({ l, I }, i) => {
@@ -152,7 +152,7 @@ function LoadingScreen({ step }) {
           return (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 11, padding: "9px 13px", borderRadius: 9, background: done ? C.tealDim : active ? C.elevated : "transparent", border: `1px solid ${done ? C.teal+"28" : active ? C.border : "transparent"}`, transition: "all 0.3s ease", opacity: i > step + 3 ? 0.15 : 1 }}>
               <div style={{ width: 24, height: 24, borderRadius: "50%", background: done ? C.teal : C.elevated, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                {done ? <CheckCircle size={11} color="#000" /> : <I size={11} color={active ? C.teal : C.textDim} />}
+                {done ? <CheckCircle size={11} color="#04130C" /> : <I size={11} color={active ? C.teal : C.textDim} />}
               </div>
               <span style={{ fontSize: 12, color: done ? C.teal : active ? C.text : C.textDim, fontWeight: active ? 600 : 400, flex: 1 }}>{l}</span>
               {active && [0,1,2].map(j => <div key={j} style={{ width: 4, height: 4, borderRadius: "50%", background: C.teal, animation: `dot 0.5s ease-in-out ${j*0.17}s infinite alternate` }} />)}
@@ -284,24 +284,24 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
   const ta = (v, s) => ({
     width: "100%", height: 220, padding: 13, borderRadius: 10, background: C.card,
     border: `1px solid ${v ? C.teal+"50" : C.border}`, color: C.text, fontSize: 13,
-    lineHeight: 1.75, fontFamily: "Plus Jakarta Sans,sans-serif", resize: "vertical",
+    lineHeight: 1.75, fontFamily: "Inter,sans-serif", resize: "vertical",
     outline: "none", boxSizing: "border-box", transition: "border-color 0.2s",
   });
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Plus Jakarta Sans,sans-serif", color: C.text }}>
+    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Inter,sans-serif", color: C.text }}>
       <div style={{ borderBottom: `1px solid ${C.border}`, padding: "16px 28px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: C.tealDim, border: `1px solid ${C.teal}30`, display: "flex", alignItems: "center", justifyContent: "center" }}><Brain size={15} color={C.teal} /></div>
-          <div><div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 15 }}>Infinite Careers</div><div style={{ fontSize: 10, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.09em" }}>Career Intelligence · Infinite Awesome Studio</div></div>
+          <div><div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 15 }}>Infinite Careers</div><div style={{ fontSize: 10, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.09em" }}>Career Intelligence · Infinite Awesome Studio</div></div>
         </div>
         {DEMO_MODE
-          ? <span style={{ padding: "5px 11px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.tealDim, border: `1px solid ${C.teal}30`, color: C.teal, fontFamily: "Plus Jakarta Sans,sans-serif", letterSpacing: "0.04em" }}>LIVE DEMO</span>
-          : <button onClick={() => { setJob(DEMO_JD); setRes(DEMO_RES); }} style={{ padding: "7px 13px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif" }}>Load Demo ↗</button>}
+          ? <span style={{ padding: "5px 11px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.tealDim, border: `1px solid ${C.teal}30`, color: C.teal, fontFamily: "Inter,sans-serif", letterSpacing: "0.04em" }}>LIVE DEMO</span>
+          : <button onClick={() => { setJob(DEMO_JD); setRes(DEMO_RES); }} style={{ padding: "7px 13px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Load Demo ↗</button>}
       </div>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "44px 24px 80px" }}>
         <div style={{ textAlign: "center", marginBottom: 42 }}>
           <Chip text="16 AI-Powered Intelligence Modules" color={C.teal} size={11} />
-          <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "clamp(26px,4vw,44px)", letterSpacing: "-0.03em", lineHeight: 1.1, margin: "14px 0 11px" }}>
+          <h1 style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: "clamp(26px,4vw,44px)", letterSpacing: "-0.03em", lineHeight: 1.1, margin: "14px 0 11px" }}>
             Know every dimension of your<br /><span style={{ color: C.teal }}>career fit.</span>
           </h1>
           <p style={{ color: C.textMuted, fontSize: 14, maxWidth: 480, margin: "0 auto", lineHeight: 1.8 }}>Interview prediction, salary benchmarking, bias detection, career trajectory modeling and real-time market intelligence — all from one analysis.</p>
@@ -321,11 +321,11 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 28 }}>
           {DEMO_MODE ? (
             <>
-              <button onClick={onRunDemo} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Syne,sans-serif", border: "none", background: `linear-gradient(135deg, ${C.teal}, #00a88a)`, color: "#000", cursor: "pointer", boxShadow: `0 0 36px ${C.tealGlow}`, transition: "all 0.25s ease" }}>▶ Run the Demo</button>
-              <button onClick={() => onAnalyze(job, res)} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif" }}>Analyze your own resume → <span style={{ color: C.teal, fontWeight: 600 }}>Full version coming soon</span></button>
+              <button onClick={onRunDemo} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", border: "none", background: `linear-gradient(135deg, ${C.teal}, #009A5F)`, color: "#04130C", cursor: "pointer", boxShadow: `0 0 36px ${C.tealGlow}`, transition: "all 0.25s ease" }}>▶ Run the Demo</button>
+              <button onClick={() => onAnalyze(job, res)} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Analyze your own resume → <span style={{ color: C.teal, fontWeight: 600 }}>Full version coming soon</span></button>
             </>
           ) : (
-            <button onClick={() => onAnalyze(job, res)} disabled={!ready} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Syne,sans-serif", border: "none", background: ready ? `linear-gradient(135deg, ${C.teal}, #00a88a)` : C.elevated, color: ready ? "#000" : C.textDim, cursor: ready ? "pointer" : "not-allowed", boxShadow: ready ? `0 0 36px ${C.tealGlow}` : "none", transition: "all 0.25s ease" }}>Run Full Analysis →</button>
+            <button onClick={() => onAnalyze(job, res)} disabled={!ready} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", border: "none", background: ready ? `linear-gradient(135deg, ${C.teal}, #009A5F)` : C.elevated, color: ready ? "#04130C" : C.textDim, cursor: ready ? "pointer" : "not-allowed", boxShadow: ready ? `0 0 36px ${C.tealGlow}` : "none", transition: "all 0.25s ease" }}>Run Full Analysis →</button>
           )}
         </div>
         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 14 }}>
@@ -364,7 +364,7 @@ function OverviewTab({ d, onTabChange }) {
           {quickMetrics.map(({ label, val, color, I, tab }) => (
             <Card key={label} style={{ padding: "14px 12px", textAlign: "center", cursor: tab ? "pointer" : "default" }} onClick={() => tab && onTabChange(tab)}>
               <I size={16} color={color} style={{ marginBottom: 6 }} />
-              <div style={{ fontFamily: "Syne,sans-serif", fontSize: 18, fontWeight: 800, color }}>{typeof val === "string" ? val.toUpperCase() : val}</div>
+              <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 18, fontWeight: 700, color }}>{typeof val === "string" ? val.toUpperCase() : val}</div>
               <div style={{ fontSize: 10, color: C.textMuted, marginTop: 3 }}>{label}</div>
             </Card>
           ))}
@@ -384,12 +384,12 @@ function OverviewTab({ d, onTabChange }) {
         <Card>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
             <SLabel>Missing ATS Keywords</SLabel>
-            <div style={{ fontFamily: "Syne,sans-serif", fontSize: 22, fontWeight: 800, color: C.amber, lineHeight: 1, marginTop: -2 }}>{d.atsKeywords?.matchScore ?? 0}%</div>
+            <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 22, fontWeight: 700, color: C.amber, lineHeight: 1, marginTop: -2 }}>{d.atsKeywords?.matchScore ?? 0}%</div>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
             {(d.atsKeywords?.missing || []).map(k => <Chip key={k} text={`+ ${k}`} color={C.red} />)}
           </div>
-          <button onClick={() => onTabChange("resume")} style={{ width: "100%", padding: "10px 0", borderRadius: 8, background: C.tealDim, border: `1px solid ${C.teal}28`, color: C.teal, fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <button onClick={() => onTabChange("resume")} style={{ width: "100%", padding: "10px 0", borderRadius: 8, background: C.tealDim, border: `1px solid ${C.teal}28`, color: C.teal, fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "Inter,sans-serif", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
             <Sparkles size={13} /> Optimize Resume with AI
           </button>
         </Card>
@@ -401,7 +401,7 @@ function OverviewTab({ d, onTabChange }) {
           { I: GitBranch, title: "Career Path", desc: `${d.careerProgression?.successProbability ?? 0}% success probability`, tab: "career", color: C.teal },
           { I: Flag, title: "Bias Analysis", desc: `${d.biasAnalysis?.biasedPhrases?.length ?? 0} flags in JD`, tab: "bias", color: C.coral },
         ].map(({ I, title, desc, tab, color }) => (
-          <button key={tab} onClick={() => onTabChange(tab)} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8, padding: "14px 14px", borderRadius: 11, background: C.elevated, border: `1px solid ${C.border}`, cursor: "pointer", textAlign: "left", fontFamily: "Plus Jakarta Sans,sans-serif" }}>
+          <button key={tab} onClick={() => onTabChange(tab)} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8, padding: "14px 14px", borderRadius: 11, background: C.elevated, border: `1px solid ${C.border}`, cursor: "pointer", textAlign: "left", fontFamily: "Inter,sans-serif" }}>
             <div style={{ width: 34, height: 34, borderRadius: 9, background: `${color}12`, display: "flex", alignItems: "center", justifyContent: "center" }}><I size={16} color={color} /></div>
             <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{title}</div>
             <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5 }}>{desc}</div>
@@ -444,12 +444,12 @@ function GapTab({ d }) {
         {(d.learningPath || []).map((phase, pi) => (
           <div key={pi} style={{ display: "flex", gap: 16, marginBottom: pi < (d.learningPath.length - 1) ? 0 : 0 }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, width: 30 }}>
-              <div style={{ width: 30, height: 30, borderRadius: "50%", background: `${phaseC[pi%3]}15`, border: `2px solid ${phaseC[pi%3]}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Syne,sans-serif", fontSize: 12, fontWeight: 800, color: phaseC[pi%3], zIndex: 1, marginTop: 4, flexShrink: 0 }}>{pi+1}</div>
+              <div style={{ width: 30, height: 30, borderRadius: "50%", background: `${phaseC[pi%3]}15`, border: `2px solid ${phaseC[pi%3]}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Grotesk,sans-serif", fontSize: 12, fontWeight: 700, color: phaseC[pi%3], zIndex: 1, marginTop: 4, flexShrink: 0 }}>{pi+1}</div>
               {pi < (d.learningPath.length - 1) && <div style={{ width: 2, flex: 1, minHeight: 28, background: `linear-gradient(${phaseC[pi%3]}, ${phaseC[(pi+1)%3]})`, opacity: 0.22, marginTop: 3, marginBottom: 3 }} />}
             </div>
             <div style={{ flex: 1, paddingBottom: pi < d.learningPath.length-1 ? 20 : 0, paddingTop: 3 }}>
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 13, color: phaseC[pi%3] }}>{phase.phase}</div>
+                <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 13, color: phaseC[pi%3] }}>{phase.phase}</div>
                 <div style={{ fontSize: 12, color: C.textMuted }}>{phase.timeframe}</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -497,9 +497,9 @@ function ResumeTab({ jobDesc, resume, atsData }) {
   if (status === "comingSoon") return (
     <Card style={{ textAlign: "center", padding: "48px 28px" }}>
       <div style={{ width: 56, height: 56, borderRadius: "50%", background: C.tealDim, border: `1px solid ${C.teal}30`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px" }}><Lock size={24} color={C.teal} /></div>
-      <div style={{ fontFamily: "Syne,sans-serif", fontSize: 20, fontWeight: 800, marginBottom: 7, color: C.text }}>Full version coming soon</div>
+      <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 20, fontWeight: 700, marginBottom: 7, color: C.text }}>Full version coming soon</div>
       <p style={{ color: C.textMuted, fontSize: 13, maxWidth: 380, margin: "0 auto 20px", lineHeight: 1.75 }}>Live resume optimization runs in the full Infinite Careers release. Want it on your real resume now?</p>
-      <a href={BOOK_CALL_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "11px 26px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: "Syne,sans-serif", textDecoration: "none", background: `linear-gradient(135deg, ${C.teal}, #00a88a)`, color: "#000" }}>Book a working session →</a>
+      <a href={BOOK_CALL_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "11px 26px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", textDecoration: "none", background: `linear-gradient(135deg, ${C.teal}, #009A5F)`, color: "#04130C" }}>Book a working session →</a>
     </Card>
   );
   if (status === "loading") return <Card style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, padding: 60 }}><style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style><div style={{ width: 40, height: 40, borderRadius: "50%", border: `3px solid ${C.teal}`, borderTopColor: "transparent", animation: "spin 0.7s linear infinite" }} /><div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Optimizing with Claude AI…</div></Card>;
@@ -507,22 +507,22 @@ function ResumeTab({ jobDesc, resume, atsData }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <Card style={{ textAlign: "center", padding: "40px 28px" }}>
         <div style={{ width: 56, height: 56, borderRadius: "50%", background: C.tealDim, border: `1px solid ${C.teal}30`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px" }}><Sparkles size={24} color={C.teal} /></div>
-        <div style={{ fontFamily: "Syne,sans-serif", fontSize: 20, fontWeight: 800, marginBottom: 7, color: C.text }}>AI Resume Optimizer</div>
+        <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 20, fontWeight: 700, marginBottom: 7, color: C.text }}>AI Resume Optimizer</div>
         <p style={{ color: C.textMuted, fontSize: 13, maxWidth: 400, margin: "0 auto 20px", lineHeight: 1.75 }}>Claude rewrites your experience section with injected ATS keywords, quantified achievements and industry-specific language.</p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center", marginBottom: 22 }}>
           {["ATS keyword injection","Achievement quantification","Action verb optimization","Industry language"].map(f => <Chip key={f} text={`✓ ${f}`} color={C.teal} size={11} />)}
         </div>
         {err && <div style={{ color: C.red, fontSize: 12, marginBottom: 14, padding: "8px 12px", borderRadius: 7, background: C.coralDim }}>{err}</div>}
-        <button onClick={run} style={{ padding: "12px 36px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: "Syne,sans-serif", background: `linear-gradient(135deg, ${C.teal}, #00a88a)`, color: "#000", border: "none", cursor: "pointer" }}>Optimize My Resume →</button>
+        <button onClick={run} style={{ padding: "12px 36px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", background: `linear-gradient(135deg, ${C.teal}, #009A5F)`, color: "#04130C", border: "none", cursor: "pointer" }}>Optimize My Resume →</button>
       </Card>
       <Card style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         <div style={{ textAlign: "center", padding: "10px 0" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 7 }}>Current ATS Match</div>
-          <div style={{ fontFamily: "Syne,sans-serif", fontSize: 38, fontWeight: 800, color: C.red }}>{atsData?.matchScore ?? 0}%</div>
+          <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 38, fontWeight: 700, color: C.red }}>{atsData?.matchScore ?? 0}%</div>
         </div>
         <div style={{ textAlign: "center", padding: "10px 0", opacity: 0.35 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 7 }}>After Optimization</div>
-          <div style={{ fontFamily: "Syne,sans-serif", fontSize: 38, fontWeight: 800, color: C.teal }}>?%</div>
+          <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 38, fontWeight: 700, color: C.teal }}>?%</div>
         </div>
       </Card>
     </div>
@@ -530,14 +530,14 @@ function ResumeTab({ jobDesc, resume, atsData }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 12, alignItems: "center" }}>
-        <Card style={{ textAlign: "center" }}><div style={{ fontSize: 10, fontWeight: 700, color: C.red, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 6 }}>Before</div><div style={{ fontFamily: "Syne,sans-serif", fontSize: 36, fontWeight: 800, color: C.red }}>{result.atsScoreBefore}%</div></Card>
-        <div style={{ textAlign: "center" }}><div style={{ fontFamily: "Syne,sans-serif", fontSize: 14, fontWeight: 800, color: C.teal }}>+{result.atsScoreAfter - result.atsScoreBefore}%</div><ChevronRight size={18} color={C.teal} /></div>
-        <Card style={{ textAlign: "center", border: `1px solid ${C.teal}28` }}><div style={{ fontSize: 10, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 6 }}>After</div><div style={{ fontFamily: "Syne,sans-serif", fontSize: 36, fontWeight: 800, color: C.teal }}>{result.atsScoreAfter}%</div></Card>
+        <Card style={{ textAlign: "center" }}><div style={{ fontSize: 10, fontWeight: 700, color: C.red, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 6 }}>Before</div><div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 36, fontWeight: 700, color: C.red }}>{result.atsScoreBefore}%</div></Card>
+        <div style={{ textAlign: "center" }}><div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 14, fontWeight: 700, color: C.teal }}>+{result.atsScoreAfter - result.atsScoreBefore}%</div><ChevronRight size={18} color={C.teal} /></div>
+        <Card style={{ textAlign: "center", border: `1px solid ${C.teal}28` }}><div style={{ fontSize: 10, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 6 }}>After</div><div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 36, fontWeight: 700, color: C.teal }}>{result.atsScoreAfter}%</div></Card>
       </div>
       {(result.keywordsAdded||[]).length > 0 && <Card><SLabel>Keywords Injected</SLabel><div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{result.keywordsAdded.map(k => <Chip key={k} text={`+ ${k}`} color={C.teal} />)}</div></Card>}
       {(result.sections||[]).map((s, i) => (
         <Card key={i}>
-          <div style={{ fontFamily: "Syne,sans-serif", fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 12 }}>{s.title}</div>
+          <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 12 }}>{s.title}</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             {[{label:"Original",txt:s.original,col:C.red},{label:"AI Optimized",txt:s.optimized,col:C.teal}].map(({label,txt,col}) => (
               <div key={label}><div style={{ fontSize: 10, fontWeight: 700, color: col, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 7 }}>{label}</div>
@@ -549,7 +549,7 @@ function ResumeTab({ jobDesc, resume, atsData }) {
         </Card>
       ))}
       {result.generalAdvice && <Card accent={C.teal}><SLabel color={C.teal}>Recommendations</SLabel><p style={{ color: C.text, fontSize: 13, lineHeight: 1.8, margin: 0 }}>{result.generalAdvice}</p></Card>}
-      <button onClick={() => { setStatus("idle"); setResult(null); }} style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 8, color: C.textMuted, padding: "9px 0", cursor: "pointer", fontSize: 13, fontFamily: "Plus Jakarta Sans,sans-serif" }}>↺ Regenerate</button>
+      <button onClick={() => { setStatus("idle"); setResult(null); }} style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 8, color: C.textMuted, padding: "9px 0", cursor: "pointer", fontSize: 13, fontFamily: "Inter,sans-serif" }}>↺ Regenerate</button>
     </div>
   );
 }
@@ -584,7 +584,7 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
       <Card accent={C.purple} style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <div style={{ width: 44, height: 44, borderRadius: 11, background: C.purpleDim, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><MessageSquare size={20} color={C.purple} /></div>
         <div>
-          <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 15, color: C.text, marginBottom: 3 }}>AI-Predicted Interview Questions</div>
+          <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 15, color: C.text, marginBottom: 3 }}>AI-Predicted Interview Questions</div>
           <div style={{ fontSize: 12, color: C.textMuted }}>{questions.length} questions generated from job requirements and your gap profile. Click any question to practice your answer and receive AI coaching.</div>
         </div>
       </Card>
@@ -608,9 +608,9 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
                 const isLoading = loading[idx];
                 return (
                   <div key={qi} style={{ borderRadius: 10, background: C.elevated, border: `1px solid ${isOpen ? col+"30" : C.border}`, overflow: "hidden", transition: "border-color 0.2s" }}>
-                    <button onClick={() => setOpenIdx(isOpen ? null : idx)} style={{ width: "100%", padding: "13px 14px", background: "none", border: "none", cursor: "pointer", textAlign: "left", display: "flex", alignItems: "flex-start", gap: 10, fontFamily: "Plus Jakarta Sans,sans-serif" }}>
+                    <button onClick={() => setOpenIdx(isOpen ? null : idx)} style={{ width: "100%", padding: "13px 14px", background: "none", border: "none", cursor: "pointer", textAlign: "left", display: "flex", alignItems: "flex-start", gap: 10, fontFamily: "Inter,sans-serif" }}>
                       <div style={{ width: 22, height: 22, borderRadius: 6, background: `${col}14`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                        <span style={{ fontSize: 10, fontWeight: 800, color: col }}>{qi+1}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: col }}>{qi+1}</span>
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.55, marginBottom: 4 }}>{q.question}</div>
@@ -626,9 +626,9 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
                         {q.hint && <div style={{ fontSize: 12, color: col, padding: "8px 11px", borderRadius: 7, background: `${col}0d`, marginBottom: 12, lineHeight: 1.65 }}>💡 {q.hint}</div>}
                         <div style={{ marginBottom: 10 }}>
                           <div style={{ fontSize: 11, fontWeight: 700, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7 }}>Your Practice Answer</div>
-                          <textarea value={answers[idx] || ""} onChange={e => setAnswers(a => ({...a, [idx]: e.target.value}))} placeholder="Type your answer here… try to use the STAR format for behavioral questions." style={{ width: "100%", minHeight: 100, padding: 11, borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.text, fontSize: 12, lineHeight: 1.75, fontFamily: "Plus Jakarta Sans,sans-serif", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+                          <textarea value={answers[idx] || ""} onChange={e => setAnswers(a => ({...a, [idx]: e.target.value}))} placeholder="Type your answer here… try to use the STAR format for behavioral questions." style={{ width: "100%", minHeight: 100, padding: 11, borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.text, fontSize: 12, lineHeight: 1.75, fontFamily: "Inter,sans-serif", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
                         </div>
-                        <button onClick={() => getCoaching(idx, q.question, answers[idx] || "")} disabled={!answers[idx]?.trim() || isLoading} style={{ padding: "9px 20px", borderRadius: 8, fontSize: 12, fontWeight: 700, fontFamily: "Syne,sans-serif", background: answers[idx]?.trim() ? `linear-gradient(135deg, ${col}, ${col}bb)` : C.elevated, color: answers[idx]?.trim() ? (cat === "culture" ? "#000" : "#000") : C.textDim, border: "none", cursor: answers[idx]?.trim() ? "pointer" : "not-allowed" }}>
+                        <button onClick={() => getCoaching(idx, q.question, answers[idx] || "")} disabled={!answers[idx]?.trim() || isLoading} style={{ padding: "9px 20px", borderRadius: 8, fontSize: 12, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", background: answers[idx]?.trim() ? `linear-gradient(135deg, ${col}, ${col}bb)` : C.elevated, color: answers[idx]?.trim() ? (cat === "culture" ? "#04130C" : "#04130C") : C.textDim, border: "none", cursor: answers[idx]?.trim() ? "pointer" : "not-allowed" }}>
                           {isLoading ? "Analyzing…" : "Get AI Coaching →"}
                         </button>
                         {coach?.comingSoon && (
@@ -642,7 +642,7 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
                             <Divider />
                             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 12 }}>
                               <div style={{ textAlign: "center", padding: "10px 8px", borderRadius: 8, background: C.card }}>
-                                <div style={{ fontFamily: "Syne,sans-serif", fontSize: 24, fontWeight: 800, color: coach.score >= 80 ? C.teal : coach.score >= 60 ? C.amber : C.red }}>{coach.score}</div>
+                                <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 24, fontWeight: 700, color: coach.score >= 80 ? C.teal : coach.score >= 60 ? C.amber : C.red }}>{coach.score}</div>
                                 <div style={{ fontSize: 11, color: C.textMuted }}>{coach.scoreLabel}</div>
                               </div>
                               <div style={{ padding: "10px 8px", borderRadius: 8, background: C.card }}>
@@ -716,7 +716,7 @@ function MarketTab({ d }) {
         ].map(({ label, val, color, I, sub }) => (
           <Card key={label} style={{ textAlign: "center" }}>
             <div style={{ width: 38, height: 38, borderRadius: 9, background: `${color}12`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}><I size={17} color={color} /></div>
-            <div style={{ fontFamily: "Syne,sans-serif", fontSize: 17, fontWeight: 800, color, marginBottom: 3 }}>{val}</div>
+            <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 17, fontWeight: 700, color, marginBottom: 3 }}>{val}</div>
             <div style={{ fontSize: 11, fontWeight: 600, color: C.textMuted }}>{label}</div>
             <div style={{ fontSize: 10, color: C.textDim }}>{sub}</div>
           </Card>
@@ -823,12 +823,12 @@ function CompetitiveTab({ d }) {
                   style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)", filter: `drop-shadow(0 0 6px ${comp.color}70)` }} />
               </svg>
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 18, color: comp.color, lineHeight: 1 }}>{comp.pct}%</div>
+                <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 18, color: comp.color, lineHeight: 1 }}>{comp.pct}%</div>
                 <div style={{ fontSize: 9, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.05em" }}>Density</div>
               </div>
             </div>
             <div>
-              <div style={{ fontFamily: "Syne,sans-serif", fontSize: 16, fontWeight: 700, color: comp.color, marginBottom: 5 }}>{(d.marketIntelligence?.competitionLevel || "Medium").toUpperCase()} Competition</div>
+              <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 16, fontWeight: 700, color: comp.color, marginBottom: 5 }}>{(d.marketIntelligence?.competitionLevel || "Medium").toUpperCase()} Competition</div>
               <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.65 }}>{comp.desc}</div>
             </div>
           </div>
@@ -861,7 +861,7 @@ function CompetitiveTab({ d }) {
           ].map(({ label, val, color, I }) => (
             <div key={label} style={{ padding: "12px 10px", borderRadius: 10, background: C.elevated, textAlign: "center" }}>
               <I size={15} color={color} style={{ marginBottom: 7 }} />
-              <div style={{ fontFamily: "Syne,sans-serif", fontSize: 14, fontWeight: 800, color }}>{val}</div>
+              <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 14, fontWeight: 700, color }}>{val}</div>
               <div style={{ fontSize: 10, color: C.textMuted, marginTop: 3 }}>{label}</div>
             </div>
           ))}
@@ -905,7 +905,7 @@ function IndustryTab({ d }) {
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
           <div style={{ width: 44, height: 44, borderRadius: 11, background: `${cfg.color}14`, display: "flex", alignItems: "center", justifyContent: "center" }}><CfgI size={21} color={cfg.color} /></div>
           <div>
-            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 15, color: C.text }}>Vertical: {cfg.label} Analysis</div>
+            <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 15, color: C.text }}>Vertical: {cfg.label} Analysis</div>
             <div style={{ fontSize: 12, color: C.textMuted }}>Industry-specific scoring model active</div>
           </div>
           <Chip text={vertical.toUpperCase()} color={cfg.color} size={11} />
@@ -943,7 +943,7 @@ function IndustryTab({ d }) {
             <div key={label} style={{ padding: "13px 14px", borderRadius: 10, background: C.elevated, border: `1px solid ${C.border}` }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
                 <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{label}</span>
-                <span style={{ fontFamily: "Syne,sans-serif", fontSize: 16, fontWeight: 800, color }}>{score}%</span>
+                <span style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 16, fontWeight: 700, color }}>{score}%</span>
               </div>
               <AnimBar label="" pct={score} color={color} />
               <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.55 }}>{desc}</div>
@@ -978,7 +978,12 @@ function IndustryTab({ d }) {
 function CareerTab({ d }) {
   const cp = d.careerProgression || {};
   const pathways = cp.pathways || [];
-  const chartData = pathways.length > 0 ? pathways : [
+  // Pathways carry salaryRange strings ("$90k–$115k"); the chart needs numeric
+  // salary/upper keys, so parse the bounds out (values are already in $K).
+  const chartData = pathways.length > 0 ? pathways.map(p => {
+    const nums = (p.salaryRange || "").match(/\d+/g)?.map(Number) || [];
+    return { year: p.year, role: p.role, salary: nums[0] ?? 0, upper: nums[1] ?? nums[0] ?? 0 };
+  }) : [
     { year: "Now", salary: d.marketIntelligence?.salaryMin || 80, upper: d.marketIntelligence?.salaryMin || 80, role: "Current Level" },
     { year: "Yr 1", salary: (d.marketIntelligence?.salaryMin || 80) * 1.1, upper: (d.marketIntelligence?.salaryMin || 80) * 1.2, role: "Growth" },
     { year: "Yr 2", salary: (d.marketIntelligence?.salaryMin || 80) * 1.22, upper: (d.marketIntelligence?.salaryMin || 80) * 1.4, role: "Skilled" },
@@ -1022,8 +1027,8 @@ function CareerTab({ d }) {
             {pathways.slice(0,4).map((p, i) => (
               <div key={i} style={{ padding: "13px 12px", borderRadius: 10, background: C.elevated, border: `1px solid ${C.border}` }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 5 }}>{p.year}</div>
-                <div style={{ fontFamily: "Syne,sans-serif", fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 4, lineHeight: 1.3 }}>{p.role}</div>
-                <div style={{ fontFamily: "Syne,sans-serif", fontSize: 15, fontWeight: 800, color: C.teal, marginBottom: 4 }}>{p.salaryRange}</div>
+                <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 4, lineHeight: 1.3 }}>{p.role}</div>
+                <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 15, fontWeight: 700, color: C.teal, marginBottom: 4 }}>{p.salaryRange}</div>
                 <div style={{ fontSize: 10, color: C.textMuted }}>{p.probability}% probability</div>
               </div>
             ))}
@@ -1090,7 +1095,7 @@ function BiasTab({ d }) {
             <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 12px", borderRadius: 16, background: `${bl.color}14`, border: `1px solid ${bl.color}30`, marginBottom: 10 }}>
               <Flag size={12} color={bl.color} /><span style={{ fontSize: 11, fontWeight: 700, color: bl.color }}>{bl.label}</span>
             </div>
-            <div style={{ fontFamily: "Syne,sans-serif", fontSize: 17, fontWeight: 700, color: C.text, marginBottom: 7 }}>Unconscious Bias Analysis</div>
+            <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 17, fontWeight: 700, color: C.text, marginBottom: 7 }}>Unconscious Bias Analysis</div>
             <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.75, margin: 0 }}>This analysis scans the job description for language patterns associated with gender, age, cultural, or socioeconomic bias — and flags non-traditional career path penalties. A higher fairness score means more inclusive language.</p>
           </div>
         </div>
@@ -1165,12 +1170,12 @@ function DashboardTab({ d }) {
         <Card>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
             <SLabel>Career Health Radar</SLabel>
-            <div style={{ fontFamily: "Syne,sans-serif", fontSize: 26, fontWeight: 800, color: C.teal, lineHeight: 1, marginTop: -2 }}>{d.careerHealth?.overall ?? 0}%</div>
+            <div style={{ fontFamily: "Space Grotesk,sans-serif", fontSize: 26, fontWeight: 700, color: C.teal, lineHeight: 1, marginTop: -2 }}>{d.careerHealth?.overall ?? 0}%</div>
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <RadarChart data={radarData} margin={{ top: 8, right: 20, bottom: 8, left: 20 }}>
               <PolarGrid stroke={C.border} />
-              <PolarAngleAxis dataKey="metric" tick={{ fill: C.textMuted, fontSize: 10, fontFamily: "Plus Jakarta Sans,sans-serif" }} />
+              <PolarAngleAxis dataKey="metric" tick={{ fill: C.textMuted, fontSize: 10, fontFamily: "Inter,sans-serif" }} />
               <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
               <Radar dataKey="value" stroke={C.teal} fill={C.teal} fillOpacity={0.13} strokeWidth={2} dot={{ fill: C.teal, r: 3, strokeWidth: 0 }} />
             </RadarChart>
@@ -1203,12 +1208,12 @@ function DashboardTab({ d }) {
       <Card>
         <SLabel>Application Tracker</SLabel>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto auto", gap: 8, marginBottom: 12, alignItems: "end" }}>
-          <input value={newApp.company} onChange={e => setNewApp(n => ({...n, company: e.target.value}))} placeholder="Company" style={{ padding: "8px 11px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "Plus Jakarta Sans,sans-serif", outline: "none" }} />
-          <input value={newApp.role} onChange={e => setNewApp(n => ({...n, role: e.target.value}))} placeholder="Role" style={{ padding: "8px 11px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "Plus Jakarta Sans,sans-serif", outline: "none" }} />
-          <select value={newApp.status} onChange={e => setNewApp(n => ({...n, status: e.target.value}))} style={{ padding: "8px 11px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "Plus Jakarta Sans,sans-serif", outline: "none" }}>
+          <input value={newApp.company} onChange={e => setNewApp(n => ({...n, company: e.target.value}))} placeholder="Company" style={{ padding: "8px 11px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "Inter,sans-serif", outline: "none" }} />
+          <input value={newApp.role} onChange={e => setNewApp(n => ({...n, role: e.target.value}))} placeholder="Role" style={{ padding: "8px 11px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "Inter,sans-serif", outline: "none" }} />
+          <select value={newApp.status} onChange={e => setNewApp(n => ({...n, status: e.target.value}))} style={{ padding: "8px 11px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "Inter,sans-serif", outline: "none" }}>
             {statuses.map(s => <option key={s}>{s}</option>)}
           </select>
-          <button onClick={() => { if (newApp.company && newApp.role) { setApps(a => [...a, { ...newApp, id: Date.now() }]); setNewApp({ company: "", role: "", status: "Applied" }); }}} style={{ padding: "8px 16px", borderRadius: 7, background: C.teal, border: "none", color: "#000", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif", whiteSpace: "nowrap" }}>+ Add</button>
+          <button onClick={() => { if (newApp.company && newApp.role) { setApps(a => [...a, { ...newApp, id: Date.now() }]); setNewApp({ company: "", role: "", status: "Applied" }); }}} style={{ padding: "8px 16px", borderRadius: 7, background: C.teal, border: "none", color: "#04130C", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "Inter,sans-serif", whiteSpace: "nowrap" }}>+ Add</button>
         </div>
         {apps.length === 0 ? (
           <div style={{ textAlign: "center", padding: "20px 0", color: C.textDim, fontSize: 13 }}>No applications tracked yet. Add your first above.</div>
@@ -1255,15 +1260,15 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
   const [tab, setTab] = useState("overview");
   const curr = NAV_ITEMS.find(n => n.id === tab);
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Plus Jakarta Sans,sans-serif", color: C.text, display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Inter,sans-serif", color: C.text, display: "flex", flexDirection: "column" }}>
       {/* Top bar */}
       <div style={{ borderBottom: `1px solid ${C.border}`, padding: "13px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, background: C.bg + "f0", zIndex: 30, backdropFilter: "blur(14px)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 28, height: 28, borderRadius: 7, background: C.tealDim, display: "flex", alignItems: "center", justifyContent: "center" }}><Brain size={13} color={C.teal} /></div>
-          <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 14 }}>Infinite Careers</span>
+          <span style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 14 }}>Infinite Careers</span>
           <span style={{ padding: "2px 7px", borderRadius: 5, background: C.tealDim, color: C.teal, fontSize: 9, fontWeight: 700, letterSpacing: "0.07em" }}>REPORT READY · {analysis.fitScore}% FIT</span>
         </div>
-        <button onClick={onReset} style={{ padding: "6px 13px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif", display: "flex", alignItems: "center", gap: 5 }}>
+        <button onClick={onReset} style={{ padding: "6px 13px", borderRadius: 7, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "Inter,sans-serif", display: "flex", alignItems: "center", gap: 5 }}>
           <RefreshCw size={11} /> New Analysis
         </button>
       </div>
@@ -1274,7 +1279,7 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
           {NAV_ITEMS.map(({ id, label, I, color }) => {
             const active = tab === id;
             return (
-              <button key={id} onClick={() => setTab(id)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 11px", borderRadius: 8, border: "none", background: active ? `${color}12` : "transparent", cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif", marginBottom: 2, transition: "background 0.15s ease" }}>
+              <button key={id} onClick={() => setTab(id)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 11px", borderRadius: 8, border: "none", background: active ? `${color}12` : "transparent", cursor: "pointer", fontFamily: "Inter,sans-serif", marginBottom: 2, transition: "background 0.15s ease" }}>
                 <I size={14} color={active ? color : C.textDim} />
                 <span style={{ fontSize: 12, fontWeight: active ? 700 : 400, color: active ? color : C.textMuted, textAlign: "left" }}>{label}</span>
                 {active && <div style={{ width: 4, height: 4, borderRadius: "50%", background: color, marginLeft: "auto" }} />}
@@ -1289,7 +1294,7 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
             {curr && <div style={{ width: 32, height: 32, borderRadius: 8, background: `${curr.color}12`, display: "flex", alignItems: "center", justifyContent: "center" }}><curr.I size={15} color={curr.color} /></div>}
             <div>
-              <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 18, letterSpacing: "-0.02em", color: C.text }}>{curr?.label}</div>
+              <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "-0.02em", color: C.text }}>{curr?.label}</div>
             </div>
           </div>
 
@@ -1312,16 +1317,16 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
 // ── COMING SOON (public demo: live analysis gated) ───────────────────────────
 function ComingSoon({ onBack, onRunDemo }) {
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Plus Jakarta Sans,sans-serif", color: C.text, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Inter,sans-serif", color: C.text, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ maxWidth: 470, textAlign: "center" }}>
         <div style={{ width: 60, height: 60, borderRadius: 14, background: C.tealDim, border: `1px solid ${C.teal}30`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 22px" }}><Lock size={26} color={C.teal} /></div>
-        <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 28, letterSpacing: "-0.02em", margin: "0 0 12px" }}>Full version coming soon</h1>
+        <h1 style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 28, letterSpacing: "-0.02em", margin: "0 0 12px" }}>Full version coming soon</h1>
         <p style={{ color: C.textMuted, fontSize: 14, lineHeight: 1.8, margin: "0 0 26px" }}>Live analysis of your own resume and job description is part of the full Infinite Careers release. Want a real run on your materials now? Book a working session and we'll do it live.</p>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <a href={BOOK_CALL_URL} target="_blank" rel="noopener noreferrer" style={{ padding: "13px 26px", borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: "Syne,sans-serif", textDecoration: "none", background: `linear-gradient(135deg, ${C.teal}, #00a88a)`, color: "#000", boxShadow: `0 0 30px ${C.tealGlow}` }}>Book a working session →</a>
-          <button onClick={onRunDemo} style={{ padding: "13px 22px", borderRadius: 12, fontSize: 14, fontWeight: 600, fontFamily: "Plus Jakarta Sans,sans-serif", background: C.elevated, border: `1px solid ${C.border}`, color: C.text, cursor: "pointer" }}>▶ See the sample report</button>
+          <a href={BOOK_CALL_URL} target="_blank" rel="noopener noreferrer" style={{ padding: "13px 26px", borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", textDecoration: "none", background: `linear-gradient(135deg, ${C.teal}, #009A5F)`, color: "#04130C", boxShadow: `0 0 30px ${C.tealGlow}` }}>Book a working session →</a>
+          <button onClick={onRunDemo} style={{ padding: "13px 22px", borderRadius: 12, fontSize: 14, fontWeight: 600, fontFamily: "Inter,sans-serif", background: C.elevated, border: `1px solid ${C.border}`, color: C.text, cursor: "pointer" }}>▶ See the sample report</button>
         </div>
-        <button onClick={onBack} style={{ marginTop: 22, background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Plus Jakarta Sans,sans-serif" }}>← Back</button>
+        <button onClick={onBack} style={{ marginTop: 22, background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>← Back</button>
       </div>
     </div>
   );
@@ -1384,13 +1389,13 @@ export default function App() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        *{box-sizing:border-box;} body{margin:0;background:#05080e;}
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        *{box-sizing:border-box;} body{margin:0;background:#04130C;}
         ::-webkit-scrollbar{width:5px;height:5px;}
         ::-webkit-scrollbar-track{background:transparent;}
-        ::-webkit-scrollbar-thumb{background:#1a2d48;border-radius:3px;}
-        textarea::placeholder,input::placeholder{color:#2e4060;}
-        button:focus{outline:2px solid rgba(0,212,168,0.4);outline-offset:2px;}
+        ::-webkit-scrollbar-thumb{background:#1C4634;border-radius:3px;}
+        textarea::placeholder,input::placeholder{color:#3E5C4B;}
+        button:focus{outline:2px solid rgba(0,196,122,0.4);outline-offset:2px;}
       `}</style>
       {view === "loading" && <LoadingScreen step={step} />}
       {view === "results" && analysis && <ResultsScreen analysis={analysis} jobDesc={jobDesc} resume={resume} onReset={() => { setView("input"); setAnalysis(null); setError(""); }} />}
