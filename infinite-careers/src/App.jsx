@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import iasMark from "./assets/ias-mark.png";
 import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip,
@@ -327,7 +328,7 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
     <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Inter,sans-serif", color: C.text }}>
       <div style={{ borderBottom: `1px solid ${C.border}`, padding: "16px 28px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: C.tealDim, border: `1px solid ${C.teal}30`, display: "flex", alignItems: "center", justifyContent: "center" }}><Brain size={15} color={C.teal} /></div>
+          <img src={iasMark} alt="Infinite Awesome Studio" style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${C.teal}30`, display: "block" }} />
           <div><div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 15 }}>Infinite Careers</div><div style={{ fontSize: 10, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.09em" }}>Career Intelligence · Infinite Awesome Studio</div></div>
         </div>
         {DEMO_MODE
@@ -1312,7 +1313,7 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
       {/* Top bar */}
       <div style={{ borderBottom: `1px solid ${C.border}`, padding: "13px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, background: C.bg + "f0", zIndex: 30, backdropFilter: "blur(14px)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: C.tealDim, display: "flex", alignItems: "center", justifyContent: "center" }}><Brain size={13} color={C.teal} /></div>
+          <img src={iasMark} alt="Infinite Awesome Studio" style={{ width: 28, height: 28, borderRadius: 7, display: "block" }} />
           <span style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 14 }}>Infinite Careers</span>
           <span style={{ padding: "2px 7px", borderRadius: 5, background: C.tealDim, color: C.teal, fontSize: 9, fontWeight: 700, letterSpacing: "0.07em" }}>REPORT READY · {analysis.fitScore}% FIT</span>
         </div>
