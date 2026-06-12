@@ -255,9 +255,8 @@ section { padding: 80px 0; }
   width: 220px; aspect-ratio: 1;
   background: var(--ink-08); border-radius: 12px;
   border: 1px solid var(--ink-12);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-body); font-size: 13px;
-  color: var(--ink-40); text-align: center;
+  object-fit: cover; object-position: 50% 22%;
+  display: block;
 }
 .about-photo-name {
   font-family: var(--font-body); font-size: 12px;
@@ -588,9 +587,7 @@ section { padding: 80px 0; }
     <div class="container">
       <div class="about-grid">
         <div class="about-photo">
-          <div class="about-photo-img" role="img" aria-label="Photo of Ty Mosher">
-            Photo<br/>placeholder
-          </div>
+          <img class="about-photo-img" src="../assets/ty-headshot.jpg" alt="Ty Mosher, founder of Infinite Awesome Studio" loading="lazy"/>
           <p class="about-photo-name">Ty Mosher</p>
         </div>
         <div class="about-content">
