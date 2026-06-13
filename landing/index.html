@@ -911,6 +911,19 @@ html,body{background:var(--warm-neutral);}
   .ias-h1{font-size:32px;}
   .ias-guy-layout{padding:24px;}
 }
+
+/* Motion: matches the Infinite Careers pass (01e5326) — transform/opacity only,
+   220ms ease-out, 40ms stagger. Hidden states apply only after JS adds .fx to <html>,
+   so no-JS and reduced-motion visitors see everything immediately. */
+.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(7px);transition:opacity 220ms cubic-bezier(0,0,.2,1),transform 220ms cubic-bezier(0,0,.2,1);}
+.fx .fx-r.fx-in,.fx .fx-s.fx-in>*{opacity:1;transform:none;}
+.fx .fx-s.fx-in>*:nth-child(2){transition-delay:40ms}
+.fx .fx-s.fx-in>*:nth-child(3){transition-delay:80ms}
+.fx .fx-s.fx-in>*:nth-child(4){transition-delay:120ms}
+.fx .fx-s.fx-in>*:nth-child(5){transition-delay:160ms}
+.fx .fx-s.fx-in>*:nth-child(6){transition-delay:200ms}
+.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:240ms}
+@media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
 </style>
 </head>
 <body>
@@ -1001,7 +1014,7 @@ html,body{background:var(--warm-neutral);}
       <div class="ias-card-title">MyBenefitsGuy + BeneBots</div>
       <div class="ias-divider"></div>
       <div class="ias-card-body">25 years of benefits expertise built into AI tools for the work that buries HR teams. From stewardship reports to open enrollment, the manual grind is already solved.</div>
-      <div class="ias-stat-row">
+      <div class="ias-stat-row fx-s">
         <div class="ias-stat"><div class="ias-stat-val">25+</div><div class="ias-stat-label">Years in benefits</div></div>
         <div class="ias-stat"><div class="ias-stat-val">6</div><div class="ias-stat-label">Specialized bots</div></div>
         <div class="ias-stat"><div class="ias-stat-val">24/7</div><div class="ias-stat-label">Always running</div></div>
@@ -1050,7 +1063,7 @@ html,body{background:var(--warm-neutral);}
 
   <!-- ============== THE PROBLEM ============== -->
   <section class="ias-section" id="the-problem">
-    <div class="ias-section-header">
+    <div class="ias-section-header fx-r">
       <div class="ias-section-heading">
         <div class="ias-eyebrow">THE PROBLEM</div>
         <h2 class="ias-section-title">The same admin work has been piling up in every business.</h2>
@@ -1065,7 +1078,7 @@ html,body{background:var(--warm-neutral);}
 
   <!-- ============== QUICK WIN: AI TOOLS ============== -->
   <section class="ias-section" id="ai-tools">
-    <div class="ias-section-header">
+    <div class="ias-section-header fx-r">
       <div class="ias-section-heading">
         <div class="ias-eyebrow">QUICK WIN</div>
         <h2 class="ias-section-title">Here&rsquo;s what&rsquo;s possible with tools you already have.</h2>
@@ -1073,7 +1086,7 @@ html,body{background:var(--warm-neutral);}
       </div>
     </div>
 
-    <div class="ias-ai-tools-cards">
+    <div class="ias-ai-tools-cards fx-s">
       <div class="ias-ai-tool-card">
         <div class="ias-ai-tool-name">Microsoft Copilot</div>
         <div class="ias-ai-tool-tag">Within Microsoft 365</div>
@@ -1110,7 +1123,7 @@ html,body{background:var(--warm-neutral);}
 
   <!-- ============== MYBENEFITSGUY ============== -->
   <section class="ias-section" id="mybenefitsguy">
-    <div class="ias-section-header">
+    <div class="ias-section-header fx-r">
       <div class="ias-section-heading">
         <div class="ias-eyebrow">BUILT BY AN EXPERT DOING THIS FOR 25 YEARS</div>
         <h2 class="ias-section-title">I learned to tame chaos in the most paperwork-heavy corner of business there is.</h2>
@@ -1120,7 +1133,7 @@ html,body{background:var(--warm-neutral);}
       </div>
     </div>
 
-    <div class="ias-guy-layout">
+    <div class="ias-guy-layout fx-s">
       <div class="ias-guy-img-wrap">
         <!-- MyBenefitsGuy mascot -->
         <img src="assets/MyBenefitsGuy_mascot_TP.png" alt="MyBenefitsGuy — The Guy, snap-and-point pose"/>
@@ -1181,7 +1194,7 @@ html,body{background:var(--warm-neutral);}
 
   <!-- ============== BENEBOTS ============== -->
   <section class="ias-benebots" id="benebots">
-    <div class="ias-section-header">
+    <div class="ias-section-header fx-r">
       <div class="ias-section-heading">
         <div class="ias-eyebrow ias-benebots-eyebrow">CHARACTER-LED EDUCATION &amp; AUTOMATION</div>
         <h2 class="ias-section-title ias-benebots-title">I turn the most confusing topic in business into something anyone gets.</h2>
@@ -1212,7 +1225,7 @@ html,body{background:var(--warm-neutral);}
       <a class="ias-social-link" href="https://www.threads.net/@mybenefitsguy" target="_blank" rel="noopener noreferrer">Threads</a>
     </div>
 
-    <div class="ias-bots-grid">
+    <div class="ias-bots-grid fx-s">
       <div class="ias-bot-card">
         <div class="ias-bot-num">BOT 01</div>
         <img class="ias-bot-art" src="assets/HSABot_Gold_TP.png" alt="Ask BeneBot" loading="lazy">
@@ -1273,7 +1286,7 @@ html,body{background:var(--warm-neutral);}
 
   <section class="ias-iw" id="infinite-workflows">
     <div class="ias-iw-inner">
-      <div class="ias-section-header" style="margin-bottom:40px;">
+      <div class="ias-section-header fx-r" style="margin-bottom:40px;">
         <div class="ias-section-heading">
           <div class="ias-iw-eyebrow">INFINITE WORKFLOWS</div>
           <h2 class="ias-section-title" style="color:var(--ink);">Your admin work shouldn't live in your head.</h2>
@@ -1293,7 +1306,7 @@ html,body{background:var(--warm-neutral);}
         </div>
 
         <div>
-          <div class="ias-iw-cards">
+          <div class="ias-iw-cards fx-s">
             <div class="ias-iw-card ias-iw-card-wide">
               <div class="ias-iw-card-label">The Engagement</div>
               <div class="ias-iw-card-title">AI Workflow Launchpad</div>
@@ -1389,6 +1402,14 @@ function closeMobileNav(){
       }).join('');
     })
     .catch(function(){});
+})();
+</script>
+<script>
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;
+  document.documentElement.classList.add("fx");
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("fx-in");io.unobserve(e.target);}});},{threshold:0.12,rootMargin:"0px 0px -36px 0px"});
+  document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){io.observe(el);});
 })();
 </script>
 </body>

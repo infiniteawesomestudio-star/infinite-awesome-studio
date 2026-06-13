@@ -495,6 +495,19 @@ section { padding: 80px 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* Motion: matches the Infinite Careers pass (01e5326) — transform/opacity only,
+   220ms ease-out, 40ms stagger. Hidden states apply only after JS adds .fx to <html>,
+   so no-JS and reduced-motion visitors see everything immediately. */
+.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(7px);transition:opacity 220ms cubic-bezier(0,0,.2,1),transform 220ms cubic-bezier(0,0,.2,1);}
+.fx .fx-r.fx-in,.fx .fx-s.fx-in>*{opacity:1;transform:none;}
+.fx .fx-s.fx-in>*:nth-child(2){transition-delay:40ms}
+.fx .fx-s.fx-in>*:nth-child(3){transition-delay:80ms}
+.fx .fx-s.fx-in>*:nth-child(4){transition-delay:120ms}
+.fx .fx-s.fx-in>*:nth-child(5){transition-delay:160ms}
+.fx .fx-s.fx-in>*:nth-child(6){transition-delay:200ms}
+.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:240ms}
+@media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
 </style>
 </head>
 <body>
@@ -541,7 +554,7 @@ section { padding: 80px 0; }
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <div class="hero-grid">
+      <div class="hero-grid fx-s">
         <div class="hero-copy">
           <p class="hero-tag">Here's the shovel</p>
           <h1>Your business already has workflows. They just live in your head.</h1>
@@ -565,9 +578,9 @@ section { padding: 80px 0; }
   <section class="problems" id="problems">
     <div class="container">
       <div class="section-label">Does This Sound Like You?</div>
-      <h2 class="section-title">The admin isn't the hard part. Doing it all alone is.</h2>
+      <h2 class="section-title fx-r">The admin isn't the hard part. Doing it all alone is.</h2>
       <p class="resonance-intro">Most small business owners have tried AI at least once, got a generic answer and went back to doing it themselves. That's not a you problem. That's a setup problem.</p>
-      <ul class="problems-list">
+      <ul class="problems-list fx-s">
         <li>Quotes go cold because follow-up keeps slipping to tomorrow</li>
         <li>Invoices sit unpaid because chasing clients feels awkward</li>
         <li>Social media stays quiet because there's never time to write anything</li>
@@ -584,7 +597,7 @@ section { padding: 80px 0; }
   <!-- ABOUT TY (moved up — credibility before product) -->
   <section class="about" id="about">
     <div class="container">
-      <div class="about-grid">
+      <div class="about-grid fx-s">
         <div class="about-photo">
           <img class="about-photo-img" src="../assets/ty-headshot.jpg" alt="Ty Mosher, founder of Infinite Awesome Studio" loading="lazy"/>
           <p class="about-photo-name">Ty Mosher</p>
@@ -612,13 +625,13 @@ section { padding: 80px 0; }
   <section class="workflows" id="workflows">
     <div class="container">
       <div class="section-label">Example Workflows</div>
-      <h2 class="section-title">What we actually build in the launchpad.</h2>
+      <h2 class="section-title fx-r">What we actually build in the launchpad.</h2>
 
       <div class="pullquote">
         <p>"AI drafts. You review. You send. That took about 90 seconds. That's what a well-built workflow does."</p>
       </div>
 
-      <div class="workflows-grid">
+      <div class="workflows-grid fx-s">
         <div class="workflow-card">
           <div class="workflow-tag">Best for Contractors</div>
           <h3>Quote Follow-Up Assistant</h3>
@@ -663,8 +676,8 @@ section { padding: 80px 0; }
   <section class="how" id="how">
     <div class="container">
       <div class="section-label">How the Launchpad Works</div>
-      <h2 class="section-title">Five steps. One focused engagement. Three working workflows.</h2>
-      <div class="steps">
+      <h2 class="section-title fx-r">Five steps. One focused engagement. Three working workflows.</h2>
+      <div class="steps fx-s">
         <div class="step">
           <div class="step-number">1</div>
           <div class="step-content">
@@ -712,8 +725,8 @@ section { padding: 80px 0; }
   <section class="for-you" id="for-you">
     <div class="container">
       <div class="section-label">Who This Is For</div>
-      <h2 class="section-title">Built for small businesses stretched thin on admin.</h2>
-      <div class="for-you-grid">
+      <h2 class="section-title fx-r">Built for small businesses stretched thin on admin.</h2>
+      <div class="for-you-grid fx-s">
         <div class="for-you-item"><span>Contractors &amp; Home Services</span></div>
         <div class="for-you-item"><span>Bookkeepers &amp; Tax Preparers</span></div>
         <div class="for-you-item"><span>Real Estate Agents</span></div>
@@ -729,7 +742,7 @@ section { padding: 80px 0; }
   <!-- OFFER -->
   <section class="offer" id="offer">
     <div class="container">
-      <div class="offer-inner">
+      <div class="offer-inner fx-r">
         <div class="offer-badge">Founding Client Offer</div>
         <h2>Three discounted launchpad spots. Limited availability.</h2>
         <p class="offer-desc">I'm working with a small group of businesses to validate this service, gather real-world feedback and build case studies. In exchange for your time and an honest testimonial, you get the full engagement at a significant discount.</p>
@@ -799,5 +812,13 @@ function closeMobileNav(){
 }
 </script>
 
+<script>
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;
+  document.documentElement.classList.add("fx");
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("fx-in");io.unobserve(e.target);}});},{threshold:0.12,rootMargin:"0px 0px -36px 0px"});
+  document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){io.observe(el);});
+})();
+</script>
 </body>
 </html>
