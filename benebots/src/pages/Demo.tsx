@@ -14,7 +14,7 @@ const BOT_META: Record<string, { name: string; color: string; tagline: string; i
   ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in the client\'s plans', image: '/HSABot_TP.png' },
   stewardship: { name: 'Stewardship Studio', color: '#5B8FFF', tagline: 'Renewal report drafter, client claims data pre-loaded', image: '/ComplianceBot_TP.png' },
   'plan-compare': { name: 'Plan Compare', color: '#F7D154', tagline: 'HDHP vs PPO with the client\'s actual numbers', image: '/CompareBot_TP.png' },
-  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Personalized plan recommendation', image: '/OEBot_TP.png' },
+  'oe-coach': { name: 'OE Coach', color: '#FF6F61', tagline: 'Open enrollment, by the numbers', image: '/OEBot_TP.png' },
   'loa-navigator': { name: 'LOA Navigator', color: '#A78BFA', tagline: 'Leave guide for FMLA, state programs, parental leave', image: '/LOABot_TP2.png' },
   'claims-compass': { name: 'Claims Compass', color: '#F97316', tagline: 'EOB denials, prior auth appeals, No Surprises Act', image: '/ClaimBot_TP.png' },
 }

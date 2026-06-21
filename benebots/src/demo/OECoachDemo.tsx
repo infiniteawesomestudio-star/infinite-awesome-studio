@@ -44,11 +44,11 @@ function getRecommendation(DEMO_PROFILE: Client, a: Answers) {
 }
 
 function buildOEMarkdown(rec: ReturnType<typeof getRecommendation>, a: Answers): string {
-  return `# Demo Co — Open Enrollment Recommendation
+  return `# Demo Co — Open Enrollment Breakdown
 
-**Recommended plan:** ${rec.plan.name} (${rec.isHDHP ? 'HDHP + HSA pair' : 'Traditional PPO'})
+**Plan the numbers favor:** ${rec.plan.name} (${rec.isHDHP ? 'HDHP + HSA pair' : 'Traditional PPO'})
 
-## HSA / FSA strategy
+## HSA / FSA angles to weigh
 ${rec.hsaNote}
 
 ## Don't forget
@@ -150,13 +150,13 @@ export default function OECoachDemo() {
         {step === 'result' && rec && (
           <div className="space-y-5">
             <div>
-              <p className="text-xs font-body text-dark-muted uppercase tracking-widest mb-2">Recommendation</p>
+              <p className="text-xs font-body text-dark-muted uppercase tracking-widest mb-2">Where the numbers point</p>
               <p className="font-display font-bold text-2xl text-dark-text">{rec.plan.name}</p>
               <p className="text-sm font-body text-dark-muted mt-1">{rec.isHDHP ? 'HDHP + HSA pair' : 'Traditional PPO'}</p>
             </div>
 
             <div className="border-t border-dark-border pt-4 space-y-3">
-              <p className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted">HSA / FSA strategy</p>
+              <p className="text-xs font-body font-semibold uppercase tracking-widest text-dark-muted">HSA / FSA angles to weigh</p>
               <p className="text-sm font-body text-dark-muted leading-relaxed">{rec.hsaNote}</p>
             </div>
 
@@ -186,7 +186,7 @@ export default function OECoachDemo() {
               </button>
               <ExportBar
                 getContent={() => buildOEMarkdown(rec, answers as Answers)}
-                filename="Demo-Co-oe-recommendation.md"
+                filename="Demo-Co-oe-breakdown.md"
                 accent="#FF6F61"
               />
             </div>
@@ -195,7 +195,7 @@ export default function OECoachDemo() {
       </div>
 
       <p className="text-[10px] font-body text-dark-muted text-center">
-        Demo mode. Recommendations based on {DEMO_PROFILE.companyName} plan data. Not a substitute for a licensed benefits advisor.
+        Demo mode. Educational breakdown based on {DEMO_PROFILE.companyName} plan data. Not advice. Confirm your choice with HR or a licensed benefits advisor.
       </p>
     </div>
   )

@@ -14,7 +14,7 @@ interface Bot {
 
 const bots: Bot[] = [
   {
-    image: '/AskBot_Duo_TP.png',
+    image: '/HSABot_TP.png',
     name: 'Ask BeneBot',
     tagline: 'Every plan detail, plain language',
     description:
@@ -63,11 +63,11 @@ const bots: Bot[] = [
     name: 'OE Coach',
     tagline: 'Open enrollment, one step at a time',
     description:
-      'A short questionnaire covering coverage tier, expected care, prescriptions, and budget. Returns a personalized plan recommendation, HSA/FSA contribution strategy, and the one trade-off they\'re making.',
+      'A short questionnaire covering coverage tier, expected care, prescriptions, and budget. Lays out how each plan would play out for their situation, the HSA/FSA angles to weigh and the trade-offs, so they can decide with HR.',
     color: '#FF6F61',
     tasks: [
-      'Plan recommendation by profile',
-      'HSA/FSA contribution strategy',
+      'Plan scenarios by profile',
+      'HSA/FSA angles to weigh',
       '"Don\'t forget" elections',
       'Trade-off plain language',
     ],
