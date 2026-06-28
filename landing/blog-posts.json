@@ -17,6 +17,40 @@
   },
   "posts": [
     {
+      "id": "post-2026-06-28-your-employees-dont-trust-th",
+      "title": "Your Employees Don't Trust the AI You Just Bought",
+      "slug": "your-employees-dont-trust-the-ai-you-just-bought",
+      "excerpt": "Employers are racing to add AI to their benefits stack. Employees are pumping the brakes. Here's why the gap exists—and what to do about it.",
+      "body": "Sixty-seven percent of employers want to use AI to help workers make better benefits decisions. Only 28% of workers would actually trust what it tells them.\n\nThat's not a technology problem. That's a design problem.\n\nForrester calls it the \"employer-first, employee-lagging\" pattern. Employers buy AI to cut call center volume and speed up enrollment but workers want something that feels personal and has a human backstop. Both things can be true but right now, most deployments are built for the first group and handed to the second.\n\nHere's where to start closing that gap.\n\nFirst, look at what your AI tool actually says to employees. Not the pitch deck version...The real output a worker sees when they ask about their deductible or whether they should pick the HDHP. Is the recommendation just an answer, or does it show its work? Benefitfocus found that employees who received a clear rationale for AI-generated suggestions were twice as likely to act on them. Accuracy isn't enough and people need to understand why.\n\nSecond, take the privacy concern seriously instead of dismissing it. Fifty-eight percent of employees worry about data privacy when using AI-assisted benefits platforms, according to MetLife's 2024 Benefit Trends Study. That's not irrational fear. These are people sharing health status, dependent information, financial decisions. If your rollout materials don't address what data is used, how it's stored and who can see it, you've left a real question unanswered.\n\nThird, keep humans in the picture. The 28% trust figure doesn't mean workers hate AI, it means they don't want AI instead of a person. Position the tool as a first stop, not a final answer and make it easy to escalate. \"Talk to a benefits advisor\" should be one click away, not buried in a footer.\n\nFourth, pilot with a group that will give you honest feedback...Not your most tech-comfortable employees and not HR. Find the people who usually call the benefits line with questions and watch how they interact with the tool. What confuses them? What do they skip? That's your real UX data.\n\nFifth, close the loop after open enrollment. Did employees who used the AI tool make different elections? Did they call in less? Did anyone complain that the recommendation felt wrong? You need that feedback to know whether the tool is actually helping or just running in the background while everyone ignores it.\n\nMy shovel metaphor holds strong here. AI can do a lot of the heavy lifting in benefits support, but only if it's built for the person swinging it...not just the person who bought it.\n\nThe employers who get this right won't just reduce call volume. They'll actually help people make better decisions about their health coverage. That's the whole point.\n\nIf your benefits AI is live but adoption is flat, it's worth asking: do your employees understand what it's telling them, and do they believe it has their interests in mind?",
+      "tags": [
+        "AI in Benefits",
+        "Employee Trust",
+        "Benefits Technology"
+      ],
+      "source": "BenefitsPRO",
+      "sourceUrl": "https://news.google.com/read/CBMiqAFBVV95cUxPQVBxckJBRmhQd0RuWGgyaVd5b0c5UXVKamhRWXRoeGZhMmVkU3NiZkdCaU9xd0ExMnlSb2VySi1oUmI2dHh2b3ZyeENQeVBXY0lYX2VqMXNUZ1dpcFNlY1B1QWN3ZEV4VFU5QjhoOFVoV1EwYVRCbEhYdUpPaHN5QVZ3em85TTB5YUczMV9DNFJaMXdhXy1WUkgyTDZsN0RRaE95WnVJNV_SAagBQVVfeXFMT0FQcXJCQUZoUHdEblhoMmlXeW9HOVF1SmpoUVl0aHhmYTJlZFNzYmZHQmlPcXdBMTJ5Um9lckotaFJiNnR4dm92cnhDUHlQV2NJWF9lajFzVGdXaXBTZWNQdUFjd2RFeFRVOUI4aDhVaFdRMGFUQmxIWHVKT2hzeUFWd3pvOU0weWFHMzFfQzRSWjF3YV8tVlJIMkw2bDdEUWhPeVp1STVf?hl=en-US&gl=US&ceid=US%3Aen",
+      "date": "2026-06-28",
+      "readMinutes": 2,
+      "status": "published"
+    },
+    {
+      "id": "post-2026-06-28-what-your-employees-know-abo",
+      "title": "What Your Employees Know About Your AI Rollout That Leadership Doesn't",
+      "slug": "what-your-employees-know-about-your-ai-rollout-that-leadership-doesnt",
+      "excerpt": "The metrics look great. But there's a conversation happening on the floor that never makes it to the boardroom — and in benefits, that gap has real consequences.",
+      "body": "The dashboard says adoption is up. Ticket volume is down. The board is pleased, but your entry level benefits coordinator is quietly fixing the same AI-generated enrollment error for the third week in a row.\n\nThis is the gap that doesn't show up in implementation reports.\n\nMIT Sloan researchers have a name for it: Invisible Labor. Employees spend meaningful time correcting AI mistakes, cleaning up outputs, double-checking summaries and re-explaining things the chatbot got wrong. The productivity metrics executives track still look good, but the work behind those metrics looks different.\n\nIn benefits, this matters more than in most functions. A wrong answer about a deductible or a misread EOB isn't just an inconvenience...It's a trust problem. And the person absorbing that trust problem is usually a benefits admin who never asked for the job.\n\nA 2024 Salesforce survey found 53% of workers are worried AI will replace their jobs and only 28% of executives rank that anxiety as a top concern. That's a 25-point gap in perception and it rarely surfaces in board reporting. Leadership isn't ignoring it out of malice, they're just not hearing it.\n\nGartner found that only 38% of organizations have formal mechanisms for employees to report AI-related workflow problems. The rest are making expansion decisions based on data filtered through optimistic middle-management reporting. That's not a technology problem, that's a listening problem.\n\nThe cognitive load piece compounds this. A 2023 BCG study found employees at companies with aggressive AI adoption reported 30% higher cognitive overload scores than peers at slower-adopting firms. The culprit wasn't the AI itself, it was the workflow handoffs...the moments where the human had to pick up where the tool left off, without any real re-design of how that handoff should work.\n\nBenefits teams already carry a lot...Open enrollment pressure, employee anxiety, and compliance deadlines just to name a few. Layering a half-designed AI workflow on top of that isn't efficiency, it's just a different kind of burden.\n\nNone of this means AI doesn't belong in benefits operations. It does. But the way it gets deployed often skips the people closest to the work. The ones who know where the edge cases live, especially the ones who can tell you exactly which questions the chatbot gets wrong and why.\n\nThe right tool for hard work still requires the person doing the work to help shape how it's used.\n\nSo here's a place to start this week: ask one person on your benefits team what they're actually doing after the AI produces an output. Not whether they're using the tool. What they do next.\n\nYou might hear something the board hasn't.",
+      "tags": [
+        "AI in HR",
+        "Benefits Administration",
+        "Change Management"
+      ],
+      "source": "cio.com",
+      "sourceUrl": "https://news.google.com/read/CBMitgFBVV95cUxQRVJ1NkRyektJalE1RlhqYXFNbXlsNGlOQXhqVFVJcUJqalp3ZWszRkJVMDdJX1VCZ3ZHV3UwWHA5Nl9UaGF2dmpucjdCb013N2dNQmxicGtadmswb01zeFJjYlBJZjZncU9TLV9hdk05Qm5aa0thM1Y0VVhmMm9aWk9jM3p2cXlFcG1DY3lRWGtzSWpWYk9Ka2dFb2VmcU1JcXl0aGg0SGpTZkl0TlJETVUwQ3Z2Zw?hl=en-US&gl=US&ceid=US%3Aen",
+      "date": "2026-06-28",
+      "readMinutes": 2,
+      "status": "published"
+    },
+    {
       "id": "post-2026-05-30-92-of-companies-are-betting-",
       "title": "92% of Companies Are Betting on AI. Only 1% Know What They're Doing.",
       "slug": "92-of-companies-are-betting-on-ai-only-1-know-what-theyre-doing",
