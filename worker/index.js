@@ -1,4 +1,4 @@
-const MAX_TOKENS_ALLOWED = 2048;
+const MAX_TOKENS_ALLOWED = 4096;
 const MAX_MESSAGE_CHARS = 32_000;
 
 // ─── Demo Co demo context (injected server-side into every demo bot) ───
@@ -266,10 +266,15 @@ export default {
 // Runs an Apify actor synchronously and returns normalized article candidates.
 // Actor + input are supplied by the Studio so it can be swapped without a
 // worker change; defaults to the Google News scraper.
-const DEFAULT_FETCH_ACTOR = "crawlerbros/google-news-scraper";
+const DEFAULT_FETCH_ACTOR = "data_xplorer/google-news-scraper-fast";
 // Least-privilege: only these Apify actors may be invoked through the worker.
 // Prevents a caller from running arbitrary (paid) actors via the proxy.
-const ALLOWED_FETCH_ACTORS = new Set([DEFAULT_FETCH_ACTOR]);
+// crawlerbros is the legacy actor (returns 0 results on current Google News markup);
+// kept allowed only so an old saved config doesn't hard-fail, but data_xplorer is default.
+const ALLOWED_FETCH_ACTORS = new Set([
+  DEFAULT_FETCH_ACTOR,
+  "crawlerbros/google-news-scraper",
+]);
 
 function jsonResponse(obj, status, request) {
   return new Response(JSON.stringify(obj), {
