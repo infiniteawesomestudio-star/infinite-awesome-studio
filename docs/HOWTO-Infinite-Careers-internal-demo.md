@@ -1,5 +1,7 @@
 # How to run the Infinite Careers internal demo (live mode)
 
+> **Purpose (decided 2026-06-28):** the public site demo **stays canned permanently — no public live demo is planned.** Live mode exists so **Ty can run real analyses locally to produce a proof-of-concept video / social-media campaign** (and to serve Ty-mediated pilot testers, below). It is not a customer-facing feature. Ops/cockpit companion to this dev doc: `00-Studio-Ops/Infinite-Careers-LiveMode-Runbook.md` in the IAS vault — keep the two consistent.
+
 **Two modes, one codebase:**
 
 - **Public build (the site):** canned. `VITE_DEMO_MODE` defaults to true unless explicitly set to the string `"false"`, so any clean build ships with zero network calls and zero secrets. This is by design, do not "fix" it.
@@ -17,7 +19,7 @@
 
    Edit this file in your editor only. Never paste the token on a command line. See `.env.example` for the shape.
 
-   ⚠️ **As of 2026-06-11 this file still holds the pre-rotation token, so live mode returns 401.** Paste the current token from the password manager to fix. Same applies to `benebots/.env.development.local`.
+   ✅ **As of 2026-06-28 the token is current.** `WORKER_TOKEN` was rotated on the worker and re-synced into BOTH `infinite-careers/.env.development.local` and `benebots/.env.development.local`, verified against the worker (auth passes). If `WORKER_TOKEN` is ever rotated again, both files must be re-synced or live mode returns 401 — copy the value between them, never via a command line.
 
 2. Run it:
 
@@ -41,7 +43,7 @@
 
 ## Known issues
 
-- Live-mode full analysis sometimes returns invalid JSON (ClickUp 86baa228f, open). Re-run usually succeeds.
+- ~~Live-mode full analysis sometimes returns invalid JSON (ClickUp 86baa228f).~~ **Fixed 2026-06-25** (maxTokens raised 1000→4096 on both analysis calls + worker ceiling). The fix lives in the working-tree `src/App.jsx` and is active in `npm run dev` — intentionally not committed/deployed since there's no public live build to ship it to.
 
 ## External tester workflow (real job-search journeys)
 
