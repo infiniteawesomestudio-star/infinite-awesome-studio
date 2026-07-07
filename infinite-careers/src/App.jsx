@@ -15,34 +15,122 @@ import {
 } from "lucide-react";
 
 // ── RUNTIME CONFIG ────────────────────────────────────────────────────────────
-// DEMO_MODE (public build): no network calls — renders the baked-in DEMO_RESULT.
-// Live mode (internal): Claude calls route through the benebots-proxy worker so
-// the API key never reaches the browser. Mirrors benebots/src/demo/AskDemo.tsx.
-// Secure default: canned/public UNLESS a build explicitly opts into live mode
-// with VITE_DEMO_MODE=false (set only in .env.development.local for internal dev).
-// This guarantees a stray/clean build never ships live mode + the worker token.
+// Three modes from one codebase:
+//   1. Canned demo   (VITE_DEMO_MODE unset/true) — zero network calls, baked-in
+//      DEMO_RESULT. The safety default: a stray/clean build ships canned.
+//   2. Internal live (VITE_DEMO_MODE=false + VITE_WORKER_TOKEN) — Ty's localhost
+//      tool; shared-secret path on the worker, token only in .env.development.local.
+//   3. Public live   (VITE_DEMO_MODE=false + VITE_PUBLIC_LIVE=true, NO token) —
+//      the shipped site. Tokenless worker route gated by Turnstile + origin lock
+//      + rate/spend caps server-side. Nothing secret in this bundle: the
+//      Turnstile sitekey is public by design.
+// Pilot testers get a magic link (?access=CODE) — the code rides each request
+// and the worker lets it bypass Turnstile and the public caps.
 const DEMO_MODE = import.meta.env.VITE_DEMO_MODE !== "false";
+const PUBLIC_LIVE = import.meta.env.VITE_PUBLIC_LIVE === "true";
 const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 const WORKER_TOKEN = import.meta.env.VITE_WORKER_TOKEN;
+const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY;
 const BOOK_CALL_URL = "https://calendly.com/infiniteawesomestudio";
 
-// Single Claude entry point. Returns the parsed Anthropic message JSON
-// ({ content: [{ type:"text", text }] }) — the worker passes that shape through
-// unchanged, so callers parse content[].text exactly as before.
-async function callClaude({ system, messages, maxTokens = 1000 }) {
-  if (!WORKER_URL || !WORKER_TOKEN) {
-    throw new Error("Live mode is not configured (missing worker URL/token). This is the demo build.");
+// Pilot access code: capture from the magic link once, keep it in
+// sessionStorage, and scrub it out of the address bar.
+const ACCESS_CODE = (() => {
+  if (typeof window === "undefined") return "";
+  try {
+    const url = new URL(window.location.href);
+    const fromUrl = url.searchParams.get("access");
+    if (fromUrl) {
+      sessionStorage.setItem("ic-access", fromUrl);
+      url.searchParams.delete("access");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    }
+    return sessionStorage.getItem("ic-access") || "";
+  } catch { return ""; }
+})();
+
+// ── TURNSTILE (public live mode only) ────────────────────────────────────────
+// Invisible/interaction-only widget, executed on demand. Tokens are single-use,
+// so each worker request mints a fresh one (the 2-call analysis is batched into
+// one request server-side for exactly this reason).
+let tsWidgetId = null;
+let tsResolve = null;
+let tsReject = null;
+let tsLoading = null;
+function ensureTurnstile() {
+  if (tsLoading) return tsLoading;
+  tsLoading = new Promise((resolve, reject) => {
+    if (!TURNSTILE_SITEKEY) { reject(new Error("Verification is not configured.")); return; }
+    const host = document.createElement("div");
+    host.style.cssText = "position:fixed;bottom:10px;right:10px;z-index:9999;";
+    document.body.appendChild(host);
+    window.__icTurnstileReady = () => {
+      tsWidgetId = window.turnstile.render(host, {
+        sitekey: TURNSTILE_SITEKEY,
+        execution: "execute",
+        appearance: "interaction-only",
+        callback: token => { tsResolve && tsResolve(token); tsResolve = tsReject = null; },
+        "error-callback": () => { tsReject && tsReject(new Error("Human verification failed — refresh and try again.")); tsResolve = tsReject = null; },
+      });
+      resolve();
+    };
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__icTurnstileReady";
+    s.async = true;
+    s.onerror = () => reject(new Error("Could not load the verification widget — check your connection and refresh."));
+    document.head.appendChild(s);
+  });
+  return tsLoading;
+}
+async function getTurnstileToken() {
+  await ensureTurnstile();
+  return new Promise((resolve, reject) => {
+    tsResolve = resolve; tsReject = reject;
+    setTimeout(() => { if (tsReject === reject) { tsReject(new Error("Verification timed out — refresh and try again.")); tsResolve = tsReject = null; } }, 30000);
+    window.turnstile.reset(tsWidgetId);
+    window.turnstile.execute(tsWidgetId);
+  });
+}
+
+// ── WORKER CLIENT ─────────────────────────────────────────────────────────────
+// callWorker takes 1-2 calls of { system, messages, maxTokens } and returns an
+// array of Anthropic message JSONs ({ content: [{ type:"text", text }] }) —
+// callers parse content[].text exactly as before.
+async function callWorker(calls) {
+  if (!WORKER_URL) throw new Error("Live mode is not configured. This is the demo build.");
+  if (WORKER_TOKEN) {
+    // Internal live mode — per-call shared-secret requests (original contract).
+    return Promise.all(calls.map(async c => {
+      const resp = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${WORKER_TOKEN}` },
+        body: JSON.stringify({ botId: "job-analyzer", ...c }),
+      });
+      if (!resp.ok) {
+        const t = await resp.text().catch(() => "");
+        throw new Error(`Analysis service error ${resp.status}${t ? `: ${t.slice(0, 160)}` : ""}`);
+      }
+      return resp.json();
+    }));
   }
+  if (!PUBLIC_LIVE) throw new Error("Live mode is not configured. This is the demo build.");
+  const body = { botId: "job-analyzer", calls };
+  if (ACCESS_CODE) body.accessCode = ACCESS_CODE;
+  else body.turnstileToken = await getTurnstileToken();
   const resp = await fetch(WORKER_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${WORKER_TOKEN}` },
-    body: JSON.stringify({ botId: "job-analyzer", system, messages, maxTokens }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
-  if (!resp.ok) {
-    const t = await resp.text().catch(() => "");
-    throw new Error(`Analysis service error ${resp.status}${t ? `: ${t.slice(0, 160)}` : ""}`);
-  }
-  return resp.json();
+  const data = await resp.json().catch(() => null);
+  if (!resp.ok) throw new Error(data?.error || `Analysis service error ${resp.status}`);
+  return data.results;
+}
+
+// Single-call convenience wrapper (Resume AI, interview coaching).
+async function callClaude({ system, messages, maxTokens = 1000 }) {
+  const [result] = await callWorker([{ system, messages, maxTokens }]);
+  return result;
 }
 
 // ── TOKENS ──────────────────────────────────────────────────────────────────
@@ -315,8 +403,83 @@ const DEMO_RESULT = {
   },
 };
 
+// ── THE THREE DOORS ───────────────────────────────────────────────────────────
+// One engine, three audiences. A door is prompt emphasis + copy + a few extra
+// schema fields, not a separate build. Comeback leads: re-entry and
+// translation for deep-experience professionals, not re-skilling.
+const DOORS = [
+  { id: "comeback", label: "The Comeback", tag: "Get back in", I: RefreshCw,
+    desc: "10+ years deep, between roles or consulting, and the filters keep screening you out. Reposition the experience you already have." },
+  { id: "jobs", label: "Job Finders", tag: "First real job", I: Briefcase,
+    desc: "Landing the first real job. ATS keywords, interview prep and the strengths you don't know you have yet." },
+  { id: "lanes", label: "Career Finders", tag: "Changing lanes", I: GitBranch,
+    desc: "A deliberate pivot. Map the transferable strengths, the true gaps and the path that closes them." },
+];
+
+const COMEBACK_STATUSES = [
+  { id: "consulting", label: "Currently consulting" },
+  { id: "between", label: "Between roles" },
+  { id: "employed", label: "Employed, searching" },
+];
+
+// Schema extensions injected into the base prompts for the Comeback door.
+const CORE_SCHEMA_COMEBACK = `,"actionArtifacts":{"resumeRewrites":[{"original":string,"rewritten":string,"why":string}],"answerDraft":{"question":string,"draft":string},"outreachNote":string,"nextMoves":[string]}`;
+const INTEL_SCHEMA_COMEBACK = `,"candidatePositioning":{"agedOutSignals":[{"signal":string,"whereItShows":string,"fix":string}],"overqualifiedRisk":{"level":"high"|"medium"|"low","howItReads":string,"positioning":string},"dateStrategy":string},"bridgeNarrative":{"applies":boolean,"framing":string,"recommendation":string,"exampleRoles":[string]}`;
+
+function comebackContext(status) {
+  const statusLine = {
+    consulting: "The candidate is CURRENTLY CONSULTING and wants to move back into a full-time role.",
+    between: "The candidate is BETWEEN ROLES.",
+    employed: "The candidate is still employed but actively searching.",
+  }[status] || "";
+  return `\n\nCOMEBACK MODE. ${statusLine}
+This candidate is an experienced professional (often 10-25+ years deep) re-entering or repositioning after a layoff, a long gap, or a stretch of consulting. Their problem is stale positioning and ATS/age screening, NOT a skills deficit. Do not prescribe a re-skilling program.
+TONE (non-negotiable): strength-based, dignifying, urgency-aware. This is a capable person in a genuinely hard moment — never pity, never spin, never hype. Direct and respectful.`;
+}
+
+function comebackCoreRules(includeBridge) {
+  return `
+COMEBACK RULES:
+- atsKeywords is the headline: it answers "why am I getting auto-rejected with all this experience."
+- Every diagnosis must end in something usable. actionArtifacts is REQUIRED: 3-5 resumeRewrites translating dated titles, skills and accomplishments into how the market names them TODAY; answerDraft = a strong drafted answer to the single hardest question this candidate will face; outreachNote = a short, confident "why I'm a fit" note they can send; nextMoves = 3-5 concrete actions for THIS WEEK.
+- NEVER FABRICATE — applies to EVERY artifact, not just resume rewrites. Rewrites may only rephrase experience actually present in the resume, in ATS-friendly modern language. answerDraft and outreachNote must never assert activities, credentials, coursework or tool experience the resume doesn't show (do NOT write "I'm currently learning X" unless the resume says so — put "start X" in nextMoves as an action instead, and if a draft would be stronger with it, mark it "[once you've started: ...]"). A claim that gets checked and fails costs this candidate the offer.
+- learningPath: only true currency gaps (tools/practices that changed since they last searched). Short and surgical, not a curriculum.
+- opportunityMatches: ${includeBridge
+    ? "include contract, interim and fractional leadership roles ALONGSIDE full-time matches (the candidate opted in to bridge roles)."
+    : "full-time roles only (the candidate opted out of contract/interim suggestions)."}
+OUTPUT BUDGET (strict — the response is hard-cut at the token limit, and a cut-off response is worthless): gaps ≤5, strengths ≤6, learningPath ≤2 phases of ≤2 items, opportunityMatches ≤4, marketAlerts ≤3, resumeRewrites 3-4 (single bullets, not paragraphs), nextMoves ≤5 one-liners, outreachNote ≤110 words, answerDraft ≤140 words. Every string tight and specific. Include every schema field; pad none.`;
+}
+
+function comebackIntelRules(status, includeBridge) {
+  const bridgeFraming = {
+    consulting: `The candidate is currently consulting: frame the consulting as continuity and momentum toward full-time — proof they never stopped operating at level — never a consolation prize.`,
+    between: `If the gap is long (12+ months) at senior level, frame an interim or fractional role as a deliberate strategic move to break the gap and manufacture recent experience.`,
+    employed: `The candidate is employed; bridge roles are optional leverage — mention only where genuinely useful.`,
+  }[status] || "";
+  return `
+COMEBACK RULES:
+- candidatePositioning: read the RESUME from the screener's chair. agedOutSignals = where this candidate reads as aged-out or dated (spans like "25+ years", early graduation dates, legacy tech listed first, titles the market renamed) — each with exactly where it shows and a concrete fix. overqualifiedRisk = whether they're likely screened as too senior or too expensive, how that reads, and how to position around it. dateStrategy = which dates to lead with and which to drop entirely.
+- biasAnalysis stays about the JOB DESCRIPTION as written (employer-side scan), unchanged.
+- interviewQuestions: 8 total, and AT LEAST 4 must be category "returning" — the questions this candidate actually fears: "why did you leave," "walk me through the gap," "why consulting instead of full-time," "aren't you overqualified." whyAsked must be honest about the screener's real concern; hint must be strength-based, never apologetic.
+- bridgeNarrative: ${bridgeFraming} At senior level ALWAYS use the language of fractional/interim leadership (fractional CxO, interim VP, advisory) — a respected, growing path — never "settling for contract work." PROACTIVE TRIGGER: if the resume shows a 12+ month gap at senior level in a cool market, set applies:true and recommend the bridge even though the candidate didn't ask${includeBridge ? "" : " (they toggled bridge roles off, so frame it as an option worth reconsidering, gently)"}.
+- EMIT candidatePositioning and bridgeNarrative FIRST in the JSON object, before marketIntelligence.
+OUTPUT BUDGET (strict — the response is hard-cut at the token limit, and a cut-off response is worthless): agedOutSignals ≤4 (one sentence per field), interviewQuestions exactly 8 (hint ≤25 words, whyAsked ≤20 words), trendingSkills ≤6, decliningSkills ≤4, biasedPhrases ≤4, diversitySignals ≤3, pathways ≤4, lateralMoves ≤3, obsolescenceRisks ≤4, techStack ≤6, insights ≤3, exampleRoles ≤4, framing and recommendation ≤80 words each. Every string tight and specific. Include every schema field; pad none.`;
+}
+
+const DOOR_CONTEXTS = {
+  jobs: `\n\nJOB FINDERS MODE. The candidate is early-career, hunting a first real job: thin resume, high anxiety, low market knowledge. Emphasize the get-in-the-door cluster — ATS keyword match, transferable strengths they don't realize count, interview confidence, realistic opportunity discovery. Tone: encouraging, concrete, zero jargon.`,
+  lanes: `\n\nCAREER FINDERS MODE. The candidate is an experienced professional deliberately changing lanes. Emphasize the lane-change engine — transferable strength reframing, true skill gaps with a focused learning path, obsolescence risk in the old lane, market intelligence on the new one. Tone: strategic, honest about the gap, confident about the transfer.`,
+};
+
 function InputScreen({ onAnalyze, onRunDemo, error }) {
   const [job, setJob] = useState(DEMO_MODE ? DEMO_JD : ""); const [res, setRes] = useState(DEMO_MODE ? DEMO_RES : "");
+  const [door, setDoor] = useState("comeback");
+  const [status, setStatus] = useState("between");
+  const [includeBridge, setIncludeBridge] = useState(false);
+  // Consulting defaults the bridge toggle on (continuity framing), everything
+  // else defaults off — the user decides either way.
+  const pickStatus = s => { setStatus(s); setIncludeBridge(s === "consulting"); };
+  const doorCfg = { door, status, includeBridge: door === "comeback" ? includeBridge : false };
   const ready = job.trim().length > 30 && res.trim().length > 30;
   const ta = (v, s) => ({
     width: "100%", height: 220, padding: 13, borderRadius: 10, background: C.card,
@@ -333,7 +496,11 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
         </div>
         {DEMO_MODE
           ? <span style={{ padding: "5px 11px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.tealDim, border: `1px solid ${C.teal}30`, color: C.teal, fontFamily: "Inter,sans-serif", letterSpacing: "0.04em" }}>LIVE DEMO</span>
-          : <button className="fx-press" onClick={() => { setJob(DEMO_JD); setRes(DEMO_RES); }} style={{ padding: "7px 13px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Load Demo ↗</button>}
+          : <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {ACCESS_CODE && <span style={{ padding: "5px 11px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.purpleDim, border: `1px solid ${C.purple}30`, color: C.purple, fontFamily: "Inter,sans-serif", letterSpacing: "0.04em" }}>PRIVATE ACCESS</span>}
+              <span style={{ padding: "5px 11px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.tealDim, border: `1px solid ${C.teal}30`, color: C.teal, fontFamily: "Inter,sans-serif", letterSpacing: "0.04em" }}>● LIVE</span>
+              {WORKER_TOKEN && <button className="fx-press" onClick={() => { setJob(DEMO_JD); setRes(DEMO_RES); }} style={{ padding: "7px 13px", borderRadius: 8, fontSize: 12, fontWeight: 600, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Load Demo ↗</button>}
+            </div>}
       </div>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "44px 24px 80px" }}>
         <div style={{ textAlign: "center", marginBottom: 42 }}>
@@ -343,6 +510,41 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
           </h1>
           <p style={{ color: C.textMuted, fontSize: 14, maxWidth: 480, margin: "0 auto", lineHeight: 1.8 }}>Interview prediction, salary benchmarking, bias detection, career trajectory modeling and real-time market intelligence — all from one analysis.</p>
         </div>
+
+        {/* Door selection — what brings you here shapes the whole analysis */}
+        <div style={{ marginBottom: 22 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: C.textMuted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10, textAlign: "center" }}>What brings you here?</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+            {DOORS.map(({ id, label, tag, I, desc }) => {
+              const active = door === id;
+              return (
+                <button key={id} className="fx-press" onClick={() => setDoor(id)} style={{ textAlign: "left", padding: "14px 15px", borderRadius: 12, background: active ? C.tealDim : C.card, border: `1px solid ${active ? C.teal + "55" : C.border}`, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
+                    <I size={15} color={active ? C.teal : C.textMuted} />
+                    <span style={{ fontSize: 13, fontWeight: 700, color: active ? C.teal : C.text }}>{label}</span>
+                  </div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: active ? C.text : C.textMuted, marginBottom: 5 }}>{tag}</div>
+                  <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.6 }}>{desc}</div>
+                </button>
+              );
+            })}
+          </div>
+          {door === "comeback" && (
+            <div className="fx-stagger" style={{ marginTop: 12, padding: "14px 16px", borderRadius: 12, background: C.card, border: `1px solid ${C.border}`, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 18 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                <span style={{ fontSize: 12, color: C.textMuted, fontWeight: 600 }}>Where are you right now?</span>
+                {COMEBACK_STATUSES.map(({ id, label }) => (
+                  <button key={id} onClick={() => pickStatus(id)} style={{ padding: "6px 13px", borderRadius: 18, fontSize: 12, fontWeight: 600, fontFamily: "Inter,sans-serif", cursor: "pointer", background: status === id ? C.tealDim : C.elevated, border: `1px solid ${status === id ? C.teal + "50" : C.border}`, color: status === id ? C.teal : C.textMuted }}>{label}</button>
+                ))}
+              </div>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginLeft: "auto" }}>
+                <input type="checkbox" checked={includeBridge} onChange={e => setIncludeBridge(e.target.checked)} style={{ accentColor: C.teal, width: 15, height: 15, cursor: "pointer" }} />
+                <span style={{ fontSize: 12, color: C.text }}>Include contract, interim &amp; fractional roles</span>
+              </label>
+            </div>
+          )}
+        </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 18 }}>
           {[{label:"Job Description",I:Briefcase,val:job,set:setJob,ph:"Paste the full job posting…"},{label:"Resume / Skills",I:User,val:res,set:setRes,ph:"Paste your resume or skill list…"}].map(({label,I,val,set,ph}) => {
             const [f, setF] = useState(false);
@@ -359,10 +561,13 @@ function InputScreen({ onAnalyze, onRunDemo, error }) {
           {DEMO_MODE ? (
             <>
               <button className="fx-press" onClick={onRunDemo} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", border: "none", background: `linear-gradient(135deg, ${C.teal}, #009A5F)`, color: "#04130C", cursor: "pointer", boxShadow: `0 0 36px ${C.tealGlow}` }}>▶ Run the Demo</button>
-              <button onClick={() => onAnalyze(job, res)} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Analyze your own resume → <span style={{ color: C.teal, fontWeight: 600 }}>Full version coming soon</span></button>
+              <button onClick={() => onAnalyze(job, res, doorCfg)} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Analyze your own resume → <span style={{ color: C.teal, fontWeight: 600 }}>Full version coming soon</span></button>
             </>
           ) : (
-            <button className={ready ? "fx-press" : undefined} onClick={() => onAnalyze(job, res)} disabled={!ready} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", border: "none", background: ready ? `linear-gradient(135deg, ${C.teal}, #009A5F)` : C.elevated, color: ready ? "#04130C" : C.textDim, cursor: ready ? "pointer" : "not-allowed", boxShadow: ready ? `0 0 36px ${C.tealGlow}` : "none" }}>Run Full Analysis →</button>
+            <>
+              <button className={ready ? "fx-press" : undefined} onClick={() => onAnalyze(job, res, doorCfg)} disabled={!ready} style={{ padding: "14px 48px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "Space Grotesk,sans-serif", border: "none", background: ready ? `linear-gradient(135deg, ${C.teal}, #009A5F)` : C.elevated, color: ready ? "#04130C" : C.textDim, cursor: ready ? "pointer" : "not-allowed", boxShadow: ready ? `0 0 36px ${C.tealGlow}` : "none" }}>Run Full Analysis →</button>
+              <button onClick={onRunDemo} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Not ready? <span style={{ color: C.teal, fontWeight: 600 }}>See a sample report first →</span></button>
+            </>
           )}
         </div>
         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 14 }}>
@@ -522,8 +727,12 @@ function ResumeTab({ jobDesc, resume, atsData }) {
     setStatus("loading");
     try {
       const data = await callClaude({
-        system: `You are an expert ATS-optimization resume specialist. Return ONLY valid JSON, no markdown. Format: {"atsScoreBefore":number,"atsScoreAfter":number,"sections":[{"title":string,"original":string,"optimized":string,"improvements":[string]}],"keywordsAdded":[string],"generalAdvice":string}`,
-        messages: [{ role: "user", content: `Job:\n${jobDesc}\n\nResume:\n${resume}\n\nMissing keywords: ${(atsData?.missing||[]).join(", ")}. Rewrite experience section with quantified achievements and keywords. Be concrete and specific.` }],
+        system: `You are an expert ATS-optimization resume specialist. Return ONLY valid JSON, no markdown. Format: {"atsScoreBefore":number,"atsScoreAfter":number,"sections":[{"title":string,"original":string,"optimized":string,"improvements":[string]}],"keywordsAdded":[string],"generalAdvice":string}
+RULES:
+- Modernize dated titles, skills and accomplishment language into how the market names them TODAY, in ATS-friendly phrasing.
+- NEVER FABRICATE. Only rephrase experience actually present in the resume. Never invent keywords, titles, metrics, tools or skills the candidate does not have — an optimized resume that lies gets caught in the interview. keywordsAdded may only contain keywords genuinely supported by the candidate's real experience.
+- Quantify only with numbers the resume already supports; where a number is missing, use a bracketed placeholder like [X%] for the candidate to fill honestly.`,
+        messages: [{ role: "user", content: `Job:\n${jobDesc}\n\nResume:\n${resume}\n\nMissing keywords to work in WHERE HONESTLY SUPPORTED: ${(atsData?.missing||[]).join(", ")}. Rewrite the experience section with modernized, concrete, specific language.` }],
       });
       if (data.error) throw new Error(data.error.message);
       const raw = data.content?.find(b => b.type==="text")?.text || "";
@@ -597,9 +806,10 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
   const [answers, setAnswers] = useState({});
   const [coaching, setCoaching] = useState({});
   const [loading, setLoading] = useState({});
-  const cats = ["technical","behavioral","situational","culture"];
-  const catC = { technical: C.teal, behavioral: C.purple, situational: C.blue, culture: C.amber };
-  const catI = { technical: Cpu, behavioral: Users, situational: Zap, culture: Heart };
+  const cats = ["returning","technical","behavioral","situational","culture"];
+  const catC = { returning: C.coral, technical: C.teal, behavioral: C.purple, situational: C.blue, culture: C.amber };
+  const catI = { returning: RefreshCw, technical: Cpu, behavioral: Users, situational: Zap, culture: Heart };
+  const catLabel = { returning: "The Questions You're Dreading (Returning Candidate)" };
   const getCoaching = async (idx, question, answer) => {
     if (DEMO_MODE) { setCoaching(c => ({...c, [idx]: { comingSoon: true }})); return; }
     setLoading(l => ({...l, [idx]: true}));
@@ -634,7 +844,7 @@ function InterviewTab({ questions = [], jobDesc, gaps = [] }) {
           <Card key={cat}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 13 }}>
               <CatI size={14} color={col} />
-              <SLabel color={col}>{cat.charAt(0).toUpperCase()+cat.slice(1)} Questions</SLabel>
+              <SLabel color={col}>{catLabel[cat] || `${cat.charAt(0).toUpperCase()+cat.slice(1)} Questions`}</SLabel>
               <Chip text={`${qs.length}`} color={col} size={10} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1279,7 +1489,137 @@ function DashboardTab({ d }) {
   );
 }
 
+// ── TAB: COMEBACK PLAN ────────────────────────────────────────────────────────
+// The insight-to-action tab: how the screeners are reading you, the bridge
+// strategy, and drafts you can actually use — not just a gap list.
+function ComebackTab({ d }) {
+  const cp = d.candidatePositioning || {};
+  const bn = d.bridgeNarrative || {};
+  const aa = d.actionArtifacts || {};
+  const riskC = { high: C.red, medium: C.amber, low: C.teal };
+  const orCol = riskC[cp.overqualifiedRisk?.level] || C.amber;
+  const copyText = t => { try { navigator.clipboard.writeText(t); } catch { /* no-op */ } };
+  return (
+    <div className="fx-stagger" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <Card accent={C.coral} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <div style={{ width: 44, height: 44, borderRadius: 11, background: C.coralDim, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><RefreshCw size={20} color={C.coral} /></div>
+        <div>
+          <div style={{ fontFamily: "Space Grotesk,sans-serif", fontWeight: 700, fontSize: 15, color: C.text, marginBottom: 3 }}>Your Comeback Plan</div>
+          <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.6 }}>How screeners are actually reading your resume, the positioning fixes, and drafts ready to use. Your experience isn't the problem — the translation is.</div>
+        </div>
+      </Card>
+
+      {(cp.agedOutSignals || []).length > 0 && (
+        <Card>
+          <SLabel color={C.coral}>How You're Being Read ({cp.agedOutSignals.length} signals)</SLabel>
+          <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+            {cp.agedOutSignals.map((s, i) => (
+              <div key={i} style={{ padding: "13px 14px", borderRadius: 10, background: C.elevated, border: `1px solid ${C.coral}18` }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 4 }}>{s.signal}</div>
+                <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.6, marginBottom: 7 }}>Where it shows: {s.whereItShows}</div>
+                <div style={{ fontSize: 12, color: C.teal, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                  <CheckCircle size={11} style={{ marginTop: 2, flexShrink: 0 }} /><span>Fix: {s.fix}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        {cp.overqualifiedRisk && (
+          <Card>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <SLabel>Overqualified Read</SLabel>
+              <Chip text={`${cp.overqualifiedRisk.level || "medium"} risk`} color={orCol} size={10} />
+            </div>
+            <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.7, marginBottom: 10 }}>{cp.overqualifiedRisk.howItReads}</div>
+            <div style={{ padding: "11px 13px", borderRadius: 8, background: C.tealDim, border: `1px solid ${C.teal}20`, fontSize: 12, color: C.text, lineHeight: 1.7 }}>{cp.overqualifiedRisk.positioning}</div>
+          </Card>
+        )}
+        {cp.dateStrategy && (
+          <Card>
+            <SLabel>Date Strategy</SLabel>
+            <div style={{ fontSize: 13, color: C.text, lineHeight: 1.8 }}>{cp.dateStrategy}</div>
+          </Card>
+        )}
+      </div>
+
+      {bn && (bn.applies || bn.recommendation) && (
+        <Card accent={C.purple}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <GitBranch size={14} color={C.purple} />
+            <SLabel color={C.purple}>Bridge Strategy</SLabel>
+          </div>
+          {bn.framing && <div style={{ fontSize: 13, color: C.text, lineHeight: 1.8, marginBottom: 10 }}>{bn.framing}</div>}
+          {bn.recommendation && <div style={{ padding: "12px 14px", borderRadius: 9, background: C.purpleDim, border: `1px solid ${C.purple}25`, fontSize: 13, color: C.text, lineHeight: 1.75, marginBottom: (bn.exampleRoles||[]).length ? 12 : 0 }}>{bn.recommendation}</div>}
+          {(bn.exampleRoles || []).length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {bn.exampleRoles.map(r => <Chip key={r} text={r} color={C.purple} />)}
+            </div>
+          )}
+        </Card>
+      )}
+
+      {(aa.resumeRewrites || []).length > 0 && (
+        <Card>
+          <SLabel color={C.teal}>Resume Lines, Rewritten (nothing invented — your experience, today's language)</SLabel>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {aa.resumeRewrites.map((r, i) => (
+              <div key={i} style={{ padding: "13px 14px", borderRadius: 10, background: C.elevated, border: `1px solid ${C.border}` }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 8 }}>
+                  {[{ label: "Before", txt: r.original, col: C.red }, { label: "After", txt: r.rewritten, col: C.teal }].map(({ label, txt, col }) => (
+                    <div key={label}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: col, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 6 }}>{label}</div>
+                      <div style={{ padding: 11, borderRadius: 8, background: C.card, border: `1px solid ${col}18`, fontSize: 12, color: col === C.red ? C.textMuted : C.text, lineHeight: 1.75, fontFamily: "JetBrains Mono,monospace", whiteSpace: "pre-wrap" }}>{txt}</div>
+                    </div>
+                  ))}
+                </div>
+                {r.why && <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.6, display: "flex", gap: 6 }}><Sparkles size={10} color={C.teal} style={{ marginTop: 2, flexShrink: 0 }} />{r.why}</div>}
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {aa.answerDraft?.draft && (
+        <Card>
+          <SLabel color={C.purple}>The Hardest Question — Answer Drafted</SLabel>
+          <div style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 9 }}>"{aa.answerDraft.question}"</div>
+          <div style={{ padding: "13px 15px", borderRadius: 9, background: C.elevated, fontSize: 13, color: C.text, lineHeight: 1.85 }}>{aa.answerDraft.draft}</div>
+        </Card>
+      )}
+
+      <div style={{ display: "grid", gridTemplateColumns: (aa.outreachNote && (aa.nextMoves||[]).length) ? "1fr 1fr" : "1fr", gap: 16 }}>
+        {aa.outreachNote && (
+          <Card>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <SLabel>Outreach Note — Ready to Send</SLabel>
+              <button className="fx-press" onClick={() => copyText(aa.outreachNote)} style={{ padding: "4px 11px", borderRadius: 7, fontSize: 11, fontWeight: 600, background: C.elevated, border: `1px solid ${C.border}`, color: C.textMuted, cursor: "pointer", fontFamily: "Inter,sans-serif" }}>Copy</button>
+            </div>
+            <div style={{ padding: "12px 14px", borderRadius: 9, background: C.elevated, fontSize: 12, color: C.text, lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aa.outreachNote}</div>
+          </Card>
+        )}
+        {(aa.nextMoves || []).length > 0 && (
+          <Card>
+            <SLabel color={C.teal}>This Week's Moves</SLabel>
+            <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+              {aa.nextMoves.map((m, i) => (
+                <div key={i} style={{ display: "flex", gap: 9, padding: "9px 12px", borderRadius: 8, background: C.elevated, fontSize: 12, color: C.text, lineHeight: 1.6 }}>
+                  <div style={{ width: 20, height: 20, borderRadius: 6, background: C.tealDim, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 10, fontWeight: 700, color: C.teal }}>{i + 1}</div>
+                  {m}
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── RESULTS SCREEN WITH SIDEBAR ───────────────────────────────────────────────
+const COMEBACK_NAV = { id: "comeback", label: "Comeback Plan", I: RefreshCw, color: C.coral };
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", I: BarChart2, color: C.teal },
   { id: "gaps", label: "Gap Analysis", I: Target, color: C.amber },
@@ -1294,6 +1634,9 @@ const NAV_ITEMS = [
 ];
 
 function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
+  // The Comeback Plan tab appears only when the analysis carries comeback data.
+  const hasComeback = !!(analysis.candidatePositioning || analysis.actionArtifacts || analysis.bridgeNarrative);
+  const navItems = hasComeback ? [NAV_ITEMS[0], COMEBACK_NAV, ...NAV_ITEMS.slice(1)] : NAV_ITEMS;
   const [tab, setTab] = useState("overview");
   // Tab crossfade: the outgoing panel fades 150ms ease-in, then shownTab
   // catches up and the incoming panel (keyed remount) fades/rises 220ms.
@@ -1307,7 +1650,7 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
     const t = setTimeout(() => { setShownTab(tab); setLeaving(false); }, 150);
     return () => clearTimeout(t);
   }, [tab, shownTab, reducedMotion]);
-  const curr = NAV_ITEMS.find(n => n.id === shownTab);
+  const curr = navItems.find(n => n.id === shownTab);
   return (
     <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "Inter,sans-serif", color: C.text, display: "flex", flexDirection: "column" }}>
       {/* Top bar */}
@@ -1325,7 +1668,7 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
       <div style={{ display: "flex", flex: 1 }}>
         {/* Sidebar */}
         <div style={{ width: 196, borderRight: `1px solid ${C.border}`, padding: "14px 10px", flexShrink: 0, position: "sticky", top: 52, height: "calc(100vh - 52px)", overflowY: "auto" }}>
-          {NAV_ITEMS.map(({ id, label, I, color }) => {
+          {navItems.map(({ id, label, I, color }) => {
             const active = tab === id;
             return (
               <button key={id} className="fx-press" onClick={() => setTab(id)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 11px", borderRadius: 8, border: "none", background: active ? `${color}12` : "transparent", cursor: "pointer", fontFamily: "Inter,sans-serif", marginBottom: 2, transition: "background 0.15s ease, transform 0.15s cubic-bezier(0,0,.2,1)" }}>
@@ -1349,6 +1692,7 @@ function ResultsScreen({ analysis, jobDesc, resume, onReset }) {
             </div>
 
             {shownTab === "overview" && <OverviewTab d={analysis} onTabChange={setTab} />}
+            {shownTab === "comeback" && <ComebackTab d={analysis} />}
             {shownTab === "gaps" && <GapTab d={analysis} />}
             {shownTab === "resume" && <ResumeTab jobDesc={jobDesc} resume={resume} atsData={analysis.atsKeywords} />}
             {shownTab === "interview" && <InterviewTab questions={analysis.interviewQuestions} jobDesc={jobDesc} gaps={analysis.gaps} />}
@@ -1390,21 +1734,27 @@ export default function App() {
   const [analysis, setAnalysis] = useState(null);
   const [step, setStep] = useState(0); const [error, setError] = useState("");
 
-  const analyze = useCallback(async (jd, res) => {
+  const analyze = useCallback(async (jd, res, doorCfg = {}) => {
     if (!jd.trim() || !res.trim()) return;
     if (DEMO_MODE) { setView("comingSoon"); return; }
+    const { door = "jobs", status = "between", includeBridge = false } = doorCfg;
+    const isComeback = door === "comeback";
     setJobDesc(jd); setResume(res);
     setView("loading"); setStep(0); setError("");
     const iv = setInterval(() => setStep(s => Math.min(s + 1, 7)), 700);
 
-    const SYS_CORE = `You are a career intelligence AI. Return ONLY valid JSON, no markdown fences. Schema: {"fitScore":number,"recommendation":"STRONG_APPLY"|"UPSKILL_FIRST"|"LOOK_ELSEWHERE","summary":string,"careerHealth":{"marketDemand":number,"skillCurrency":number,"experienceLevel":number,"networkStrength":number,"learningVelocity":number,"overall":number},"gaps":[{"skill":string,"type":string,"priority":"high"|"medium"|"low","currentLevel":string,"requiredLevel":string}],"strengths":[string],"atsKeywords":{"found":[string],"missing":[string],"matchScore":number},"learningPath":[{"phase":string,"timeframe":string,"items":[{"skill":string,"priority":"high"|"medium"|"low","duration":string,"resource":string,"project":string}]}],"opportunityMatches":[{"role":string,"company":string,"matchScore":number,"salary":string}],"marketAlerts":[{"type":"trending"|"demand"|"opportunity","icon":string,"text":string}]}`;
+    const SYS_CORE = `You are a career intelligence AI. Return ONLY valid JSON, no markdown fences. Schema: {"fitScore":number,"recommendation":"STRONG_APPLY"|"UPSKILL_FIRST"|"LOOK_ELSEWHERE","summary":string,"careerHealth":{"marketDemand":number,"skillCurrency":number,"experienceLevel":number,"networkStrength":number,"learningVelocity":number,"overall":number},"gaps":[{"skill":string,"type":string,"priority":"high"|"medium"|"low","currentLevel":string,"requiredLevel":string}],"strengths":[string],"atsKeywords":{"found":[string],"missing":[string],"matchScore":number},"learningPath":[{"phase":string,"timeframe":string,"items":[{"skill":string,"priority":"high"|"medium"|"low","duration":string,"resource":string,"project":string}]}],"opportunityMatches":[{"role":string,"company":string,"matchScore":number,"salary":string}],"marketAlerts":[{"type":"trending"|"demand"|"opportunity","icon":string,"text":string}]${isComeback ? CORE_SCHEMA_COMEBACK : ""}}`
+      + (isComeback ? comebackContext(status) + comebackCoreRules(includeBridge) : DOOR_CONTEXTS[door] || "");
 
-    const SYS_INTEL = `You are a career intelligence AI specializing in market analysis and career modeling. Return ONLY valid JSON, no markdown fences. Schema: {"marketIntelligence":{"salaryMin":number,"salaryMax":number,"demandLevel":"high"|"medium"|"low","competitionLevel":"high"|"medium"|"low","trendingSkills":[string],"decliningSkills":[string],"hiringMarket":"hot"|"normal"|"cold"},"interviewQuestions":[{"category":"technical"|"behavioral"|"situational"|"culture","question":string,"whyAsked":string,"targetGap":string,"hint":string}],"biasAnalysis":{"biasedPhrases":[{"phrase":string,"biasType":string,"concern":string,"alternative":string}],"overallBiasScore":number,"diversitySignals":[string]},"careerProgression":{"successProbability":number,"pathways":[{"year":string,"role":string,"probability":number,"salaryRange":string}],"lateralMoves":[{"role":string,"reason":string}],"obsolescenceRisks":[{"skill":string,"risk":"high"|"medium"|"low","timeframe":string}]},"industryModule":{"vertical":"tech"|"finance"|"healthcare"|"sales"|"other","techStack":[{"name":string,"found":boolean,"level":string}],"insights":[string]},"companyIntelligence":{"cultureSignals":[string],"workLifeScore":number,"cultureFitScore":number},"roleType":{"startupScore":number,"startupInsight":string,"remoteScore":number,"remoteInsight":string,"executiveScore":number,"executiveInsight":string}}`;
+    const SYS_INTEL = `You are a career intelligence AI specializing in market analysis and career modeling. Return ONLY valid JSON, no markdown fences. Schema: {"marketIntelligence":{"salaryMin":number,"salaryMax":number,"demandLevel":"high"|"medium"|"low","competitionLevel":"high"|"medium"|"low","trendingSkills":[string],"decliningSkills":[string],"hiringMarket":"hot"|"normal"|"cold"},"interviewQuestions":[{"category":"technical"|"behavioral"|"situational"|"culture"${isComeback ? '|"returning"' : ""},"question":string,"whyAsked":string,"targetGap":string,"hint":string}],"biasAnalysis":{"biasedPhrases":[{"phrase":string,"biasType":string,"concern":string,"alternative":string}],"overallBiasScore":number,"diversitySignals":[string]},"careerProgression":{"successProbability":number,"pathways":[{"year":string,"role":string,"probability":number,"salaryRange":string}],"lateralMoves":[{"role":string,"reason":string}],"obsolescenceRisks":[{"skill":string,"risk":"high"|"medium"|"low","timeframe":string}]},"industryModule":{"vertical":"tech"|"finance"|"healthcare"|"sales"|"other","techStack":[{"name":string,"found":boolean,"level":string}],"insights":[string]},"companyIntelligence":{"cultureSignals":[string],"workLifeScore":number,"cultureFitScore":number},"roleType":{"startupScore":number,"startupInsight":string,"remoteScore":number,"remoteInsight":string,"executiveScore":number,"executiveInsight":string}${isComeback ? INTEL_SCHEMA_COMEBACK : ""}}`
+      + (isComeback ? comebackContext(status) + comebackIntelRules(status, includeBridge) : DOOR_CONTEXTS[door] || "");
 
     try {
-      const [d1, d2] = await Promise.all([
-        callClaude({ system: SYS_CORE, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide thorough career fit analysis.` }] }),
-        callClaude({ system: SYS_INTEL, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide market intelligence, interview questions (8 total across categories), bias analysis, career progression modeling and industry module analysis.` }] }),
+      // One batched request in public mode (a Turnstile token is single-use, so
+      // the analysis pair must share it); internal token mode fans out as before.
+      const [d1, d2] = await callWorker([
+        { system: SYS_CORE, maxTokens: 8000, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide thorough career fit analysis.` }] },
+        { system: SYS_INTEL, maxTokens: 8000, messages: [{ role: "user", content: `JOB:\n${jd}\n\nRESUME:\n${res}\n\nProvide market intelligence, interview questions (8 total across categories), bias analysis, career progression modeling and industry module analysis.` }] },
       ]);
       clearInterval(iv); setStep(8);
 
@@ -1419,14 +1769,27 @@ export default function App() {
         catch {
           const m = raw.match(/\{[\s\S]*\}/);
           if (m) { try { return JSON.parse(m[0]); } catch { /* fall through */ } }
-          throw new Error("The analysis came back in an unexpected format. Please try again.");
+          console.error(`IC parse failure — stop_reason=${d.stop_reason} output_tokens=${d.usage?.output_tokens} rawLen=${raw.length} tail=${JSON.stringify(raw.slice(-120))}`);
+          throw new Error(d.stop_reason === "max_tokens"
+            ? "The analysis ran long and got cut off. Please try again."
+            : "The analysis came back in an unexpected format. Please try again.");
         }
       };
       const merged = { ...parse(d1), ...parse(d2) };
+      // Lightweight run breadcrumb (no resume/JD content) — survives reloads;
+      // first thing to check when a pilot reports "it didn't work".
+      try {
+        sessionStorage.setItem("ic-last-run", JSON.stringify({
+          at: new Date().toISOString(), door, ok: true, fit: merged.fitScore,
+          comeback: { positioning: !!merged.candidatePositioning, artifacts: !!merged.actionArtifacts, bridge: !!merged.bridgeNarrative },
+          questionCategories: [...new Set((merged.interviewQuestions || []).map(q => q.category))],
+        }));
+      } catch { /* no-op */ }
       setAnalysis(merged);
       setTimeout(() => setView("results"), 500);
     } catch (e) {
       clearInterval(iv);
+      try { sessionStorage.setItem("ic-last-run", JSON.stringify({ at: new Date().toISOString(), door, ok: false, error: e.message })); } catch { /* no-op */ }
       setError(e.message || "Analysis failed. Please try again.");
       setView("input");
     }

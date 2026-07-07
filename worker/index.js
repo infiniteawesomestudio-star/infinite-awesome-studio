@@ -1,5 +1,23 @@
-const MAX_TOKENS_ALLOWED = 4096;
+const MAX_TOKENS_ALLOWED = 8192;
 const MAX_MESSAGE_CHARS = 32_000;
+
+// ─── Public (tokenless) route config — Infinite Careers only ─────────────────
+// The public site cannot ship WORKER_TOKEN (Vite would inline it into the JS
+// bundle), so job-analyzer gets a second, tokenless path gated by layered
+// defenses instead of a shared secret: hard origin lock + Turnstile + per-IP
+// hourly KV cap + a global daily KV spend cap. Pilot access codes (PILOT_CODES
+// secret) bypass Turnstile and the caps for named private testers.
+const PUBLIC_BOT = "job-analyzer";
+const PUBLIC_ORIGIN = "https://infiniteawesomestudio.com";
+const PUBLIC_MAX_CALLS_PER_REQUEST = 2; // one analysis = 2 Claude calls, batched
+const DEFAULT_IP_HOURLY_LIMIT = 5;      // public requests per IP per hour
+const DEFAULT_DAILY_CAP = 60;           // public requests per day, all IPs
+
+// job-analyzer moves to Sonnet 5 (cheaper, newer default); the BeneBots demos
+// and Blog Studio stay on their proven model until revisited on their own.
+function modelFor(botId) {
+  return botId === PUBLIC_BOT ? "claude-sonnet-5" : "claude-sonnet-4-6";
+}
 
 // ─── Demo Co demo context (injected server-side into every demo bot) ───
 const DEMO_CONTEXT = `
@@ -156,17 +174,23 @@ export default {
       return new Response("Method not allowed", { status: 405, headers: corsHeaders(request) });
     }
 
-    // Shared-secret token check — blocks anonymous abuse from outside the app.
-    const auth = request.headers.get("Authorization") || "";
-    if (!env.WORKER_TOKEN || auth !== `Bearer ${env.WORKER_TOKEN}`) {
-      return new Response("Unauthorized", { status: 401, headers: corsHeaders(request) });
-    }
-
     let body;
     try {
       body = await request.json();
     } catch {
       return new Response("Invalid JSON", { status: 400, headers: corsHeaders(request) });
+    }
+
+    // No Authorization header + job-analyzer → the tokenless public route.
+    // Everything else still requires the shared-secret token.
+    const auth = request.headers.get("Authorization") || "";
+    if (!auth && body.botId === PUBLIC_BOT && body.action !== "fetch") {
+      return handlePublic(body, env, request);
+    }
+
+    // Shared-secret token check — blocks anonymous abuse from outside the app.
+    if (!env.WORKER_TOKEN || auth !== `Bearer ${env.WORKER_TOKEN}`) {
+      return new Response("Unauthorized", { status: 401, headers: corsHeaders(request) });
     }
 
     // Rate limiting — 20 requests per IP per minute
@@ -216,42 +240,16 @@ export default {
       systemPrompt = `${botIdentity}\n\n${DEMO_CONTEXT}`;
     }
 
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return new Response("Missing or empty messages array", { status: 400, headers: corsHeaders(request) });
+    const messagesError = validateMessages(messages);
+    if (messagesError) {
+      return new Response(messagesError, { status: 400, headers: corsHeaders(request) });
     }
 
-    // Validate each message: must have string role and string content only.
-    for (const msg of messages) {
-      if (!msg || typeof msg.role !== "string" || typeof msg.content !== "string") {
-        return new Response("Invalid message shape", { status: 400, headers: corsHeaders(request) });
-      }
-      if (!["user", "assistant"].includes(msg.role)) {
-        return new Response("Invalid message role", { status: 400, headers: corsHeaders(request) });
-      }
-      if (msg.content.length > MAX_MESSAGE_CHARS) {
-        return new Response("Message content too long", { status: 400, headers: corsHeaders(request) });
-      }
-    }
-
-    // Clamp maxTokens — never let the client drive unbounded spending.
-    const safeMaxTokens = Math.min(
-      typeof maxTokens === "number" && maxTokens > 0 ? maxTokens : 1024,
-      MAX_TOKENS_ALLOWED
-    );
-
-    const upstream = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: safeMaxTokens,
-        system: systemPrompt,
-        messages,
-      }),
+    const upstream = await callAnthropic(env, {
+      model: modelFor(botId),
+      maxTokens,
+      system: systemPrompt,
+      messages,
     });
 
     const data = await upstream.text();
@@ -261,6 +259,160 @@ export default {
     });
   },
 };
+
+// ─── Shared validation + upstream call ───────────────────────────────────────
+
+function validateMessages(messages) {
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    return "Missing or empty messages array";
+  }
+  for (const msg of messages) {
+    if (!msg || typeof msg.role !== "string" || typeof msg.content !== "string") {
+      return "Invalid message shape";
+    }
+    if (!["user", "assistant"].includes(msg.role)) {
+      return "Invalid message role";
+    }
+    if (msg.content.length > MAX_MESSAGE_CHARS) {
+      return "Message content too long";
+    }
+  }
+  return null;
+}
+
+function callAnthropic(env, { model, maxTokens, system, messages }) {
+  // Clamp maxTokens — never let the client drive unbounded spending.
+  const safeMaxTokens = Math.min(
+    typeof maxTokens === "number" && maxTokens > 0 ? maxTokens : 1024,
+    MAX_TOKENS_ALLOWED
+  );
+  return fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: safeMaxTokens,
+      system,
+      messages,
+    }),
+  });
+}
+
+// ─── Public (tokenless) route — Infinite Careers ─────────────────────────────
+// Layered defenses replace the shared secret. Order matters: cheap checks
+// first, counters only increment once a request is fully valid, and the
+// Anthropic call is last. Fails closed if TURNSTILE_SECRET or PUBLIC_KV are
+// missing (pilot access codes still work — they don't need either).
+async function handlePublic(body, env, request) {
+  // 1. Hard origin lock — actually reject server-side, not just CORS headers.
+  //    localhost is allowed only with a valid pilot code (Ty-mediated runs).
+  const origin = request.headers.get("Origin") || "";
+  const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const pilotCodes = (env.PILOT_CODES || "").split(",").map(s => s.trim()).filter(Boolean);
+  const isPilot = typeof body.accessCode === "string" && pilotCodes.includes(body.accessCode);
+  if (origin !== PUBLIC_ORIGIN && !(isLocal && isPilot)) {
+    return jsonResponse({ error: "Origin not allowed." }, 403, request);
+  }
+
+  // 2. Burst rate limit (separate key space from the internal tools).
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  const { success } = await env.RATE_LIMITER.limit({ key: `pub:${ip}` });
+  if (!success) {
+    return jsonResponse({ error: "Too many requests — give it a minute and try again." }, 429, request);
+  }
+
+  // 3. Normalize: either a batched { calls: [...] } (one analysis = 2 calls,
+  //    Turnstile tokens are single-use so the pair must share one request) or
+  //    a single { system, messages, maxTokens } call.
+  const calls = Array.isArray(body.calls)
+    ? body.calls
+    : [{ system: body.system, messages: body.messages, maxTokens: body.maxTokens }];
+  if (calls.length < 1 || calls.length > PUBLIC_MAX_CALLS_PER_REQUEST) {
+    return jsonResponse({ error: "Invalid calls array." }, 400, request);
+  }
+  for (const call of calls) {
+    if (!call || typeof call.system !== "string" || !call.system.trim() || call.system.length > MAX_MESSAGE_CHARS) {
+      return jsonResponse({ error: "Invalid system prompt." }, 400, request);
+    }
+    const msgError = validateMessages(call.messages);
+    if (msgError) return jsonResponse({ error: msgError }, 400, request);
+  }
+
+  // 4. Anonymous public traffic: Turnstile + per-IP hourly cap + global daily
+  //    spend cap. Pilots skip all three.
+  if (!isPilot) {
+    if (!env.TURNSTILE_SECRET || !env.PUBLIC_KV) {
+      return jsonResponse({ error: "Public analysis isn't open yet — check back soon." }, 503, request);
+    }
+
+    const verified = await verifyTurnstile(env.TURNSTILE_SECRET, body.turnstileToken, ip);
+    if (!verified) {
+      return jsonResponse({ error: "Human verification failed — refresh the page and try again." }, 403, request);
+    }
+
+    const now = new Date();
+    const day = now.toISOString().slice(0, 10);
+    const hourKey = `pubip:${ip}:${day}T${String(now.getUTCHours()).padStart(2, "0")}`;
+    const dayKey = `pubday:${day}`;
+
+    const ipLimit = intVar(env.PUBLIC_IP_HOURLY_LIMIT, DEFAULT_IP_HOURLY_LIMIT);
+    const ipCount = parseInt(await env.PUBLIC_KV.get(hourKey), 10) || 0;
+    if (ipCount >= ipLimit) {
+      return jsonResponse({ error: "You've hit the hourly limit for free analyses — come back in a bit." }, 429, request);
+    }
+
+    const dailyCap = intVar(env.PUBLIC_DAILY_CAP, DEFAULT_DAILY_CAP);
+    const dayCount = parseInt(await env.PUBLIC_KV.get(dayKey), 10) || 0;
+    if (dayCount >= dailyCap) {
+      return jsonResponse({ error: "Today's free analyses are all used up — check back tomorrow." }, 429, request);
+    }
+
+    await Promise.all([
+      env.PUBLIC_KV.put(hourKey, String(ipCount + 1), { expirationTtl: 3900 }),
+      env.PUBLIC_KV.put(dayKey, String(dayCount + 1), { expirationTtl: 172800 }),
+    ]);
+  }
+
+  // 5. Run the call(s) against Anthropic in parallel; return the raw message
+  //    JSON per call so the client parses content[].text exactly as before.
+  const upstreams = await Promise.all(
+    calls.map(c => callAnthropic(env, {
+      model: modelFor(PUBLIC_BOT),
+      maxTokens: c.maxTokens,
+      system: c.system,
+      messages: c.messages,
+    }))
+  );
+  const results = await Promise.all(upstreams.map(async u => {
+    try { return await u.json(); }
+    catch { return { error: { message: `Upstream error ${u.status}` } }; }
+  }));
+  return jsonResponse({ results }, 200, request);
+}
+
+async function verifyTurnstile(secret, token, ip) {
+  if (typeof token !== "string" || !token) return false;
+  try {
+    const resp = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ secret, response: token, remoteip: ip }),
+    });
+    const data = await resp.json();
+    return data.success === true;
+  } catch {
+    return false;
+  }
+}
+
+function intVar(value, fallback) {
+  const n = parseInt(value, 10);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
 
 // ─── On-demand Apify scrape (Blog Studio "Fetch new articles") ───────────────
 // Runs an Apify actor synchronously and returns normalized article candidates.

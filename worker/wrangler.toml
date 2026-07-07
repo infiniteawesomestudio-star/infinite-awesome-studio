@@ -6,6 +6,17 @@ compatibility_date = "2025-01-01"
 # ANTHROPIC_API_KEY and WORKER_TOKEN are set as secrets — never put real keys here.
 # Run: npx wrangler secret put ANTHROPIC_API_KEY
 # Run: npx wrangler secret put WORKER_TOKEN
+# The public Infinite Careers route also needs (as secrets):
+#   TURNSTILE_SECRET — Turnstile widget secret key (Cloudflare dashboard → Turnstile)
+#   PILOT_CODES — comma-separated private access codes for named pilot testers
+# Public-route knobs (in requests; one full analysis = 1 batched request):
+PUBLIC_IP_HOURLY_LIMIT = "5"
+PUBLIC_DAILY_CAP = "60"
+
+# Counters for the public route: per-IP hourly cap + global daily spend cap.
+[[kv_namespaces]]
+binding = "PUBLIC_KV"
+id = "785e9d97fbab4219822575b1695c0d97"
 
 [[unsafe.bindings]]
 name = "RATE_LIMITER"
