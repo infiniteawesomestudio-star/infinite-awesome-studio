@@ -13,10 +13,11 @@ const PUBLIC_MAX_CALLS_PER_REQUEST = 2; // one analysis = 2 Claude calls, batche
 const DEFAULT_IP_HOURLY_LIMIT = 5;      // public requests per IP per hour
 const DEFAULT_DAILY_CAP = 60;           // public requests per day, all IPs
 
-// job-analyzer moves to Sonnet 5 (cheaper, newer default); the BeneBots demos
-// and Blog Studio stay on their proven model until revisited on their own.
+// All bots now run on Sonnet 5 (the newer, cheaper agentic default). job-analyzer
+// moved first (2026-07-06); the BeneBots demos and Blog Studio followed on 2026-07-12.
+// Kept as a function so a single bot can be pinned to a different model later if needed.
 function modelFor(botId) {
-  return botId === PUBLIC_BOT ? "claude-sonnet-5" : "claude-sonnet-4-6";
+  return "claude-sonnet-5";
 }
 
 // ─── Demo Co demo context (injected server-side into every demo bot) ───
@@ -25,7 +26,7 @@ CLIENT: Demo Co | Mid-size employer, ~450 employees | Plan year 2026
 
 MEDICAL PLANS:
 1. HDHP with HSA
-   - Individual deductible: $1,600 | Family: $3,200
+   - Individual deductible: $1,700 | Family: $3,400
    - Individual OOPM: $4,000 | Family: $8,000
    - Coinsurance: 80% after deductible
    - Employer HSA seed: $1,000/year
@@ -44,14 +45,14 @@ DENTAL: Delta Dental PPO
 VISION: VSP
 
 HSA (HDHP enrollees only):
-   - 2026 individual limit: $4,400 | Family: $8,550
+   - 2026 individual limit: $4,400 | Family: $8,750
    - Catch-up (age 55+): additional $1,000
    - Employer seed: $1,000
 
 FSA:
-   - Health FSA: $3,300 limit, $660 carryover
+   - Health FSA: $3,400 limit, $680 carryover
    - Limited-purpose FSA: available for HDHP/HSA enrollees
-   - Dependent care FSA: $5,000
+   - Dependent care FSA: $7,500 ($3,750 if married filing separately)
 
 401(k): 100% match on first 3%, 50% on next 2% (4% max employer contribution)
    - Roth option: yes | SECURE 2.0 catch-up: yes

@@ -50,7 +50,7 @@ const faqs: FAQItem[] = [
   {
     question: "What's the HSA contribution limit for 2026?",
     answer:
-      'For 2026, the IRS HSA contribution limit is $4,300 for self-only HDHP coverage and $8,550 for family coverage. Catch-up contributions for account holders 55 and older add $1,000 on top of either limit. These are the employee-plus-employer combined limits, so if your employer seeds $750, your personal contribution ceiling drops accordingly. Always verify with the current IRS Revenue Procedure for the plan year.',
+      'For 2026, the IRS HSA contribution limit is $4,400 for self-only HDHP coverage and $8,750 for family coverage. Catch-up contributions for account holders 55 and older add $1,000 on top of either limit. These are the employee-plus-employer combined limits, so if your employer seeds $750, your personal contribution ceiling drops accordingly. Always verify with the current IRS Revenue Procedure for the plan year.',
     bot: 'Ask BeneBot',
     botIcon: MessageSquare,
     botColor: '#00C47A',

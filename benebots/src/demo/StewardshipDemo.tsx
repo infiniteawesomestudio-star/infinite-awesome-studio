@@ -111,7 +111,10 @@ async function generateDraft(DEMO_PROFILE: Client, section: Section, drafts: Rec
   })
   if (!res.ok) return drafts[section]
   const data = await res.json()
-  return data?.content?.[0]?.text ?? drafts[section]
+  // Sonnet 5 can lead with a thinking block, so pick the text block by type
+  // rather than by position. Position-indexing here fell through to the canned
+  // draft silently, which reads as live output.
+  return data?.content?.find((b: { type: string }) => b.type === 'text')?.text ?? drafts[section]
 }
 
 export default function StewardshipDemo() {

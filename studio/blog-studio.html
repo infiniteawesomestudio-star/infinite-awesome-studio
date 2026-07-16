@@ -212,7 +212,9 @@ async function callClaude(system, user, maxTokens = 1500) {
     throw new Error(`Worker ${res.status}: ${t.slice(0,200)}`);
   }
   const data = await res.json();
-  return (data.content && data.content[0] && data.content[0].text || "").trim();
+  // Sonnet 5 can lead with a thinking block, so pick the text block by type
+  // rather than by position.
+  return ((data.content || []).find(b => b.type === "text")?.text || "").trim();
 }
 
 async function testConnection() {

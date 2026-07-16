@@ -66,15 +66,15 @@ const WORKER_TOKEN = import.meta.env.VITE_WORKER_TOKEN as string | undefined
 // The live worker path is used only in internal dev where the worker creds are set.
 const CANNED: { keywords: string[]; answer: string }[] = [
   { keywords: ['hdhp', 'ppo', 'deductible', 'plan', 'difference', 'coinsurance', 'out-of-pocket', 'oopm'],
-    answer: `Demo Co offers two medical plans:\n\n• HDHP with HSA — $1,600 individual / $3,200 family deductible, $4,000 / $8,000 out-of-pocket max, and Demo Co seeds your HSA with $1,000. Lower premium, higher deductible.\n• PPO — $500 / $1,000 deductible with $30 primary-care and $55 specialist copays from day one. Higher premium, more predictable costs.\n\nIf you're generally healthy or want the HSA tax advantage, the HDHP usually wins. If you want copays without a big deductible, the PPO is the safer pick.` },
+    answer: `Demo Co offers two medical plans:\n\n• HDHP with HSA — $1,700 individual / $3,400 family deductible, $4,000 / $8,000 out-of-pocket max, and Demo Co seeds your HSA with $1,000. Lower premium, higher deductible.\n• PPO — $500 / $1,000 deductible with $30 primary-care and $55 specialist copays from day one. Higher premium, more predictable costs.\n\nIf you're generally healthy or want the HSA tax advantage, the HDHP usually wins. If you want copays without a big deductible, the PPO is the safer pick.` },
   { keywords: ['hsa', 'health savings', 'seed', 'contribution', 'contribute', 'limit'],
-    answer: `If you enroll in the HDHP, Demo Co contributes $1,000 to your HSA each year — it's yours to keep and rolls over. For 2026 you can contribute up to $4,400 (individual) or $8,550 (family), plus an extra $1,000 if you're 55+. HSA money is triple tax-advantaged and never expires.` },
+    answer: `If you enroll in the HDHP, Demo Co contributes $1,000 to your HSA each year — it's yours to keep and rolls over. For 2026 you can contribute up to $4,400 (individual) or $8,750 (family), plus an extra $1,000 if you're 55+. HSA money is triple tax-advantaged and never expires.` },
   { keywords: ['baby', 'newborn', 'birth', 'parental', 'maternity', 'paternity', 'child', 'pregnan'],
     answer: `Congratulations! A few things:\n\n• Demo Co offers 6 weeks of fully paid parental leave, which runs alongside FMLA.\n• Add your new dependent within 30 days of birth — it's a qualifying life event, so you can change your election outside open enrollment.\n• Short-term disability through The Hartford covers the medical recovery portion of leave.\n\nStart the paperwork with Demo Co HR (hr@democo.example).` },
   { keywords: ['open enrollment', 'oe', 'enroll', 'election', 'when can i change', 'change plan', 'qualifying'],
     answer: `Open enrollment is your once-a-year window to change medical, dental, vision, and HSA/FSA elections. Outside that window you can only make changes after a qualifying life event — marriage, birth, or loss of other coverage — and you have 30 days from the event to act.` },
   { keywords: ['fsa', 'flexible spending', 'carryover', 'dependent care'],
-    answer: `Demo Co offers a Health FSA (up to $3,300, with $660 carryover) and a Dependent Care FSA (up to $5,000). Important: you can't pair a general Health FSA with an HSA — if you're on the HDHP/HSA, you'd use a Limited Purpose FSA (dental and vision only) instead.` },
+    answer: `Demo Co offers a Health FSA (up to $3,400, with $680 carryover) and a Dependent Care FSA (up to $7,500, or $3,750 if you're married filing separately). Important: you can't pair a general Health FSA with an HSA — if you're on the HDHP/HSA, you'd use a Limited Purpose FSA (dental and vision only) instead.` },
   { keywords: ['cobra', 'lose coverage', 'leaving', 'job loss', 'continuation', 'quit', 'laid off'],
     answer: `If you lose coverage, COBRA (administered by WEX Benefits) lets you continue your current plan, typically for up to 18 months. You have 60 days from the qualifying event to elect it. The coverage is identical, but you pay the full premium yourself.` },
   { keywords: ['401', 'retirement', 'match', 'roth', 'vest'],
@@ -107,7 +107,9 @@ async function callWorker(messages: Message[]): Promise<string> {
   })
   if (!res.ok) throw new Error(`Worker error ${res.status}`)
   const data = await res.json()
-  return data?.content?.[0]?.text ?? ''
+  // Sonnet 5 can lead with a thinking block, so pick the text block by type
+  // rather than by position.
+  return data?.content?.find((b: { type: string }) => b.type === 'text')?.text ?? ''
 }
 
 export default function AskDemo() {

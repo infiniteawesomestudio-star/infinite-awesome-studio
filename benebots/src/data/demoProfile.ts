@@ -11,7 +11,9 @@ const demoCo = {
   medical: {
     hdhp: {
       name: "HDHP with HSA",
-      deductible: { individual: 1600, family: 3200 },
+      // Must meet the IRS 2026 HDHP minimum deductible ($1,700/$3,400) or the
+      // plan is not HSA-qualified. Rev. Proc. 2025-19.
+      deductible: { individual: 1700, family: 3400 },
       oopm: { individual: 4000, family: 8000 },
       employerHsaSeed: 1000,
       coinsurance: "80% after deductible",
@@ -39,15 +41,15 @@ const demoCo = {
 
   hsa: {
     limit2026Individual: 4400,
-    limit2026Family: 8550,
+    limit2026Family: 8750,
     catchUp55: 1000,
     employerSeed: 1000,
   },
 
   fsa: {
-    healthFsa: { limit: 3300, carryover: 660 },
+    healthFsa: { limit: 3400, carryover: 680 },
     limitedPurposeFsa: true,
-    dependentCareFsa: { limit: 5000 },
+    dependentCareFsa: { limit: 7500 },
   },
 
   retirement: {
@@ -143,15 +145,15 @@ const northpoint: Client = {
 
   hsa: {
     limit2026Individual: 4400,
-    limit2026Family: 8550,
+    limit2026Family: 8750,
     catchUp55: 1000,
     employerSeed: 500,
   },
 
   fsa: {
-    healthFsa: { limit: 3300, carryover: 660 },
+    healthFsa: { limit: 3400, carryover: 680 },
     limitedPurposeFsa: true,
-    dependentCareFsa: { limit: 5000 },
+    dependentCareFsa: { limit: 7500 },
   },
 
   retirement: {
