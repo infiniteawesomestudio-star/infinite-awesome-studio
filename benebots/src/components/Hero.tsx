@@ -9,7 +9,7 @@ const stats = [
 ]
 
 const BOT_FACES = [
-  { color: '#00C47A', label: 'Ask', delay: '0s', slug: 'ask', image: '/HSABot_TP.png' },
+  { color: '#00C47A', label: 'Ask', delay: '0s', slug: 'ask', image: '/MyBenefitsGuy_AskBot_TP.png' },
   { color: '#5B8FFF', label: 'Reports', delay: '1s', slug: 'stewardship', image: '/ComplianceBot_TP.png' },
   { color: '#F7D154', label: 'Compare', delay: '2s', slug: 'plan-compare', image: '/CompareBot_TP.png' },
   { color: '#FF6F61', label: 'OE', delay: '0.5s', slug: 'oe-coach', image: '/OEBot_TP.png' },

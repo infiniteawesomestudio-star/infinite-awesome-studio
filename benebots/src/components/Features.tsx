@@ -14,7 +14,7 @@ interface Bot {
 
 const bots: Bot[] = [
   {
-    image: '/HSABot_TP.png',
+    image: '/MyBenefitsGuy_AskBot_TP.png',
     name: 'Ask BeneBot',
     tagline: 'Every plan detail, plain language',
     description:
