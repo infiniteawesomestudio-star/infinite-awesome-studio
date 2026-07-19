@@ -27,3 +27,7 @@ benebots/.vite/
 # Wrangler local dev vars — test keys only, but never commit
 worker/.dev.vars
 .dev.vars
+
+.dev.vars*
+!.dev.vars.example
+!.env.example
