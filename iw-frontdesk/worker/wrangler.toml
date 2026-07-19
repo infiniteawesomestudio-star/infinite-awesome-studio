@@ -1,0 +1,15 @@
+name = "iw-frontdesk"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+# Secrets (never put real values here — set with wrangler secret put):
+#   npx wrangler secret put WORKER_TOKEN          # this worker's OWN token, not benebots-proxy's
+#   npx wrangler secret put STRIPE_SECRET_KEY     # sk_test_… first, then Vic's sk_live_… at go-live
+#   npx wrangler secret put STRIPE_WEBHOOK_SECRET # whsec_… — authenticates the /webhook handler
+#   npx wrangler secret put MAKE_WEBHOOK_URL      # where /webhook forwards the deposit_paid event
+#   npx wrangler secret put MAKE_SHARED_SECRET    # dedicated outbound token for the Make forward (NOT WORKER_TOKEN)
+# Optional, for the multi-client Stripe Connect path:
+#   npx wrangler secret put CLIENT_ACCOUNTS       # JSON map clientId→acct_ (server-side binding; "" = direct charge)
+#   npx wrangler secret put STRIPE_ACCOUNT_ID     # acct_… single-tenant fallback for unmapped clients
+# Optional, per-client quote ceiling (default $5,000 if unset):
+#   npx wrangler secret put CLIENT_MAX_QUOTE      # JSON map clientId→dollars, e.g. {"vic":5000}; server-side cap, caller can't raise it
