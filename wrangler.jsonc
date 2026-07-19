@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "infinite-awesome-studio",
+  "compatibility_date": "2026-07-19",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "benebots"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
