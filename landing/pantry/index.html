@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0A0B0D" />
+    <meta name="color-scheme" content="dark" />
+
+    <title>Infinite Pantry — Smarter meals start here. | Infinite Awesome Studio</title>
+    <meta
+      name="description"
+      content="Infinite Pantry is an AI meal-planning and smart grocery assistant. Plan your week, build your grocery list, use what's already in your kitchen, and shop smarter — built for real life, real budgets, and real 'what are we eating tonight?' emergencies."
+    />
+    <meta name="author" content="Infinite Awesome Studio" />
+    <link rel="canonical" href="https://infiniteawesomestudio.com/pantry/" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Infinite Awesome Studio" />
+    <meta property="og:title" content="Infinite Pantry — Smarter meals start here." />
+    <meta
+      property="og:description"
+      content="An AI meal-planning and smart grocery assistant. Plan the week, build the list, use what's in your kitchen, shop smarter."
+    />
+    <meta property="og:url" content="https://infiniteawesomestudio.com/pantry/" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Infinite Pantry — Smarter meals start here." />
+    <meta name="twitter:description" content="AI meal planning + smart grocery lists. Plan the week, use what you have, shop smarter." />
+
+    <!-- Fonts: Fraunces (display) + Instrument Sans (body) + JetBrains Mono (mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Structured data: Product within the Infinite suite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Infinite Pantry",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Web",
+        "description": "AI meal planning and smart grocery shopping assistant by Infinite Awesome Studio.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@type": "Organization", "name": "Infinite Awesome Studio" }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#planner">Skip to the planner</a>
+
+    <!-- ============================ HEADER ============================ -->
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a href="#top" class="brand" aria-label="Infinite Pantry — an Infinite Awesome Studio product">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.25" />
+            <path d="M10 12 h12 M10 16 h12 M10 20 h12" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
+            <circle cx="16" cy="6.5" r="1.4" fill="currentColor" />
+          </svg>
+          <span class="brand-text">
+            <span class="brand-studio">Infinite Pantry</span>
+            <span class="brand-div">·</span>
+            <span class="brand-line">IAS</span>
+          </span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#how">How it works</a>
+          <a href="#planner">The planner</a>
+          <a href="#shop">Smart shopping</a>
+          <a href="#future">What's next</a>
+          <a href="#planner" class="btn btn-sm btn-sage">Build my plan</a>
+        </nav>
+
+        <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <div class="mobile-nav" id="mobile-nav" hidden>
+        <a href="#how">How it works</a>
+        <a href="#planner">The planner</a>
+        <a href="#shop">Smart shopping</a>
+        <a href="#future">What's next</a>
+        <a href="#planner" class="btn btn-sage">Build my plan</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============================ HERO ============================ -->
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="dot"></span>An Infinite Awesome Studio product</p>
+            <h1 class="display">Smarter meals<br />start <em>here.</em></h1>
+            <p class="lede">
+              Plan your week, build your grocery list, use what's already in your kitchen,
+              and shop smarter — with an AI assistant built for real life, real budgets,
+              and real "what are we eating tonight?" emergencies.
+            </p>
+            <div class="hero-cta">
+              <a href="#planner" class="btn btn-sage" data-scroll>Build my weekly plan</a>
+              <a href="#how" class="btn btn-ghost">See how it works</a>
+            </div>
+            <dl class="hero-stats">
+              <div><dt>~6 hrs</dt><dd>Planning &amp; list time saved each week*</dd></div>
+              <div><dt>$0</dt><dd>No paid APIs — runs in your browser</dd></div>
+              <div><dt>8</dt><dd>Stores supported in the planner</dd></div>
+            </dl>
+          </div>
+
+          <div class="hero-preview" aria-hidden="true">
+            <div class="preview-card">
+              <div class="preview-head">
+                <p class="chat-name">This week's plan</p>
+                <span class="badge">Sample</span>
+              </div>
+              <div class="preview-body">
+                <div class="preview-day"><span class="pd-day">Mon</span><span class="pd-meal">Sheet-pan chicken &amp; veggies<small>Dinner · 30 min · uses pantry rice</small></span></div>
+                <div class="preview-day"><span class="pd-day">Tue</span><span class="pd-meal">Chicken burrito bowls<small>Dinner · leftover remix from Mon</small></span></div>
+                <div class="preview-day"><span class="pd-day">Wed</span><span class="pd-meal">Lentil &amp; veggie soup<small>Dinner · 25 min · freezer-friendly</small></span></div>
+                <div class="preview-day"><span class="pd-day">Thu</span><span class="pd-meal">Pasta with greens &amp; beans<small>Dinner · 20 min · budget pick</small></span></div>
+              </div>
+              <div class="preview-foot">
+                <span>Grocery est. <strong>$78–$94</strong></span>
+                <span>Best store: <strong>Aldi</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ BENEFITS ============================ -->
+      <section class="section section--paper" id="how" aria-labelledby="how-title">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">§ 01 — What it does</p>
+            <h2 id="how-title" class="section-title">Dinner, <span class="hl">decided.</span></h2>
+            <p class="section-dek">
+              Tell Infinite Pantry who you're feeding and what's in your kitchen. It builds the week,
+              writes the grocery list, and points you at the cheaper cart — no spreadsheet, no 6&nbsp;p.m. panic.
+            </p>
+          </header>
+          <div class="benefit-grid">
+            <article class="benefit-card reveal">
+              <span class="benefit-icon">🗓️</span>
+              <h3>Plan the whole week in minutes</h3>
+              <p>Breakfast, lunch, dinner, and optional snacks — matched to your diet, time, skill level, and the people at your table.</p>
+            </article>
+            <article class="benefit-card reveal">
+              <span class="benefit-icon">🧺</span>
+              <h3>Use what's already in your kitchen</h3>
+              <p>Enter your pantry and the plan leans on it first — so those groceries finally find their purpose and less food hits the trash.</p>
+            </article>
+            <article class="benefit-card reveal">
+              <span class="benefit-icon">🧾</span>
+              <h3>A grocery list that matches your meals</h3>
+              <p>Organized by store department, de-duplicated, and trimmed of anything you already have. Check items off as you shop.</p>
+            </article>
+            <article class="benefit-card reveal">
+              <span class="benefit-icon">🛒</span>
+              <h3>Shop the smarter cart</h3>
+              <p>Compare an estimated total across Giant, Food Lion, Walmart, Target, Aldi, Costco, and Whole Foods, plus budget swaps that actually add up.</p>
+            </article>
+            <article class="benefit-card reveal">
+              <span class="benefit-icon">♻️</span>
+              <h3>Leftovers with a plan</h3>
+              <p>Tonight's roast becomes tomorrow's bowls or wraps. We map the remix so you cook once and eat twice.</p>
+            </article>
+            <article class="benefit-card reveal">
+              <span class="benefit-icon">🌿</span>
+              <h3>Optional wellness, never preachy</h3>
+              <p>Add gentle, general habit nudges — a short walk, a hydration reminder, a two-minute desk stretch. Skip it entirely if it's not your thing.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SAFETY BAND ============================ -->
+      <section class="safety" aria-labelledby="safety-title">
+        <div class="container safety-inner">
+          <span class="safety-badge" aria-hidden="true">🩺</span>
+          <div>
+            <h3 id="safety-title">A quick, honest boundary</h3>
+            <p>
+              <strong>Infinite Pantry provides general meal planning, grocery organization, and wellness support — not medical advice,
+              diagnosis, treatment, or nutrition therapy.</strong> For medical conditions, allergies, pregnancy, eating disorders,
+              diabetes, kidney or heart disease, or any specialized dietary need tied to treatment, please talk with a qualified
+              medical professional or a registered dietitian before making major diet or wellness changes.
+            </p>
+            <p>
+              We keep wellness suggestions general and evidence-informed, and we point to reputable sources
+              (USDA MyPlate, CDC, NIH, the Academy of Nutrition and Dietetics, the American Heart Association) rather than inventing claims.
+            </p>
+            <p class="src-note">No calorie counting, macro targets, or weight prescriptions here — just practical planning. *Time-saved figure is an illustrative estimate, not a measured study result.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ PLANNER (the app) ============================ -->
+      <section class="planner" id="planner" aria-labelledby="planner-title">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow"><span class="dot"></span>§ 02 — The planner · live prototype</p>
+            <h2 id="planner-title" class="section-title">Two ways in. <span class="hl">Same great plan.</span></h2>
+            <p class="section-dek">
+              Chat it out one question at a time, or fill the quick form and skip ahead. Either path builds the same
+              weekly plan, grocery list, and smart-shopping breakdown. Your answers stay in your browser.
+            </p>
+          </header>
+
+          <div class="mode-toggle" role="tablist" aria-label="Onboarding mode">
+            <button id="tab-guided" role="tab" aria-selected="true" aria-controls="panel-guided">💬 Guided chat</button>
+            <button id="tab-quick" role="tab" aria-selected="false" aria-controls="panel-quick">⚡ Quick form</button>
+          </div>
+
+          <div class="app-shell">
+            <div class="app-head">
+              <div class="app-head-left">
+                <span class="badge">🤖 Pantry Assistant</span>
+                <div>
+                  <p class="app-title">Let's build your week</p>
+                  <p class="app-sub">No account needed · answers saved locally</p>
+                </div>
+              </div>
+              <span class="badge badge--mock">Prototype · sample AI</span>
+            </div>
+
+            <!-- GUIDED CONVERSATION MODE -->
+            <div class="mode-panel is-active" id="panel-guided" role="tabpanel" aria-labelledby="tab-guided">
+              <div class="chat-progress"><span id="chat-progress-bar"></span></div>
+              <div class="chat-log" id="chat-log" aria-live="polite"></div>
+              <div class="chat-input-zone">
+                <div class="chat-options" id="chat-options"></div>
+                <form class="chat-form" id="chat-form" autocomplete="off">
+                  <label class="visually-hidden" for="chat-input">Your answer</label>
+                  <input id="chat-input" type="text" placeholder="Type your answer…" />
+                  <button type="submit" class="btn btn-sage btn-sm">Send</button>
+                </form>
+                <p class="chat-hint" id="chat-hint">Tip: tap a suggestion above, or type your own. Say "skip" to move on.</p>
+              </div>
+            </div>
+
+            <!-- QUICK FORM MODE -->
+            <div class="mode-panel" id="panel-quick" role="tabpanel" aria-labelledby="tab-quick">
+              <div class="sample-bar" id="sample-bar">
+                <p class="sample-bar-label">Just want to see it work? Load a sample kitchen and get a finished plan in one click.</p>
+                <div class="sample-bar-btns">
+                  <button type="button" class="btn btn-ghost btn-sm sample-btn" data-sample="family">Family of four, tight budget</button>
+                  <button type="button" class="btn btn-ghost btn-sm sample-btn" data-sample="glutenfree">Two adults, gluten free</button>
+                  <button type="button" class="btn btn-ghost btn-sm sample-btn" data-sample="fast">Solo parent, 20 minute dinners</button>
+                </div>
+                <p class="sample-bar-note">Each one fills the form below so you can see exactly what produced the plan, then tweak it.</p>
+              </div>
+
+              <form class="quick-form" id="quick-form" novalidate>
+                <div class="field">
+                  <label for="q-household">Household size <span class="req">*</span></label>
+                  <input id="q-household" name="household" type="number" min="1" max="12" value="2" />
+                  <span class="field-hint">How many people are you cooking for?</span>
+                </div>
+                <div class="field">
+                  <label for="q-kids">Of those, how many are kids?</label>
+                  <input id="q-kids" name="kids" type="number" min="0" max="10" value="0" />
+                  <span class="field-hint">Helps us pick kid-friendly options.</span>
+                </div>
+                <div class="field">
+                  <label for="q-days">Days to plan <span class="req">*</span></label>
+                  <select id="q-days" name="days">
+                    <option value="3">3 days</option>
+                    <option value="5">5 days</option>
+                    <option value="7" selected>7 days (full week)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="q-meals">Meals per day</label>
+                  <select id="q-meals" name="meals">
+                    <option value="dinner">Dinner only</option>
+                    <option value="ld">Lunch + dinner</option>
+                    <option value="bld" selected>Breakfast, lunch + dinner</option>
+                  </select>
+                </div>
+                <div class="field field-full">
+                  <label>Diet style / eating preference</label>
+                  <div class="checks" id="q-diets">
+                    <!-- populated by app.js -->
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="q-avoid">Foods to avoid</label>
+                  <input id="q-avoid" name="avoid" type="text" placeholder="e.g., mushrooms, cilantro" />
+                  <span class="field-hint">Comma-separated. Ingredients we'll steer around.</span>
+                </div>
+                <div class="field">
+                  <label for="q-allergies">Allergies / restrictions</label>
+                  <input id="q-allergies" name="allergies" type="text" placeholder="e.g., peanuts, shellfish" />
+                  <span class="field-hint">We'll flag conflicts and a safety reminder.</span>
+                </div>
+                <div class="field">
+                  <label for="q-skill">Cooking skill</label>
+                  <select id="q-skill" name="skill">
+                    <option value="beginner">Beginner — keep it simple</option>
+                    <option value="comfortable" selected>Comfortable in the kitchen</option>
+                    <option value="confident">Confident — bring it on</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="q-time">Time per meal on a weeknight</label>
+                  <select id="q-time" name="time">
+                    <option value="15">15 min or less</option>
+                    <option value="30" selected>About 30 min</option>
+                    <option value="60">I've got time (45+ min)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="q-budget">Weekly grocery budget</label>
+                  <select id="q-budget" name="budget">
+                    <option value="tight">Tight — stretch every dollar</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="flexible">Flexible</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="q-store">Favorite store</label>
+                  <select id="q-store" name="store">
+                    <option value="">No preference</option>
+                    <option>Giant</option>
+                    <option>Food Lion</option>
+                    <option>Walmart</option>
+                    <option>Target</option>
+                    <option value="Aldi" selected>Aldi</option>
+                    <option>Costco</option>
+                    <option>Whole Foods</option>
+                    <option value="Local market">Local market</option>
+                  </select>
+                </div>
+                <div class="field field-full">
+                  <label>What matters most? (goals)</label>
+                  <div class="checks" id="q-goals">
+                    <!-- populated by app.js -->
+                  </div>
+                </div>
+                <div class="field field-full">
+                  <label for="q-pantry">What's already in your kitchen? (pantry-aware planning)</label>
+                  <textarea id="q-pantry" name="pantry" rows="2" placeholder="e.g., rice, canned beans, frozen peas, eggs, pasta, olive oil"></textarea>
+                  <span class="field-hint">Comma-separated. We'll plan around these first and keep them off the shopping list.</span>
+                </div>
+                <div class="field">
+                  <label>Rewards / loyalty cards</label>
+                  <div class="checks" id="q-rewards"></div>
+                </div>
+                <div class="field">
+                  <label for="q-leftovers">Leftovers?</label>
+                  <select id="q-leftovers" name="leftovers">
+                    <option value="love" selected>Love them — plan cook-once-eat-twice</option>
+                    <option value="some">Some are fine</option>
+                    <option value="none">Prefer fresh each day</option>
+                  </select>
+                </div>
+                <div class="field field-full">
+                  <label for="q-special">Anything else? (special requests)</label>
+                  <input id="q-special" name="special" type="text" placeholder="e.g., one vegetarian night, school lunches, freezer meals" />
+                </div>
+
+                <!-- Dynamic medical guardrail -->
+                <div class="guardrail" id="form-guardrail" role="status">
+                  <span class="g-ico" aria-hidden="true">⚠️</span>
+                  <p><strong>Heads up:</strong> it sounds like a medical or pregnancy-related need may be in play.
+                  Infinite Pantry can help with general planning, but please confirm any major dietary changes with a
+                  qualified medical professional or registered dietitian first.</p>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-sage">Build my plan →</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="quick-reset">Reset</button>
+                  <p class="form-note" id="quick-note" aria-live="polite"></p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ RESULTS ============================ -->
+      <section class="results" id="results" aria-labelledby="results-title">
+        <div class="container">
+          <div class="results-head">
+            <div>
+              <p class="eyebrow"><span class="dot"></span>§ 03 — Your plan</p>
+              <h2 id="results-title" class="section-title">Here's your week.</h2>
+              <p class="section-dek" id="results-summary" style="margin-bottom:0;"></p>
+            </div>
+            <div class="results-actions">
+              <button class="btn btn-ghost btn-sm" id="btn-regen-week">↻ Regenerate week</button>
+              <button class="btn btn-ghost btn-sm" id="btn-prep">📋 Meal-prep schedule</button>
+              <button class="btn btn-ghost btn-sm" id="btn-print">🖨 Print / save</button>
+              <button class="btn btn-sage btn-sm" id="btn-edit">✎ Edit answers</button>
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <!-- LEFT: meal plan -->
+            <div>
+              <div class="panel" id="plan-panel">
+                <div class="panel-head">
+                  <h3>Weekly meal plan</h3>
+                  <span class="ph-note">tap ↻ to swap · ♡ to save</span>
+                </div>
+                <div class="panel-body" id="plan-body"><!-- days injected --></div>
+              </div>
+
+              <!-- Meal prep (hidden until requested) -->
+              <div class="panel" id="prep-panel" style="display:none; margin-top:1.5rem;">
+                <div class="panel-head"><h3>Meal-prep schedule</h3><span class="ph-note">a 45-minute head start</span></div>
+                <div class="panel-body" id="prep-body"></div>
+              </div>
+
+              <!-- Wellness add-on -->
+              <div class="panel" id="wellness-panel" style="margin-top:1.5rem;">
+                <div class="panel-head">
+                  <h3>Wellness add-on</h3>
+                  <label class="switch" title="Toggle wellness suggestions">
+                    <input type="checkbox" id="wellness-toggle" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="panel-body">
+                  <p style="margin:0 0 0.9rem; color:var(--text-mute); font-size:0.88rem;">
+                    Optional, general, and never clinical. Flip the switch to fold a few gentle habits into your week.
+                  </p>
+                  <div class="wellness-grid" id="wellness-body" style="display:none;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: grocery + shopping -->
+            <div>
+              <div class="panel" id="grocery-panel">
+                <div class="panel-head">
+                  <h3>Grocery list</h3>
+                  <span class="ph-note" id="grocery-note">by department</span>
+                </div>
+                <div class="panel-body" id="grocery-body"></div>
+                <div class="cost-band">
+                  <span class="cost-label">Estimated total</span>
+                  <span class="cost-val" id="cost-val">—</span>
+                </div>
+              </div>
+
+              <!-- Smart shopper -->
+              <div class="panel" id="shop" style="margin-top:1.5rem;">
+                <div class="panel-head">
+                  <h3>Smart shopper</h3>
+                  <span class="badge badge--mock">Sample estimates</span>
+                </div>
+                <div class="panel-body">
+                  <p style="margin:0 0 0.9rem; color:var(--text-mute); font-size:0.82rem;">
+                    Estimated basket totals across stores. These are <strong>sample figures</strong> for the prototype —
+                    ready to swap for live price APIs later. No real prices or coupons have been applied.
+                  </p>
+                  <div id="store-body"></div>
+                </div>
+              </div>
+
+              <!-- Budget swaps -->
+              <div class="panel" style="margin-top:1.5rem;">
+                <div class="panel-head"><h3>Budget swaps</h3><span class="ph-note">trim the total</span></div>
+                <div class="panel-body" id="swap-body"></div>
+              </div>
+
+              <!-- Coupons & rewards -->
+              <div class="panel" style="margin-top:1.5rem;">
+                <div class="panel-head"><h3>Coupons &amp; rewards</h3><span class="badge badge--mock">Sample</span></div>
+                <div class="panel-body" id="coupon-body"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saved recipes -->
+          <div style="margin-top:2.5rem;">
+            <div class="panel">
+              <div class="panel-head"><h3>Saved recipes</h3><span class="ph-note" id="saved-count">0 saved</span></div>
+              <div class="panel-body">
+                <div class="saved-grid" id="saved-body">
+                  <p class="saved-empty" style="color:var(--text-mute);">Nothing saved yet. Tap ♡ on any meal to keep it for future weeks.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ FUTURE / AGENTS ============================ -->
+      <section class="section section--rule" id="future" aria-labelledby="future-title">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">§ 04 — What's next</p>
+            <h2 id="future-title" class="section-title">Built for an <span class="hl">agent team.</span></h2>
+            <p class="section-dek">
+              This prototype runs entirely in your browser on sample data. The architecture is designed so a team of
+              focused agents can take over the heavy lifting once live integrations are connected — with a Safety
+              Review agent checking every plan before it reaches you.
+            </p>
+          </header>
+
+          <div class="agent-grid">
+            <div class="agent-node"><span class="a-ico">🍽️</span><h4>Meal Planning</h4><p>Assembles the week to fit constraints.</p></div>
+            <div class="agent-node"><span class="a-ico">🧺</span><h4>Pantry</h4><p>Tracks what you have, plans around it.</p></div>
+            <div class="agent-node"><span class="a-ico">🧾</span><h4>Grocery List</h4><p>De-dupes and sorts by department.</p></div>
+            <div class="agent-node"><span class="a-ico">🏷️</span><h4>Store Price</h4><p>Compares baskets across stores.</p></div>
+            <div class="agent-node"><span class="a-ico">🎟️</span><h4>Coupon &amp; Rewards</h4><p>Finds and applies real savings.</p></div>
+            <div class="agent-node"><span class="a-ico">📖</span><h4>Recipe Discovery</h4><p>Suggests meals like the ones you love.</p></div>
+            <div class="agent-node"><span class="a-ico">📅</span><h4>Calendar</h4><p>Schedules pickup/delivery with permission.</p></div>
+            <div class="agent-node"><span class="a-ico">🌿</span><h4>Wellness</h4><p>General, opt-in habit nudges.</p></div>
+            <div class="agent-node"><span class="a-ico">🛒</span><h4>Cart &amp; Delivery</h4><p>Preps online carts for checkout.</p></div>
+            <div class="agent-node agent-node--safety"><span class="a-ico">🛡️</span><h4>Safety Review</h4><p>Screens for medical, allergy &amp; claim risk.</p></div>
+          </div>
+
+          <div class="roadmap-grid">
+            <article class="roadmap-card">
+              <p class="r-phase">Phase 1 · today</p>
+              <h3>Working prototype</h3>
+              <ul>
+                <li>Guided chat + quick form onboarding</li>
+                <li>Real plan + grocery generation in-browser</li>
+                <li>Pantry-aware lists &amp; leftover remixes</li>
+                <li>Sample store comparison &amp; budget swaps</li>
+              </ul>
+            </article>
+            <article class="roadmap-card">
+              <p class="r-phase">Phase 2 · next</p>
+              <h3>Real intelligence &amp; accounts</h3>
+              <ul>
+                <li>Connect a live LLM <em>[LLM provider]</em></li>
+                <li>User accounts &amp; saved preferences <em>[auth provider]</em></li>
+                <li>Recipe + pantry database <em>[database provider]</em></li>
+                <li>Live store pricing <em>[store API provider]</em></li>
+              </ul>
+            </article>
+            <article class="roadmap-card">
+              <p class="r-phase">Phase 3 · the vision</p>
+              <h3>The smart shopping agent</h3>
+              <ul>
+                <li>Real coupons &amp; loyalty discounts <em>[coupon API]</em></li>
+                <li>Best-store recommendation on your full list</li>
+                <li>Cart prep + pickup/delivery scheduling</li>
+                <li>Calendar coordination after you grant access</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ CTA ============================ -->
+      <section class="section cta" id="cta" aria-labelledby="cta-title">
+        <div class="container cta-inner">
+          <div>
+            <p class="eyebrow">§ 05 — Get early access</p>
+            <h2 id="cta-title" class="section-title">Make dinner one less thing yelling from the fridge.</h2>
+            <p class="section-dek" style="margin-bottom:0;">
+              Infinite Pantry is part of the Infinite suite from Infinite Awesome Studio, alongside
+              Infinite Workflows and Infinite Careers. Want in on the next build? Drop your email.
+            </p>
+            <ul class="cta-bullets">
+              <li>No spam, no funnel — just a note when the live version opens.</li>
+              <li>Your planner answers never leave your browser in this prototype.</li>
+              <li>General planning, not medical advice. Always.</li>
+            </ul>
+          </div>
+          <div class="cta-card">
+            <h3>Join the early list</h3>
+            <p>Be first to try real store pricing, coupons, and the smart shopping agent.</p>
+            <form id="cta-form" novalidate>
+              <div class="field">
+                <label for="cta-email">Email</label>
+                <input id="cta-email" type="email" placeholder="you@email.com" required />
+              </div>
+              <div style="margin-top:1rem;">
+                <button type="submit" class="btn btn-sage" style="width:100%;">Keep me posted</button>
+              </div>
+              <p class="cta-note" id="cta-note" aria-live="polite">Prototype form — stores nothing, sends nothing. [analytics provider] hooks here later.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <svg viewBox="0 0 32 32" aria-hidden="true" class="brand-mark">
+            <circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.25" />
+            <path d="M10 12 h12 M10 16 h12 M10 20 h12" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
+            <circle cx="16" cy="6.5" r="1.4" fill="currentColor" />
+          </svg>
+          <p><strong>Infinite Pantry.</strong> Smarter meals start here. An Infinite Awesome Studio product —
+          part of the Infinite suite with Infinite Workflows &amp; Infinite Careers.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+          <div>
+            <p class="footer-head">Product</p>
+            <a href="#how">How it works</a>
+            <a href="#planner">The planner</a>
+            <a href="#shop">Smart shopping</a>
+          </div>
+          <div>
+            <p class="footer-head">Studio</p>
+            <a href="#future">Roadmap</a>
+            <a href="#cta">Early access</a>
+            <a href="/">IAS.com</a>
+          </div>
+          <div>
+            <p class="footer-head">Legal</p>
+            <a href="#safety-title">Safety &amp; scope</a>
+            <a href="#" aria-disabled="true">Privacy</a>
+            <a href="#" aria-disabled="true">Terms</a>
+          </div>
+        </nav>
+        <p class="footer-legal">
+          &copy; <span id="year">2026</span> Infinite Awesome Studio. Infinite Pantry provides general meal planning,
+          grocery, and wellness support — not medical advice, diagnosis, treatment, or nutrition therapy. Consult a
+          qualified clinician or registered dietitian for medical dietary needs.
+        </p>
+      </div>
+    </footer>
+
+    <!-- ============================ RECIPE MODAL ============================ -->
+    <div class="modal" id="recipe-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <h3 id="modal-title">Recipe</h3>
+            <p class="m-meta" id="modal-meta"></p>
+          </div>
+          <button class="modal-close" id="modal-close" aria-label="Close recipe">✕</button>
+        </div>
+        <div class="modal-body" id="modal-body"></div>
+        <div class="modal-foot">
+          <button class="btn btn-sage btn-sm" id="modal-save">♡ Save recipe</button>
+          <button class="btn btn-ghost btn-sm" id="modal-similar">↻ Find similar</button>
+          <button class="btn btn-ghost btn-sm" id="modal-dismiss">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
