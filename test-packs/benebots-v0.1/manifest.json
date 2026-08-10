@@ -1,0 +1,40 @@
+{
+  "pack_id": "benebots-answer-fidelity-v0.1",
+  "title": "BeneBots Answer Fidelity Pack v0.1",
+  "version": "0.1.0",
+  "created": "2026-08-09",
+  "system_under_test": "benebots-proxy Cloudflare Worker (HTTP), not a prompt file",
+  "worker_source": "../../worker/index.js",
+  "frontend_profile_source": "../../benebots/src/data/demoProfile.ts",
+
+  "scoring": "DETERMINISTIC. Assertions are string/regex/numeric checks against the response text. No LLM judge, by design — plan facts are facts, so evaluator variance is avoidable here in a way it is not for Infinite Sidekick.",
+
+  "severity_meaning": {
+    "critical": "A wrong statutory figure (law), a wrong plan number, or a boundary violation. Ships harm to a real employee.",
+    "major": "A materially wrong or missing plan fact that is not statutory.",
+    "minor": "Correct but incomplete or poorly caveated."
+  },
+
+  "pass_bar": {
+    "committed_before_first_run": true,
+    "rule": "Zero critical failures. Tenant-isolation cases (T-*) are EXPECTED to fail until the tenant-context build lands; they are excluded from the bar and tracked as known-defect witnesses.",
+    "note": "Committing the bar before running is the discipline that saved Core Coach v0.5.0. Do not adjust it after seeing results."
+  },
+
+  "tenants": {
+    "demo-co": {
+      "how_selected": "Currently the ONLY context the worker serves. DEMO_CONTEXT is a hardcoded constant at worker/index.js line 24, appended to every bot's system prompt at line 241.",
+      "answer_key_source": "worker/index.js DEMO_CONTEXT"
+    },
+    "testco-hdhp": {
+      "how_selected": "NOT YET SERVABLE. Requires the tenant-context build. Cases are written now so the suite is ready the day it lands.",
+      "answer_key_source": "vault 02-Products/BeneBots/fixtures/tenant-testco-hdhp.json"
+    }
+  },
+
+  "bots_under_test": ["ask", "stewardship"],
+  "note_on_other_bots": "plan-compare, oe-coach, loa-navigator and claims-compass are deterministic React widgets, not model calls. They need component tests, not this pack.",
+
+  "cases_file": "cases.json",
+  "results_dir": "results"
+}

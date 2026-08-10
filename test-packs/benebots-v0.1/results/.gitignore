@@ -1,0 +1,4 @@
+# Live run outputs contain model responses. Keep them local —
+# the pack is the artifact, not its runs.
+*
+!.gitignore
