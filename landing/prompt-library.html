@@ -331,6 +331,45 @@ html,body{background:var(--warm-neutral);}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
+
+/* ---- Funnel blocks (2026-08-04): prompts moved behind the free pack ---- */
+.pl-locked{
+  border:1px solid var(--ink-12);
+  border-radius:10px;
+  padding:18px 20px;
+  background:rgba(26,26,26,0.02);
+  margin-top:4px;
+}
+.pl-locked-free{
+  border-color:var(--mint);
+  background:var(--mint-wash);
+}
+.pl-locked-head{
+  font-size:11px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+  color:var(--deep-forest);margin-bottom:8px;
+}
+.pl-locked .pl-locked-body{
+  font-size:14px;line-height:1.6;color:var(--ink-70);margin:0 0 14px;
+}
+.pl-locked-btn{
+  display:inline-block;text-decoration:none;
+  font-size:13px;font-weight:600;
+  padding:9px 16px;border-radius:999px;
+  background:var(--deep-forest);color:#fff;
+  transition:transform .15s ease,background .15s ease;
+}
+.pl-locked-btn:hover{background:#00160E;transform:translateY(-1px);}
+.pl-locked-btn-ghost{
+  background:transparent;color:var(--deep-forest);
+  border:1px solid var(--ink-12);
+}
+.pl-locked-btn-ghost:hover{background:rgba(26,26,26,0.04);color:var(--deep-forest);}
+.pl-open-flag{
+  display:inline-block;margin-left:8px;
+  font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--deep-forest);background:var(--mint-wash);
+  border:1px solid var(--mint);border-radius:999px;padding:2px 8px;vertical-align:middle;
+}
 </style>
 </head>
 <body>
@@ -371,7 +410,7 @@ html,body{background:var(--warm-neutral);}
       FREE PROMPT LIBRARY
     </div>
     <h1>25 years of benefits expertise,<br><em>packaged for AI.</em></h1>
-    <p>19 free prompts for HR coordinators, benefits analysts, brokers and HR executives. Real workflows. Built from the inside.</p>
+    <p>19 real benefits workflows for HR coordinators, benefits analysts, brokers and HR executives. Built from the inside, not scraped off a blog. Three are open right here, in full. The five I reach for most are a free pack you can download and keep.</p>
     <p class="pl-hero-meta">Platform-agnostic. Works in any AI tool. Updated regularly.</p>
   </section>
 
@@ -399,6 +438,7 @@ html,body{background:var(--warm-neutral);}
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span></div>
           <h3 class="pl-card-title">New Hire Benefits Onboarding Guide</h3>
+          <span class="pl-open-flag">Full prompt</span>
           <p class="pl-card-tagline">They have 30 days. Most of them understand nothing. This fixes that.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-0" onclick="togglePrompt(this, 'prompt-body-0')">
@@ -497,7 +537,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
           <p class="pl-card-tagline">The 90-minute grind. Cut to 25.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-1" onclick="togglePrompt(this, 'prompt-body-1')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-1" hidden>
@@ -508,56 +548,10 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Employer name, industry, group size and enrollment by tier</li><li>Prior year paid claims: medical and pharmacy split</li><li>Current year-to-date claims and months of data available</li><li>Renewal quote or projected rate increase</li><li>Top diagnosis drivers (if carrier provided) and large claimant count</li><li>Plan design: deductible, OOP max, coinsurance, network</li><li>Employee premium contributions and any proposed changes</li><li>Any additional documents (carrier reports, SBC, prior stewardship, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a senior benefits analyst preparing a stewardship report for a [GROUP SIZE]-employee employer renewing their health benefits plan.
-
-Here is the data I have:
-
-EMPLOYER: [NAME], [INDUSTRY]
-PLAN YEAR: [START DATE] to [END DATE]
-ENROLLED: [TOTAL] — EE: [X] | EE+Spouse: [X] | EE+Children: [X] | Family: [X]
-
-PRIOR YEAR CLAIMS:
-- Total paid claims: $[AMOUNT]
-- Medical: $[AMOUNT] | Pharmacy: $[AMOUNT]
-- PMPM: $[AMOUNT] (calculate if not provided)
-
-CURRENT YEAR DATA ([X] months):
-- Total paid claims YTD: $[AMOUNT]
-- Projected full year: $[AMOUNT]
-
-RENEWAL:
-- Carrier proposed increase: [X]%
-- Renewal premium: $[AMOUNT]/month
-- Prior year premium: $[AMOUNT]/month
-
-TOP DIAGNOSIS DRIVERS: [List or &quot;Carrier did not provide&quot;]
-LARGE CLAIMANTS: [e.g., &quot;2 claimants over $100K&quot; or &quot;Not provided&quot;]
-PLAN DESIGN: Deductible $[X] | OOP Max $[X] | Coinsurance [X/X] | Network: [TYPE]
-PLAN CHANGES PROPOSED: [List or &quot;None proposed&quot;]
-
-Your job:
-1. Write an executive summary (3-4 sentences)
-2. Summarize cost performance: actual vs. prior year, PMPM analysis
-3. Identify utilization drivers
-4. Flag data gaps or anomalies that need human review
-5. Draft 2-3 renewal recommendations grounded in the data
-6. Write a &quot;What&#x27;s Next&quot; section with action items
-
-CONSTRAINTS:
-- Do NOT invent numbers. Write [DATA NEEDED] for missing data
-- Do NOT make recommendations beyond what the data supports
-- Flag anomalies explicitly
-- Write for an HR executive audience
-- Define jargon the first time it appears (PMPM, MLR, etc.)
-
-FORMAT:
-EXECUTIVE SUMMARY / COST PERFORMANCE / UTILIZATION DRIVERS /
-RENEWAL SNAPSHOT / RECOMMENDATIONS / WHAT&#x27;S NEXT</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -578,7 +572,7 @@ RENEWAL SNAPSHOT / RECOMMENDATIONS / WHAT&#x27;S NEXT</pre>
           <p class="pl-card-tagline">You have the analysis. Now send the email they'll actually read.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-2" onclick="togglePrompt(this, 'prompt-body-2')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-2" hidden>
@@ -589,50 +583,10 @@ RENEWAL SNAPSHOT / RECOMMENDATIONS / WHAT&#x27;S NEXT</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Client name and HR contact name/title</li><li>Renewal rate increase: percentage and dollar impact per employee</li><li>Utilization story in 1-2 sentences (what drove cost this year)</li><li>Your recommendation: renew as-is, modify plan design, or go to market</li><li>Key dates: proposal meeting, OE, decisions due, effective date</li><li>Any good news worth leading with</li><li>Any additional documents (stewardship report, renewal proposal, carrier correspondence, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a benefits broker writing a renewal summary email to an HR Director at a [SIZE]-employee company.
-
-CLIENT: [CLIENT NAME]
-CONTACT: [HR DIRECTOR NAME], [TITLE]
-PLAN EFFECTIVE DATE: [DATE]
-OPEN ENROLLMENT: [DATE RANGE]
-
-RENEWAL NUMBERS:
-- Proposed rate increase: [X]%
-- Monthly cost impact: +$[AMOUNT]/month total
-- Per employee impact: +$[AMOUNT]/employee/month
-
-UTILIZATION STORY: [1-2 sentences on what drove cost]
-
-YOUR RECOMMENDATION: [e.g., &quot;Renew with plan design change: raise deductible from $500 to $750&quot; or &quot;Go to market&quot;]
-
-KEY DATES:
-- Proposal meeting: [DATE]
-- Decision due: [DATE]
-- OE start: [DATE]
-- New plan effective: [DATE]
-
-GOOD NEWS (if any): [or &quot;none&quot;]
-
-Your job:
-Write a clear, honest renewal summary email that:
-1. Leads with the most important fact
-2. Explains why the increase happened in plain language
-3. States your recommendation clearly, no hedging
-4. Gives them the dates and next steps to act on
-5. Closes with one clear ask
-
-CONSTRAINTS:
-- Be honest about the increase. Do not soften it to the point of misleading
-- No jargon without plain-language explanation
-- Under 300 words
-- End with one clear ask: a meeting, a decision, or a phone call
-
-FORMAT: Subject line / Opening / Utilization story / Recommendation / Next steps / Closing ask</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -653,7 +607,7 @@ FORMAT: Subject line / Opening / Utilization story / Recommendation / Next steps
           <p class="pl-card-tagline">Leadership doesn't read reports. They read narratives.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-3" onclick="togglePrompt(this, 'prompt-body-3')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-3" hidden>
@@ -664,48 +618,10 @@ FORMAT: Subject line / Opening / Utilization story / Recommendation / Next steps
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Total benefits spend this year vs. prior year (employer cost)</li><li>Employee contribution percentage</li><li>1-2 utilization insights worth flagging at leadership level</li><li>Changes made this year and their outcome</li><li>Strategic context: headcount growth, talent market, M&amp;A, remote workforce</li><li>The specific decision(s) needed from leadership</li><li>Market benchmark data if available</li><li>Any additional documents (prior year brief, carrier summary, employee survey data, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a senior HR executive preparing a 1-page benefits brief for your leadership team (CEO, CFO, COO).
-
-ORGANIZATION: [NAME], [INDUSTRY], [HEADCOUNT] employees
-PLAN YEAR: [DATES]
-
-BENEFITS SPEND:
-- Total employer cost this year: $[AMOUNT] ($[AMOUNT] per employee)
-- Prior year: $[AMOUNT] ($[AMOUNT] per employee)
-- Year-over-year change: +/-[X]%
-- Employee contribution: [X]% of total premium
-
-KEY UTILIZATION INSIGHTS: [1-2 sentences]
-
-CHANGES MADE THIS YEAR: [What changed and outcome, or &quot;No changes&quot;]
-
-STRATEGIC CONTEXT: [Headcount growth, recruiting environment, business strategy, or &quot;N/A&quot;]
-
-DECISION NEEDED: [Specific ask from leadership]
-
-BENCHMARKS (optional): [Market comparison or &quot;Not available&quot;]
-
-Your job:
-Write a 1-page benefits brief that:
-1. Opens with the headline: what happened to cost and why it matters
-2. Explains the cost story in 3-4 sentences without analyst detail
-3. Highlights 1-2 utilization trends worth leadership attention
-4. Connects benefits to business strategy
-5. Closes with one specific decision needed
-
-CONSTRAINTS:
-- No tables or spreadsheet formatting. Narrative only
-- No benefits jargon. Write for a CFO who doesn&#x27;t know PPO from HDHP
-- 400 words maximum
-- One clear ask at the end
-
-FORMAT: HEADLINE / THE COST STORY / WHAT IS DRIVING COST / WHAT CHANGED /
-WHY THIS MATTERS / DECISION NEEDED</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -734,7 +650,7 @@ WHY THIS MATTERS / DECISION NEEDED</pre>
           <p class="pl-card-tagline">Stop writing the same emails from scratch every year.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-4" onclick="togglePrompt(this, 'prompt-body-4')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-4" hidden>
@@ -745,48 +661,10 @@ WHY THIS MATTERS / DECISION NEEDED</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>OE dates: start, end, plan effective date</li><li>Available plans: names, carrier, type, any premium changes</li><li>What changed from last year</li><li>Enrollment platform or process</li><li>HR contact name and email</li><li>Company name and tone preference (formal vs. conversational)</li><li>Any additional documents (prior year emails, carrier guides, SBCs, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR communications specialist writing the open enrollment email sequence for [COMPANY NAME].
-
-COMPANY: [NAME]
-OE WINDOW: [START DATE] to [END DATE]
-PLANS EFFECTIVE: [DATE]
-HR CONTACT: [NAME], [EMAIL]
-
-AVAILABLE PLANS:
-[Plan 1]: [Carrier] | [Type: PPO/HDHP/HMO] | Employee premium: $[X]/month
-[Plan 2]: [Carrier] | [Type] | Employee premium: $[X]/month
-
-DENTAL: [Carrier, covered yes/no, employee cost]
-VISION: [Carrier, covered yes/no, employee cost]
-FSA/HSA: [Available yes/no, contribution limits]
-
-WHAT CHANGED FROM LAST YEAR: [e.g., &quot;New carrier. Premiums up 6%.&quot; or &quot;No major changes.&quot;]
-
-ENROLLMENT PROCESS: [e.g., &quot;Log in to ADP portal at [URL]&quot; or &quot;Paper form to HR&quot;]
-
-TONE: [Conversational and direct / Professional and formal]
-
-Write a 4-email OE communication sequence:
-
-Email 1 — KICKOFF (OE start date): Announce OE is open. What&#x27;s available, what changed, how to enroll, deadline.
-Email 2 — MID-POINT REMINDER (halfway through OE): Friendly reminder. Highlight 1-2 things people overlook. Reiterate deadline.
-Email 3 — DEADLINE WEEK (5 days before close): Urgency increases. Clear deadline. State consequence of missing it.
-Email 4 — LAST CHANCE (1 day before close): Short, direct, high urgency. One link, one action, one deadline.
-
-CONSTRAINTS:
-- Plain language. No jargon without plain-English explanation
-- Be honest about changes, including cost increases
-- Each email has one clear call to action
-- Escalate urgency naturally — don&#x27;t panic in Email 1
-- Do NOT use &quot;We are excited to announce&quot; or &quot;Please don&#x27;t hesitate&quot;
-- Under 200 words each
-
-FORMAT: EMAIL [#] / Send date / Subject line / Body / CTA</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -804,10 +682,11 @@ FORMAT: EMAIL [#] / Send date / Subject line / Body / CTA</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span></div>
           <h3 class="pl-card-title">Employee FAQ Builder</h3>
+          <span class="pl-open-flag">In the free 5</span>
           <p class="pl-card-tagline">Answer the same 15 questions once. Then stop answering them.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-5" onclick="togglePrompt(this, 'prompt-body-5')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-5" hidden>
@@ -818,54 +697,10 @@ FORMAT: EMAIL [#] / Send date / Subject line / Body / CTA</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Plan names and types (PPO, HDHP, HMO)</li><li>HSA/FSA availability and contribution limits</li><li>Dental and vision coverage basics</li><li>Key OE dates and enrollment platform</li><li>QLE rules and deadline consequences</li><li>The questions HR always gets (from memory or prior year inbox)</li><li>Anything different this year</li><li>Any additional documents (SPD, SBC, carrier guides, prior year FAQ, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR coordinator building an open enrollment FAQ for employees at [COMPANY NAME].
-
-COMPANY: [NAME]
-OE WINDOW: [START DATE] to [END DATE]
-PLANS EFFECTIVE: [DATE]
-
-MEDICAL PLANS:
-[Plan 1 Name]: [Type] | EE: $[X]/mo | EE+Sp: $[X]/mo | EE+Ch: $[X]/mo | Family: $[X]/mo
-[Plan 2 Name]: [Type] | [same format]
-
-HSA: [Available on HDHP: yes/no] | 2026 limit: $[X] individual / $[X] family
-FSA: [Available: yes/no] | 2026 limit: $[X]
-DENTAL: [Carrier, covered yes/no, cost]
-VISION: [Carrier, covered yes/no, cost]
-
-ENROLLMENT PROCESS: [e.g., &quot;Log into ADP portal at [URL]&quot;]
-DEADLINE CONSEQUENCE: [What happens if they miss it]
-QUALIFYING LIFE EVENTS: [What triggers a mid-year window]
-
-QUESTIONS HR ALWAYS GETS:
-[List them — e.g.:
-- &quot;Can I add my spouse?&quot;
-- &quot;What is the difference between PPO and HDHP?&quot;
-- &quot;What is an HSA?&quot;
-- &quot;I missed the deadline. What do I do?&quot;
-- &quot;Is my doctor in network?&quot;]
-
-ANYTHING DIFFERENT THIS YEAR: [or &quot;No major changes&quot;]
-
-Build a complete employee FAQ that:
-1. Answers every question listed, plus common ones you may have missed
-2. Groups questions logically (General OE, Plan Differences, HSA/FSA, Dependents, Deadlines, Special Situations)
-3. Uses plain English throughout
-4. Gives direct answers — not &quot;it depends&quot; without explanation
-5. Flags where employees need to take action vs. just read
-
-CONSTRAINTS:
-- Do NOT invent plan details. Use [ASK HR] for missing info
-- 2-4 sentences max per answer
-- Second person throughout (&quot;You can add your spouse if...&quot;)
-- Write like a person, not a policy document
-
-FORMAT: [COMPANY] OE FAQ / [PLAN YEAR] / Grouped by topic</pre>
+        <div class="pl-locked pl-locked-free">
+          <div class="pl-locked-head">In the free starter pack</div>
+          <p class="pl-locked-body">This one is rebuilt in the 5-prompt starter pack: same job, plus a tier rating, the data-handling rules and a check-before-it-goes-anywhere list. Free, no catch.</p>
+          <a class="pl-locked-btn" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the free 5 &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -883,10 +718,11 @@ FORMAT: [COMPANY] OE FAQ / [PLAN YEAR] / Grouped by topic</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-gold">Broker / Acct Mgr</span><span class="pl-role pl-role-coral">HR Executive</span></div>
           <h3 class="pl-card-title">Plan Change Communication</h3>
+          <span class="pl-open-flag">In the free 5</span>
           <p class="pl-card-tagline">The hardest OE communication. Done right.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-6" onclick="togglePrompt(this, 'prompt-body-6')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-6" hidden>
@@ -897,50 +733,10 @@ FORMAT: [COMPANY] OE FAQ / [PLAN YEAR] / Grouped by topic</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>What is changing and what is staying the same (be specific)</li><li>Dollar or coverage impact per employee</li><li>The reason for the change in plain terms</li><li>Who is most affected</li><li>What options affected employees have</li><li>Whether any alternative plans offset the change</li><li>Key dates: effective date, OE deadline</li><li>Any additional documents (carrier notice, prior plan summary, renewal proposal, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR professional communicating a benefits plan change to employees at [COMPANY NAME].
-
-COMPANY: [NAME]
-CHANGE EFFECTIVE: [DATE]
-OE DEADLINE: [DATE]
-
-WHAT IS CHANGING:
-[Be specific — e.g., &quot;The PPO Standard deductible is increasing from $500 to $1,000&quot; or &quot;We are dropping the HMO plan.&quot;]
-
-DOLLAR IMPACT PER EMPLOYEE:
-[e.g., &quot;Employee monthly premium increases by $22&quot; or &quot;No premium change but higher out-of-pocket&quot;]
-
-WHY IT IS CHANGING:
-[Plain language — e.g., &quot;Claims were higher than projected and the carrier raised rates significantly.&quot;]
-
-WHO IS MOST AFFECTED:
-[e.g., &quot;Employees currently enrolled in the HMO&quot; or &quot;All employees on the PPO Standard&quot;]
-
-WHAT OPTIONS THEY HAVE:
-[e.g., &quot;Affected employees can enroll in the PPO Plus or HDHP during OE&quot;]
-
-ANYTHING BETTER THIS YEAR:
-[e.g., &quot;We added dental buy-up coverage&quot; or &quot;Nothing improved this year&quot; — be honest]
-
-Write an employee communication that:
-1. Leads with what is changing, clearly and specifically
-2. Explains why in plain language (factual, not spin)
-3. States exactly who is affected and how
-4. Tells them what options they have and what action to take
-5. Gives them the deadline and where to go with questions
-
-CONSTRAINTS:
-- Do NOT soften the change to the point of misleading
-- Do NOT blame the carrier in a way that damages the relationship
-- Acknowledge if the change is difficult. Don&#x27;t pretend it isn&#x27;t
-- Under 300 words
-- One clear action at the end
-
-FORMAT: Subject line / What&#x27;s changing / Why / Who&#x27;s affected / Options + action / Deadline + help</pre>
+        <div class="pl-locked pl-locked-free">
+          <div class="pl-locked-head">In the free starter pack</div>
+          <p class="pl-locked-body">This one is rebuilt in the 5-prompt starter pack: same job, plus a tier rating, the data-handling rules and a check-before-it-goes-anywhere list. Free, no catch.</p>
+          <a class="pl-locked-btn" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the free 5 &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -966,10 +762,11 @@ FORMAT: Subject line / What&#x27;s changing / Why / Who&#x27;s affected / Option
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span></div>
           <h3 class="pl-card-title">Loss of Coverage Verification Letter</h3>
+          <span class="pl-open-flag">In the free 5</span>
           <p class="pl-card-tagline">They need proof. You get asked for this every time. Now it takes two minutes.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-7" onclick="togglePrompt(this, 'prompt-body-7')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-7" hidden>
@@ -980,46 +777,10 @@ FORMAT: Subject line / What&#x27;s changing / Why / Who&#x27;s affected / Option
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Employee name, job title and last day of coverage</li><li>Reason coverage ended (termination, QLE, aging off, etc.)</li><li>Plan name and carrier</li><li>Coverage tier (EE only, EE+Spouse, EE+Children, Family)</li><li>Dependents covered and their coverage end dates (if applicable)</li><li>Company name, address, HR contact info</li><li>Any additional documents (enrollment records, termination notice, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR coordinator writing a loss of coverage verification letter for a former employee or plan member.
-
-EMPLOYEE: [FULL NAME]
-JOB TITLE: [TITLE] (or &quot;Dependent of [EMPLOYEE NAME]&quot; if for a dependent)
-COVERAGE END DATE: [DATE]
-REASON COVERAGE ENDED: [e.g., &quot;Voluntary resignation&quot; or &quot;Reduction in hours&quot; or &quot;Divorce&quot; or &quot;Aged off parent plan at 26&quot;]
-
-PLAN DETAILS:
-- Plan name: [e.g., &quot;PPO Standard&quot;]
-- Carrier: [e.g., &quot;Aetna&quot;]
-- Coverage tier: [e.g., &quot;Employee + Family&quot;]
-
-DEPENDENTS COVERED (if applicable):
-- [Name], [Relationship] — coverage end date: [DATE]
-
-EMPLOYER:
-- Company name: [NAME]
-- Address: [ADDRESS]
-- HR contact: [NAME], [TITLE], [EMAIL], [PHONE]
-
-Write a loss of coverage verification letter that:
-1. Confirms the employee and listed dependents had coverage under the plan
-2. States clearly when coverage ended and why
-3. Provides plan and carrier details needed for enrollment elsewhere
-4. Is signed by HR with contact info for follow-up verification
-
-CONSTRAINTS:
-- State only confirmed facts. Do NOT invent dates or plan details
-- Write [CONFIRM BEFORE SENDING] for any missing information
-- Professional tone — this may be submitted to another employer or carrier
-- Under 200 words
-- No commentary beyond what is needed for verification
-
-FORMAT: Date / Company letterhead / To Whom It May Concern / Coverage confirmation /
-Plan details / Dependents / Closing + HR signature</pre>
+        <div class="pl-locked pl-locked-free">
+          <div class="pl-locked-head">In the free starter pack</div>
+          <p class="pl-locked-body">This one is rebuilt in the 5-prompt starter pack: same job, plus a tier rating, the data-handling rules and a check-before-it-goes-anywhere list. Free, no catch.</p>
+          <a class="pl-locked-btn" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the free 5 &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1037,10 +798,11 @@ Plan details / Dependents / Closing + HR signature</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span></div>
           <h3 class="pl-card-title">Qualifying Life Event Response</h3>
+          <span class="pl-open-flag">In the free 5</span>
           <p class="pl-card-tagline">They just had a baby. They have 30 days. Don't make them figure it out themselves.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-8" onclick="togglePrompt(this, 'prompt-body-8')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-8" hidden>
@@ -1051,44 +813,10 @@ Plan details / Dependents / Closing + HR signature</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Employee name and current coverage tier</li><li>Qualifying life event type and date it occurred</li><li>Change they are requesting (add spouse, add dependent, change plan, etc.)</li><li>Exact documentation required (marriage certificate, birth certificate, loss of coverage letter, etc.)</li><li>Deadline to submit changes (typically 30 days — confirm with your plan documents)</li><li>How to submit the change (portal, paper form, email to HR)</li><li>Effective date of the change if submitted on time</li><li>Any additional relevant plan documents or carrier instructions</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR coordinator responding to an employee who has reported a qualifying life event.
-
-EMPLOYEE: [NAME]
-CURRENT COVERAGE: [e.g., &quot;Employee only on PPO Standard&quot;]
-QUALIFYING EVENT: [e.g., &quot;Marriage&quot; or &quot;Birth of child&quot; or &quot;Spouse lost employer coverage&quot;]
-EVENT DATE: [DATE]
-CHANGE REQUESTED: [e.g., &quot;Add spouse to medical and dental&quot; or &quot;Add newborn to family plan&quot;]
-
-DOCUMENTATION REQUIRED: [e.g., &quot;Copy of marriage certificate&quot; or &quot;Birth certificate or hospital record&quot; or &quot;Letter from spouse&#x27;s employer confirming loss of coverage with effective date&quot;]
-
-CHANGE DEADLINE: [DATE — typically 30 days from event date]
-HOW TO SUBMIT: [e.g., &quot;Log into benefits portal and upload documentation&quot; or &quot;Email to [HR EMAIL]&quot;]
-CHANGE EFFECTIVE DATE: [DATE if submitted on time]
-
-HR CONTACT: [NAME], [EMAIL]
-
-Write a complete QLE response email that:
-1. Confirms the event qualifies and what change they are eligible to make
-2. Lists exactly what documentation is required (be specific — name the document)
-3. States the exact deadline as a specific date
-4. Tells them step-by-step what to do next
-5. Confirms when the change will take effect
-6. Closes with an offer to help
-
-CONSTRAINTS:
-- Do NOT invent plan rules. Use [CONFIRM WITH PLAN DOCUMENTS] for missing info
-- Name the specific document required — &quot;proof of the event&quot; is not useful
-- State the deadline as a date, not a range
-- Warm, direct tone — this is usually a happy event. Match the moment
-- Under 250 words
-
-FORMAT: Subject / Confirm event + eligible change / Documentation (bulleted) /
-Deadline + consequence / Steps to submit / Effective date / Closing</pre>
+        <div class="pl-locked pl-locked-free">
+          <div class="pl-locked-head">In the free starter pack</div>
+          <p class="pl-locked-body">This one is rebuilt in the 5-prompt starter pack: same job, plus a tier rating, the data-handling rules and a check-before-it-goes-anywhere list. Free, no catch.</p>
+          <a class="pl-locked-btn" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the free 5 &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1109,7 +837,7 @@ Deadline + consequence / Steps to submit / Effective date / Closing</pre>
           <p class="pl-card-tagline">People in crisis ignore paperwork. This prompt helps anyway.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-9" onclick="togglePrompt(this, 'prompt-body-9')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-9" hidden>
@@ -1120,38 +848,10 @@ Deadline + consequence / Steps to submit / Effective date / Closing</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Former employee name and contact email</li><li>COBRA election deadline (the specific date)</li><li>Days remaining until the deadline</li><li>Current COBRA premium for their coverage tier</li><li>How to elect: portal link, mailing address, or form instructions</li><li>HR contact name and direct email or phone</li><li>What happens if they do not elect by the deadline</li><li>Any additional documents previously sent (election form, premium schedule, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR coordinator sending a follow-up to a former employee who has not yet responded to their COBRA election notice.
-
-FORMER EMPLOYEE: [NAME]
-COBRA ELECTION DEADLINE: [SPECIFIC DATE]
-DAYS REMAINING: [X] days
-COVERAGE TIER: [e.g., &quot;Employee + Family&quot;]
-MONTHLY PREMIUM: $[X]/month
-HOW TO ELECT: [e.g., &quot;Complete and mail the enclosed form to [ADDRESS]&quot; or &quot;Log in to [PORTAL URL]&quot;]
-HR CONTACT: [NAME], [EMAIL or PHONE]
-CONSEQUENCE OF MISSING DEADLINE: [e.g., &quot;COBRA coverage will not be available and you would need to wait for a new employer&#x27;s OE or the ACA marketplace&quot;]
-
-Write a COBRA deadline reminder that:
-1. Opens with acknowledgment — not pressure. They are going through something hard
-2. Clearly states the deadline date and days remaining
-3. Explains the consequence of missing it in plain, honest language
-4. Makes the action step as simple as possible — one thing to do
-5. Closes with a genuine offer to help
-
-CONSTRAINTS:
-- Do not repeat everything from the original notice
-- Acknowledge that the cost is significant — don&#x27;t oversell COBRA
-- Warm but direct. This is a follow-up, not a collection notice
-- Under 200 words
-- One action step only
-
-FORMAT: Subject (name the deadline directly) / Opening acknowledgment /
-Deadline + days remaining / Consequence / One action step / Offer to help</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1177,6 +877,7 @@ Deadline + days remaining / Consequence / One action step / Offer to help</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-gold">Broker / Acct Mgr</span><span class="pl-role pl-role-blue">Benefits Analyst</span></div>
           <h3 class="pl-card-title">Carrier Renewal Negotiation Brief</h3>
+          <span class="pl-open-flag">Full prompt</span>
           <p class="pl-card-tagline">Walk in with a position. Not a question.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-10" onclick="togglePrompt(this, 'prompt-body-10')">
@@ -1263,7 +964,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
           <p class="pl-card-tagline">The cheapest quote is not always the right quote.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-11" onclick="togglePrompt(this, 'prompt-body-11')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-11" hidden>
@@ -1274,53 +975,10 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Current carrier and plan as the baseline</li><li>Quote 1: carrier, plan type, premium by tier, network, key plan design</li><li>Quote 2: same format</li><li>Quote 3 if applicable</li><li>Where employees are located (zip codes, metro areas, or states)</li><li>Known utilization patterns: specialists, facilities, specialty drugs</li><li>Client&#x27;s stated priority: cost, network, stability, HSA compatibility</li><li>Any additional documents (carrier proposals, SBCs, network directories, formularies, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a benefits broker comparing carrier quotes for a client&#x27;s renewal.
-
-CLIENT: [NAME], [INDUSTRY], [GROUP SIZE] employees
-EMPLOYEE LOCATIONS: [e.g., &quot;Primarily MD, VA, DC metro&quot; or &quot;Multi-state: MD, TX, CA&quot;]
-CLIENT PRIORITY: [e.g., &quot;Keep costs down without disrupting network access&quot;]
-
-CURRENT CARRIER (BASELINE):
-- Carrier: [NAME] | Plan: [TYPE]
-- Premiums: EE $[X] | EE+Sp $[X] | EE+Ch $[X] | Family $[X]
-- Deductible: $[X] ind / $[X] fam | OOP Max: $[X] ind / $[X] fam
-- Network: [NAME] | Rx: [Notes]
-- Renewal increase: [X]%
-
-QUOTE 1:
-- Carrier: [NAME] | Plan: [TYPE]
-- Premiums: EE $[X] | EE+Sp $[X] | EE+Ch $[X] | Family $[X]
-- Deductible: $[X] ind / $[X] fam | OOP Max: $[X] ind / $[X] fam
-- Network: [NAME] | Notable differences: [e.g., &quot;Higher deductible, lower premium&quot;]
-
-QUOTE 2: [Same format]
-
-QUOTE 3 (if applicable): [Same format]
-
-UTILIZATION FLAGS: [Specialists, facilities, or specialty drugs worth checking or &quot;No known flags&quot;]
-
-Build a side-by-side comparison that:
-1. Shows premium cost across all options by tier
-2. Estimates total cost of coverage (premium + typical OOP based on plan design)
-3. Flags network adequacy concerns based on employee locations
-4. Identifies plan design differences that shift cost to employee
-5. Notes formulary/Rx differences
-6. Scores each option against the client&#x27;s stated priority
-7. Lists top 2-3 questions to resolve before recommending
-
-CONSTRAINTS:
-- Do NOT recommend based on incomplete data — flag gaps instead
-- Be explicit when lower premium comes with trade-offs
-- Present neutrally — recommendation comes after client review
-- Write [DATA NEEDED] for missing information
-
-FORMAT: PREMIUM COMPARISON / TOTAL COST OF COVERAGE / NETWORK ADEQUACY /
-PLAN DESIGN DIFFERENCES / RX FLAGS / SCORE VS. PRIORITY / QUESTIONS TO RESOLVE</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1341,7 +999,7 @@ PLAN DESIGN DIFFERENCES / RX FLAGS / SCORE VS. PRIORITY / QUESTIONS TO RESOLVE</
           <p class="pl-card-tagline">All the analysis is done. Now say what you actually think.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-12" onclick="togglePrompt(this, 'prompt-body-12')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-12" hidden>
@@ -1352,62 +1010,10 @@ PLAN DESIGN DIFFERENCES / RX FLAGS / SCORE VS. PRIORITY / QUESTIONS TO RESOLVE</
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Options evaluated (renewal as-is, plan design change, new carrier, alternative funding, etc.)</li><li>The recommended option</li><li>Core rationale in plain terms</li><li>Dollar impact vs. status quo</li><li>Key risks of the recommendation and how to mitigate them</li><li>What was considered and rejected (with one-line reason each)</li><li>Decision needed and deadline</li><li>Next steps if approved</li><li>Any additional documents (stewardship report, quote comparison, negotiation summary, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a benefits broker or HR executive writing a renewal recommendation memo.
-
-CLIENT OR ORG: [NAME]
-PLAN EFFECTIVE DATE: [DATE]
-DECISION DEADLINE: [DATE]
-
-OPTIONS EVALUATED:
-1. [e.g., &quot;Renew as-is at proposed 9.2% increase&quot;]
-2. [e.g., &quot;Renew with plan design change: raise deductible, reducing increase to 4.1%&quot;]
-3. [e.g., &quot;Move to Aetna — competitive quote at 2.8% above current premium&quot;]
-
-RECOMMENDATION: [e.g., &quot;Option 2 — renew with plan design change&quot;]
-
-WHY WE RECOMMEND THIS:
-- [Data-grounded reason 1]
-- [Data-grounded reason 2]
-- [Data-grounded reason 3]
-
-DOLLAR IMPACT vs. STATUS QUO:
-- Renew as-is: +$[X]/month | +$[X]/employee/month
-- Recommended option: +$[X]/month | +$[X]/employee/month
-- Difference: $[X]/month saved
-
-KEY RISKS:
-- [Risk 1]
-- Mitigation: [How you address it]
-
-WHAT WAS REJECTED AND WHY:
-- [Option]: [One-line reason]
-- [Option]: [One-line reason]
-
-DECISION NEEDED: [e.g., &quot;Approve plan design change and authorize counter at 4% or below&quot;]
-NEXT STEPS IF APPROVED: [Action items with dates]
-
-Write a recommendation memo that:
-1. Opens with the recommendation — in the first sentence
-2. Summarizes why the data supports it
-3. Shows the dollar impact clearly
-4. Acknowledges the key risk honestly with mitigation
-5. Briefly explains what was rejected and why
-6. Closes with one ask and a deadline
-
-CONSTRAINTS:
-- Lead with the recommendation
-- Ground every point in the data provided
-- Acknowledge trade-offs honestly
-- Under 400 words
-- One ask at the end
-
-FORMAT: RECOMMENDATION / WHY / DOLLAR IMPACT / THE TRADE-OFF /
-WHAT WAS REJECTED / DECISION NEEDED / NEXT STEPS</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1428,7 +1034,7 @@ WHAT WAS REJECTED / DECISION NEEDED / NEXT STEPS</pre>
           <p class="pl-card-tagline">What did we actually do for this client this year? Say it clearly.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-18" onclick="togglePrompt(this, 'prompt-body-18')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-18" hidden>
@@ -1439,57 +1045,10 @@ WHAT WAS REJECTED / DECISION NEEDED / NEXT STEPS</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Client name and plan year</li><li>Key services delivered this year (stewardship, renewal negotiation, OE support, compliance tracking, etc.)</li><li>Measurable outcomes: renewal rate achieved vs. proposed, dollars saved, issues resolved</li><li>Any problems solved mid-year (claims issue, carrier dispute, compliance question)</li><li>What changed or improved in their benefits program this year</li><li>What is on the horizon for next year</li><li>Any investments beyond standard service</li><li>Any additional documents (stewardship report, renewal summary, service log, communication history, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a benefits broker writing an annual client review summary to present at the end of the plan year.
-
-CLIENT: [NAME] | [INDUSTRY] | [GROUP SIZE] employees
-PLAN YEAR: [DATES]
-PRIMARY CONTACT: [NAME, TITLE]
-
-SERVICES DELIVERED THIS YEAR:
-- Stewardship report delivered: [DATE]
-- Renewal negotiated: carrier proposed [X]%, achieved [X]%
-- OE support: [what was done]
-- Compliance calendar maintained: [deadlines tracked]
-- [Other services]
-
-MEASURABLE OUTCOMES:
-[e.g., &quot;Negotiated renewal from 9.2% to 4.1% — saved $[X]/year&quot; or
-&quot;Resolved carrier billing dispute resulting in $[X] credit&quot; or
-&quot;Reduced employee benefits questions to HR by ~30% through improved OE communication&quot;]
-
-PROBLEMS SOLVED MID-YEAR:
-[e.g., &quot;Large claimant case management referral — connected with carrier case manager&quot; or &quot;None significant&quot;]
-
-WHAT IMPROVED THIS YEAR:
-[e.g., &quot;Added EAP. Improved OE communication. Stewardship delivered 2 weeks earlier than last year.&quot;]
-
-WHAT IS COMING NEXT YEAR:
-[Market conditions, compliance changes, what to watch and when to start planning]
-
-INVESTMENT BEYOND STANDARD SERVICE:
-[e.g., &quot;Conducted two employee lunch-and-learns&quot; or &quot;None beyond standard service&quot;]
-
-Write an annual client review summary that:
-1. Opens with the year in one sentence — what defined this plan year
-2. Summarizes what was delivered and what it produced
-3. Calls out 1-2 moments where you went beyond the standard
-4. Looks ahead: what is coming and why they should act now
-5. Closes with a direct statement of the relationship
-
-CONSTRAINTS:
-- This is not a sales pitch. It is a professional accounting of what was delivered
-- Let the outcomes speak — no superlatives
-- Be honest if a year was quiet — a quiet year without problems is a good year
-- Under 400 words
-- Warm but professional
-
-FORMAT: THIS YEAR IN ONE SENTENCE / WHAT WE DELIVERED / WHERE IT MADE A DIFFERENCE /
-WHAT IS COMING / THE ROAD AHEAD</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1515,10 +1074,11 @@ WHAT IS COMING / THE ROAD AHEAD</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span><span class="pl-role pl-role-coral">HR Executive</span></div>
           <h3 class="pl-card-title">Compliance Deadline Reminder Generator</h3>
+          <span class="pl-open-flag">In the free 5</span>
           <p class="pl-card-tagline">The filing is not the hard part. Remembering it's coming is.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-13" onclick="togglePrompt(this, 'prompt-body-13')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-13" hidden>
@@ -1529,52 +1089,10 @@ WHAT IS COMING / THE ROAD AHEAD</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Deadline type: 5500, ACA reporting, FSA run-out, HSA contribution cutoff, Medicare Part D notice, SBC distribution, SPD update, PCORI fee, or other</li><li>Plan year end date and calculated deadline date</li><li>Who needs to take action (HR, payroll, TPA, broker, finance)</li><li>Vendor or TPA responsible for the actual filing</li><li>Internal point of contact managing the deadline</li><li>Any context: first year, recent plan changes, new carrier</li><li>Any additional documents relevant to the deadline</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR professional generating an internal compliance deadline reminder.
-
-IMPORTANT: This is a reminder and coordination tool only. It does not constitute legal or compliance advice.
-All actual filings must be handled by the appropriate TPA, carrier, or legal counsel.
-
-DEADLINE TYPE: [e.g., &quot;Form 5500 filing window&quot; or &quot;ACA 1095-C employee distribution&quot; or
-&quot;FSA run-out period ends&quot; or &quot;Medicare Part D notice due&quot; or &quot;HSA contribution deadline&quot; or
-&quot;SBC distribution for new hires&quot; or other]
-
-PLAN YEAR END: [DATE]
-DEADLINE DATE: [DATE — or write &quot;calculate based on plan year end&quot;]
-DAYS UNTIL DEADLINE: [X days]
-
-WHO NEEDS TO ACT:
-- Internal owner: [NAME or ROLE]
-- External owner (if applicable): [TPA name or Broker name]
-- Who needs to be informed but not act: [e.g., &quot;CFO, for awareness&quot; or &quot;None&quot;]
-
-PLAN DETAILS:
-- Plan type: [Fully insured / Self-funded / Level-funded]
-- Carriers: [NAME(s)]
-- Number of participants: [X]
-
-CONTEXT: [e.g., &quot;First year filing after crossing 100 participants&quot; or &quot;No changes from prior year&quot;]
-
-Write an internal compliance deadline reminder that:
-1. Names the deadline clearly — what it is and when it is due
-2. States who owns the action and what they need to do (high level — not legal instructions)
-3. Names the external vendor or TPA responsible for the actual filing
-4. Lists what HR needs to gather or provide to support the filing
-5. Flags any first-time or changed circumstances
-6. Closes with a next step and suggested check-in date
-
-CONSTRAINTS:
-- Do NOT explain the regulation or provide legal interpretation
-- Do NOT generate the filing itself or draft any regulatory document
-- If participant count crosses a known threshold, note it as something to CONFIRM with the TPA
-- Under 300 words
-
-FORMAT: COMPLIANCE REMINDER: [TYPE] / Due date + owner / WHAT THIS IS /
-WHAT NEEDS TO HAPPEN / WHAT HR NEEDS TO GATHER / FLAGS / NEXT STEP</pre>
+        <div class="pl-locked pl-locked-free">
+          <div class="pl-locked-head">In the free starter pack</div>
+          <p class="pl-locked-body">This one is rebuilt in the 5-prompt starter pack: same job, plus a tier rating, the data-handling rules and a check-before-it-goes-anywhere list. Free, no catch.</p>
+          <a class="pl-locked-btn" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the free 5 &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1595,7 +1113,7 @@ WHAT NEEDS TO HAPPEN / WHAT HR NEEDS TO GATHER / FLAGS / NEXT STEP</pre>
           <p class="pl-card-tagline">They were supposed to send it by now. Here's how you ask again without losing the relationship.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-14" onclick="togglePrompt(this, 'prompt-body-14')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-14" hidden>
@@ -1606,47 +1124,10 @@ WHAT NEEDS TO HAPPEN / WHAT HR NEEDS TO GATHER / FLAGS / NEXT STEP</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>What was supposed to be received and when (original due date)</li><li>How many days or weeks overdue</li><li>Why you need it (OE deadline, filing window, client meeting, employee communication)</li><li>Who at the carrier or vendor is responsible</li><li>Your hard deadline: when you absolutely need it</li><li>Consequence if not received by your deadline</li><li>Prior follow-ups already attempted</li><li>Any additional context or documents related to the request</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR coordinator or benefits broker following up on an overdue document from a carrier or vendor.
-
-DOCUMENT NEEDED: [e.g., &quot;Summary of Benefits and Coverage (SBC)&quot; or &quot;Form 5500 Schedule A data&quot; or
-&quot;Renewal proposal&quot; or &quot;Network adequacy report&quot; or &quot;Updated SPD&quot;]
-
-CARRIER OR VENDOR: [NAME]
-CONTACT: [NAME, TITLE — if known]
-ORIGINAL DUE DATE OR REQUEST DATE: [DATE]
-HOW OVERDUE: [e.g., &quot;12 days past the agreed date&quot; or &quot;3 weeks since initial request&quot;]
-
-WHY IT IS NEEDED:
-[e.g., &quot;SBCs must be distributed before OE starts on [DATE]&quot; or
-&quot;5500 deadline is [DATE] and we cannot file without this data&quot; or
-&quot;Client renewal meeting is [DATE]&quot;]
-
-YOUR HARD DEADLINE: [DATE]
-
-CONSEQUENCE IF NOT RECEIVED: [e.g., &quot;We will need to notify the client we cannot complete the report on time&quot; or &quot;We will need to file for an extension&quot;]
-
-PRIOR FOLLOW-UPS: [e.g., &quot;Email sent [DATE], no response&quot; or &quot;First follow-up&quot;]
-
-Write a follow-up email that:
-1. References the original request and how long it has been outstanding
-2. States clearly what is needed and why it matters right now
-3. Gives a specific date by which you need it
-4. States what will happen if not received (professionally, not as a threat)
-5. Makes it easy to respond — specific ask, specific deadline
-
-CONSTRAINTS:
-- Professional and direct — firm without being hostile
-- Do not over-explain or write a long backstory
-- One clear ask with one specific deadline
-- Under 200 words
-
-FORMAT: Subject (name document + deadline) / Reference original request /
-Why it matters now / Hard deadline / Consequence / Single ask</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1664,6 +1145,7 @@ Why it matters now / Hard deadline / Consequence / Single ask</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span><span class="pl-role pl-role-gold">Broker / Acct Mgr</span></div>
           <h3 class="pl-card-title">Benefits Meeting Notes to Action Summary</h3>
+          <span class="pl-open-flag">Full prompt</span>
           <p class="pl-card-tagline">Raw notes in. Clean recap out. Every time.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-15" onclick="togglePrompt(this, 'prompt-body-15')">
@@ -1745,7 +1227,7 @@ WHAT WAS DISCUSSED / DECISIONS MADE / OPEN ITEMS / ACTION ITEMS (owner + deadlin
           <p class="pl-card-tagline">The full picture. Once a year. In a format leadership will actually read.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-16" onclick="togglePrompt(this, 'prompt-body-16')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-16" hidden>
@@ -1756,58 +1238,10 @@ WHAT WAS DISCUSSED / DECISIONS MADE / OPEN ITEMS / ACTION ITEMS (owner + deadlin
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>Full list of benefits offered: medical, dental, vision, life, disability, voluntary, EAP, 401k, perks</li><li>Total employer cost for each benefit category (annual)</li><li>Employee participation rates where available</li><li>Benchmarking data (even rough comparisons help)</li><li>What changed this year vs. prior year</li><li>What is working well (high utilization, employee feedback, retention wins)</li><li>What needs attention (low utilization, cost pressure, gaps vs. market)</li><li>Decisions or investments recommended for next year</li><li>Any additional documents (benefits guide, carrier summaries, utilization reports, prior year summary, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are a senior HR executive preparing an annual benefits program summary for leadership (CEO, CFO, department heads).
-
-ORGANIZATION: [NAME] | [INDUSTRY] | [HEADCOUNT] employees
-PLAN YEAR: [DATES]
-
-BENEFITS OFFERED AND EMPLOYER COST:
-Medical: [Plan names and types] | Employer cost: $[X]/year | $[X]/employee/year
-Dental: [Carrier] | Employer cost: $[X]/year
-Vision: [Carrier] | Employer cost: $[X]/year
-Life Insurance: [Basic amount] | Employer cost: $[X]/year
-Disability: [STD/LTD details] | Employer cost: $[X]/year
-EAP: [Provider] | Employer cost: $[X]/year
-Retirement: [401k match] | Employer cost: $[X]/year
-Voluntary: [List if applicable]
-Other: [Perks, wellness, stipends, etc.]
-TOTAL EMPLOYER BENEFITS SPEND: $[X]/year | $[X]/employee/year
-
-PARTICIPATION:
-Medical: [X]% enrolled | Dental: [X]% | 401k: [X]% | [Others as available]
-
-BENCHMARKING: [How you compare to industry/competitors, or &quot;No formal benchmarking this cycle&quot;]
-
-WHAT CHANGED THIS YEAR: [e.g., &quot;New medical carrier. Added EAP. 401k match increased.&quot;]
-
-WHAT IS WORKING: [High utilization, employee feedback, retention wins]
-
-WHAT NEEDS ATTENTION: [Cost pressure, low utilization, gaps vs. market]
-
-RECOMMENDATIONS FOR NEXT YEAR: [What you are proposing for leadership to approve]
-
-Write an annual benefits program summary that:
-1. Opens with a headline: the state of the program in one sentence
-2. Summarizes total investment and per-employee cost
-3. Highlights what is working and why it matters
-4. Calls out what needs attention honestly
-5. Connects the program to the org&#x27;s talent and retention strategy
-6. Closes with recommendations and decisions needed
-
-CONSTRAINTS:
-- Narrative format — no tables or spreadsheets
-- Write for a CFO and CEO, not an HR audience
-- 500 words maximum
-- Be direct about gaps
-- Every cost figure must come from the data provided
-
-FORMAT: HEADLINE / WHAT WE INVEST / WHAT IS WORKING / WHAT NEEDS ATTENTION /
-HOW WE COMPARE / WHY THIS MATTERS / RECOMMENDATIONS AND DECISIONS NEEDED</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1828,7 +1262,7 @@ HOW WE COMPARE / WHY THIS MATTERS / RECOMMENDATIONS AND DECISIONS NEEDED</pre>
           <p class="pl-card-tagline">You know what needs to change. This is how you make the case.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-17" onclick="togglePrompt(this, 'prompt-body-17')">
-          Get Prompt <span class="pl-expand-icon">+</span>
+          What it does <span class="pl-expand-icon">+</span>
         </button>
       </div>
       <div class="pl-card-body" id="prompt-body-17" hidden>
@@ -1839,64 +1273,10 @@ HOW WE COMPARE / WHY THIS MATTERS / RECOMMENDATIONS AND DECISIONS NEEDED</pre>
           <div class="pl-gather-label">Step 1: Gather</div>
           <ul><li>What you are proposing (be specific — the change, not just the category)</li><li>The problem it solves or the opportunity it addresses</li><li>Cost of the proposed change (annual employer cost, per employee)</li><li>Expected benefit: retention impact, cost offset, compliance resolution, other</li><li>Data supporting the case (employee feedback, turnover data, benchmarking, utilization trends)</li><li>What happens if you do not make this change (cost of inaction)</li><li>Implementation timeline and dependencies</li><li>The specific decision needed from leadership</li><li>Any additional documents (benchmarking reports, vendor proposals, employee survey data, etc.)</li></ul>
         </div>
-        <div class="pl-paste-wrap">
-          <div class="pl-paste-header">
-            <span class="pl-paste-label">Step 2: Paste Into a New Chat</span>
-            <button class="pl-copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
-          </div>
-          <pre class="pl-prompt-text">You are an HR executive or benefits broker building a business case to propose a benefits change to leadership.
-
-ORGANIZATION: [NAME] | [HEADCOUNT] employees
-PROPOSING TO: [e.g., &quot;CEO and CFO&quot; or &quot;Executive Leadership Team&quot;]
-
-THE PROPOSAL:
-[Be specific — e.g., &quot;Add an Employee Assistance Program with mental health support&quot; or
-&quot;Move from fully insured to level-funded health plan&quot; or
-&quot;Restructure medical cost-sharing: increase employee contribution by $25/month&quot;]
-
-THE PROBLEM THIS SOLVES:
-[e.g., &quot;Mental health claims are up 31% and our current plan has no dedicated support resource&quot; or
-&quot;Fully insured renewal is 9% — level-funding projects to save $180K annually based on our claims experience&quot;]
-
-COST OF THE CHANGE:
-- Annual employer cost: $[X]
-- Per employee per month: $[X]
-- Net cost vs. status quo: [e.g., &quot;Net savings of $180K&quot; or &quot;Additional investment of $42K/year&quot;]
-
-EXPECTED RETURN:
-[e.g., &quot;Reduce voluntary turnover by 5% — at $8K replacement cost, saves $160K annually&quot; or
-&quot;Offset 4 points of the medical renewal increase&quot;]
-
-DATA SUPPORTING THIS:
-[e.g., &quot;Employee survey: 67% cited mental health support as top benefits gap&quot; or
-&quot;Claims analysis: 3 of top 5 cost drivers have strong wellness program outcomes&quot;]
-
-COST OF INACTION:
-[e.g., &quot;Without this change we absorb the full 9% increase at $220K annually&quot; or
-&quot;Compliance exposure if not addressed before next audit&quot;]
-
-TIMELINE: [e.g., &quot;Can implement by next plan year if approved by [DATE]&quot;]
-
-DECISION NEEDED: [e.g., &quot;Approval to proceed with vendor selection and budget of $[X]&quot;]
-
-Write a benefits change proposal that:
-1. Opens with the recommendation — in the first sentence
-2. Describes the problem clearly and briefly
-3. Makes the financial case: cost of change vs. cost of inaction
-4. Supports the case with the data provided
-5. Acknowledges the key risk and addresses it directly
-6. Closes with one specific ask
-
-CONSTRAINTS:
-- Lead with the recommendation
-- Ground every claim in data provided
-- Acknowledge the main objection leadership will raise and answer it
-- Under 400 words
-- One ask at the end
-
-FORMAT: THE RECOMMENDATION / THE PROBLEM / THE FINANCIAL CASE /
-WHY THE DATA SUPPORTS THIS / THE MAIN OBJECTION AND THE ANSWER /
-THE RISK OF WAITING / WHAT WE NEED</pre>
+        <div class="pl-locked">
+          <div class="pl-locked-head">Part of Infinite Benefits</div>
+          <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1916,12 +1296,12 @@ THE RISK OF WAITING / WHAT WE NEED</pre>
   <!-- FOOTER CTA -->
   <div class="pl-footer-cta" aria-label="BeneBots promotion">
     <div class="pl-footer-cta-text">
-      <h2>Ready to stop prompting manually every week?</h2>
-      <p>BeneBots runs these workflows on a schedule. No prompting required. Built for benefits teams that want the automated version.</p>
+      <h2>Start with the five I actually use.</h2>
+<p>Rebuilt with a tier rating, the data-handling rules and a check-it-before-it-goes-anywhere list on every one. Free, no catch. And when you would rather these just run on a schedule without you prompting anything, that is what BeneBots is for.</p>
     </div>
     <div class="pl-footer-cta-actions">
-      <a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="pl-btn-white">See a Live Demo &rarr;</a>
-      <a href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots%20Inquiry" class="pl-btn-ghost-white">Talk to Ty</a>
+      <a href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer" class="pl-btn-white">Get the free 5 &rarr;</a>
+<a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="pl-btn-ghost-white">See BeneBots run it</a>
     </div>
   </div>
 
