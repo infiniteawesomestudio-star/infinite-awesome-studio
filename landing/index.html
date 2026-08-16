@@ -18,6 +18,7 @@
 :root {
   /* Primary palette */
   --mint: #00C47A;
+  --mint-text:#007A4A;
   --ink: #1A1A1A;
   --warm-neutral: #F5F5F2;
   --white: #FFFFFF;
@@ -127,7 +128,7 @@ html,body{background:var(--warm-neutral);}
   display:inline-block;
   font-family:var(--font-body);font-size:12px;font-weight:600;
   letter-spacing:0;text-transform:none;
-  color:var(--mint);background:var(--mint-wash);
+  color:var(--mint-text);background:var(--mint-wash);
   border-radius:6px;padding:3px 10px;
   margin-bottom:14px;
 }
@@ -144,7 +145,7 @@ html,body{background:var(--warm-neutral);}
 }
 .ias-ai-tool-link{
   font-family:var(--font-body);font-size:13px;font-weight:600;
-  color:var(--mint);text-decoration:none;
+  color:var(--mint-text);text-decoration:none;
 }
 .ias-ai-tool-link:hover{text-decoration:underline;}
 .ias-ai-tools-footnote{
@@ -213,7 +214,7 @@ html,body{background:var(--warm-neutral);}
   border:none;
   border-radius:10px;
   color:var(--white);
-  background:var(--mint);
+  background:var(--mint-text);
   cursor:pointer;letter-spacing:0.01em;
   text-decoration:none;
   display:inline-flex;align-items:center;
@@ -240,7 +241,7 @@ html,body{background:var(--warm-neutral);}
 }
 .ias-h1 em{
   font-style:normal;
-  color:var(--mint);
+  color:var(--mint-text);
   position:relative;
 }
 
@@ -254,8 +255,8 @@ html,body{background:var(--warm-neutral);}
   animation:fadeUp 0.6s 0.2s ease both;
 }
 .ias-hero-kicker{margin-top:22px;font-family:var(--font-body);font-size:15px;line-height:1.6;color:var(--ink-55);max-width:520px;}
-.ias-hero-kicker a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;text-decoration-color:var(--mint);}
-.ias-hero-kicker a:hover{color:var(--mint);}
+.ias-hero-kicker a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;text-decoration-color:var(--mint-text);}
+.ias-hero-kicker a:hover{color:var(--mint-text);}
 
 .ias-cta-row{
   display:flex;gap:14px;align-items:center;flex-wrap:wrap;
@@ -273,13 +274,13 @@ html,body{background:var(--warm-neutral);}
   text-decoration:none;
   display:inline-flex;align-items:center;gap:6px;
 }
-.ias-btn-primary:hover{background:var(--mint);color:var(--white);transform:translateY(-1px);}
+.ias-btn-primary:hover{background:var(--mint-text);color:var(--white);transform:translateY(-1px);}
 
 .ias-btn-mint{
   font-family:var(--font-body);
   font-size:14px;font-weight:600;
   padding:13px 28px;
-  background:var(--mint);
+  background:var(--mint-text);
   color:var(--white);
   border:none;border-radius:10px;
   cursor:pointer;letter-spacing:0.01em;
@@ -362,7 +363,7 @@ html,body{background:var(--warm-neutral);}
 
 .ias-stat-row{display:flex;gap:28px;margin-top:16px;}
 .ias-stat{font-family:var(--font-display);font-weight:700;}
-.ias-stat-val{font-size:26px;color:var(--mint);}
+.ias-stat-val{font-size:26px;color:var(--mint-text);}
 .ias-stat-label{
   font-family:var(--font-body);
   font-size:12px;color:var(--ink-55);
@@ -420,7 +421,7 @@ html,body{background:var(--warm-neutral);}
 .ias-mobile-menu a:hover{color:var(--ink);background:var(--ink-08);}
 .ias-mobile-cta{
   margin-top:8px;text-align:center;
-  background:var(--mint) !important;color:var(--white) !important;
+  background:var(--mint-text) !important;color:var(--white) !important;
   font-weight:600 !important;border-radius:10px !important;
   padding:12px 20px !important;
 }
@@ -479,7 +480,7 @@ html,body{background:var(--warm-neutral);}
   letter-spacing:-0.02em;
   color:var(--ink);
 }
-.ias-section-title em{font-style:normal;color:var(--mint);}
+.ias-section-title em{font-style:normal;color:var(--mint-text);}
 .ias-section-title em.blue{color:var(--ink-blue);}
 
 .ias-section-sub{
@@ -525,7 +526,7 @@ html,body{background:var(--warm-neutral);}
 .ias-guy-tagline{
   font-family:var(--font-body);
   font-size:18px;font-weight:500;
-  color:var(--mint);
+  color:var(--mint-text);
   margin-bottom:18px;
   font-style:italic;
 }
@@ -1021,7 +1022,7 @@ html,body{background:var(--warm-neutral);}
         <a href="mailto:ty@infiniteawesomestudio.com?subject=ChatGPT%20Workflow%20Request" class="ias-ai-tool-link">Get the prompt →</a>
       </div>
     </div>
-    <p class="ias-ai-tools-footnote">All free or &lt;$20/mo. Try them today. Want these to run automatically 24/7? <a href="#benebots" style="color:var(--mint);font-weight:600;">That&rsquo;s what BeneBots does.</a> Run a different kind of business? <a href="/infinite-workflows/" style="color:var(--mint);font-weight:600;">Same playbook, built for yours →</a></p>
+    <p class="ias-ai-tools-footnote">All free or &lt;$20/mo. Try them today. Want these to run automatically 24/7? <a href="#benebots" style="color:var(--mint-text);font-weight:600;">That&rsquo;s what BeneBots does.</a> Run a different kind of business? <a href="/infinite-workflows/" style="color:var(--mint-text);font-weight:600;">Same playbook, built for yours →</a></p>
   </section>
 
   <!-- ============== MYBENEFITSGUY ============== -->
@@ -1056,8 +1057,8 @@ html,body{background:var(--warm-neutral);}
         </p>
         <p class="ias-guy-body">So I made a shift.</p>
         <ul style="padding-left:0;list-style:none;margin-bottom:18px;">
-          <li class="ias-guy-body" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="color:var(--mint);font-weight:700;flex-shrink:0;">→</span> I started showing benefits professionals how to use AI tools like Claude, ChatGPT and Copilot to cut their workload in half today.</li>
-          <li class="ias-guy-body" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="color:var(--mint);font-weight:700;flex-shrink:0;">→</span> And I built BeneBots&hellip;the automated version of those workflows for teams that want the long-term fix, not another bandaid.</li>
+          <li class="ias-guy-body" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="color:var(--mint-text);font-weight:700;flex-shrink:0;">→</span> I started showing benefits professionals how to use AI tools like Claude, ChatGPT and Copilot to cut their workload in half today.</li>
+          <li class="ias-guy-body" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="color:var(--mint-text);font-weight:700;flex-shrink:0;">→</span> And I built BeneBots&hellip;the automated version of those workflows for teams that want the long-term fix, not another bandaid.</li>
         </ul>
         <p class="ias-guy-body" style="margin-top:8px;">
           Ty Mosher, Employee Benefits Account Manager | Founder, Infinite Awesome Studio<br>
@@ -1256,7 +1257,7 @@ html,body{background:var(--warm-neutral);}
       <a href="https://www.facebook.com/mybenefitsguy" target="_blank" rel="noopener noreferrer" style="color:rgba(26,26,26,0.55);text-decoration:none;">Facebook</a>
       <a href="https://www.threads.net/@mybenefitsguy" target="_blank" rel="noopener noreferrer" style="color:rgba(26,26,26,0.55);text-decoration:none;">Threads</a>
     </div>
-    <a href="/privacy-policy" style="font-family:var(--font-body);font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;transition:color 0.15s;" onmouseover="this.style.color='var(--mint)'" onmouseout="this.style.color='rgba(26,26,26,0.35)'">Privacy Policy</a>
+    <a href="/privacy-policy" style="font-family:var(--font-body);font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;transition:color 0.15s;" onmouseover="this.style.color='var(--mint-text)'" onmouseout="this.style.color='rgba(26,26,26,0.35)'">Privacy Policy</a>
     <div class="ias-footer-disclaimer" style="flex-basis:100%;margin-top:18px;font-family:var(--font-body);font-size:11px;line-height:1.55;color:rgba(26,26,26,0.4);">
       Infinite Awesome Studio provides AI workflow consulting, education content, prompt systems, SOPs and creative assets. IAS does not provide legal, tax, medical, investment, insurance, or employee benefits advice. MyBenefitsGuy and BeneBots content is general education only.
     </div>
@@ -1293,7 +1294,7 @@ function closeMobileNav(){
         .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');})
         .slice(0,3);
       el.innerHTML=posts.map(function(p){
-        return '<li style="margin-top:10px;line-height:1.4;"><a href="/articles#'+esc(p.slug)+'" style="text-decoration:none;color:var(--ink-70,#555);font-size:13px;font-weight:500;display:flex;gap:7px;align-items:baseline;transition:color .15s;" onmouseover="this.style.color=\'var(--mint)\';this.style.textDecoration=\'underline\'" onmouseout="this.style.color=\'var(--ink-70,#555)\';this.style.textDecoration=\'none\'"><span style="color:var(--mint);font-weight:700;">&rsaquo;</span><span>'+esc(p.title)+'</span></a></li>';
+        return '<li style="margin-top:10px;line-height:1.4;"><a href="/articles#'+esc(p.slug)+'" style="text-decoration:none;color:var(--ink-70,#555);font-size:13px;font-weight:500;display:flex;gap:7px;align-items:baseline;transition:color .15s;" onmouseover="this.style.color=\'var(--mint-text)\';this.style.textDecoration=\'underline\'" onmouseout="this.style.color=\'var(--ink-70,#555)\';this.style.textDecoration=\'none\'"><span style="color:var(--mint-text);font-weight:700;">&rsaquo;</span><span>'+esc(p.title)+'</span></a></li>';
       }).join('');
     })
     .catch(function(){});
