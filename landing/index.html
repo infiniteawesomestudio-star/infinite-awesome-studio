@@ -304,7 +304,9 @@ html,body{background:var(--warm-neutral);}
 /* ================= BENTO ================= */
 .ias-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;padding:0 36px 48px;position:relative;z-index:2;animation:fadeUp 0.7s 0.4s ease both;}
 .ias-span-7{grid-column:span 7;}
+.ias-span-6{grid-column:span 6;}
 .ias-span-5{grid-column:span 5;}
+.ias-span-4{grid-column:span 4;}
 .ias-span-12{grid-column:1/-1;}
 
 .ias-card{
@@ -320,9 +322,8 @@ html,body{background:var(--warm-neutral);}
   transform:translateY(-2px);
   box-shadow:0 8px 24px rgba(26,26,26,0.06);
 }
-.ias-card-anchor{padding:32px;}
 .ias-card-full{
-  display:flex;align-items:center;justify-content:space-between;gap:40px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:22px;
 }
 .ias-card-full-main{flex:1;min-width:0;}
 .ias-card-full-aside{
@@ -783,11 +784,12 @@ html,body{background:var(--warm-neutral);}
 @media (max-width: 920px){
   .ias-hero-inner{grid-template-columns:1fr;gap:32px;}
   .ias-hero-inner .ias-ai-pillars{margin:8px 0 0;}
+  .ias-span-4{grid-column:span 6;}
+  .ias-bento > .ias-span-4:last-child{grid-column:1/-1;}
 }
 @media (max-width: 760px){
   .ias-bento{grid-template-columns:1fr;}
-  .ias-span-7,.ias-span-5,.ias-span-12{grid-column:1/-1;}
-  .ias-card-full{flex-direction:column;align-items:flex-start;gap:22px;}
+  .ias-span-7,.ias-span-6,.ias-span-5,.ias-span-4,.ias-span-12{grid-column:1/-1;}
   .ias-h1{font-size:40px;}
   .ias-section-title{font-size:32px;}
   .ias-bots-grid{grid-template-columns:repeat(2,1fr);}
@@ -905,7 +907,27 @@ html,body{background:var(--warm-neutral);}
   <!-- ============== BENTO ============== -->
   <div class="ias-bento" id="services">
 
-    <div class="ias-card ias-span-7 ias-card-anchor">
+    <div class="ias-card ias-span-6">
+      <div class="ias-card-tag">Insights</div>
+      <div class="ias-card-icon ias-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <div class="ias-card-title">Latest Insights</div>
+      <div class="ias-card-body">What's actually happening with AI and automation in the benefits and HR space.</div>
+      <ul id="ias-latest-insights" class="ias-insights-list" style="list-style:none;margin:14px 0 0;padding:0;"></ul>
+      <a href="/articles" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore the blog →</a>
+    </div>
+
+    <div class="ias-card ias-span-6">
+      <div class="ias-card-tag">For Solo Service Pros</div>
+      <div class="ias-card-icon ias-icon-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div class="ias-card-title">Infinite Workflows</div>
+      <div class="ias-card-body">Practical AI workflows for the admin work eating your week. Client inquiries, follow-ups, invoices, content. Built around how you actually run it, not a generic template.</div>
+      <div class="ias-pill-row" style="margin-top:14px;">
+        <span class="ias-pill ias-pill-gold">A Front Desk That Never Sleeps</span>
+      </div>
+      <a href="/infinite-workflows/" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore Infinite Workflows →</a>
+    </div>
+
+    <div class="ias-card ias-span-4">
       <div class="ias-card-tag">For HR &amp; Benefits Teams</div>
       <div class="ias-card-icon ias-icon-mint"><img src="assets/benebot-icon-tp.png" alt="" width="26" height="25" style="display:block;"/></div>
       <div class="ias-card-title">MyBenefitsGuy + BeneBots</div>
@@ -922,27 +944,7 @@ html,body{background:var(--warm-neutral);}
       <a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore BeneBots →</a>
     </div>
 
-    <div class="ias-card ias-span-5">
-      <div class="ias-card-tag">For Solo Service Pros</div>
-      <div class="ias-card-icon ias-icon-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <div class="ias-card-title">Infinite Workflows</div>
-      <div class="ias-card-body">Practical AI workflows for the admin work eating your week. Client inquiries, follow-ups, invoices, content. Built around how you actually run it, not a generic template.</div>
-      <div class="ias-pill-row" style="margin-top:14px;">
-        <span class="ias-pill ias-pill-gold">A Front Desk That Never Sleeps</span>
-      </div>
-      <a href="/infinite-workflows/" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore Infinite Workflows →</a>
-    </div>
-
-    <div class="ias-card ias-span-5">
-      <div class="ias-card-tag">Insights</div>
-      <div class="ias-card-icon ias-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-      <div class="ias-card-title">Latest Insights</div>
-      <div class="ias-card-body">What's actually happening with AI and automation in the benefits and HR space.</div>
-      <ul id="ias-latest-insights" class="ias-insights-list" style="list-style:none;margin:14px 0 0;padding:0;"></ul>
-      <a href="/articles" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore the blog →</a>
-    </div>
-
-    <div class="ias-card ias-card-full ias-span-7">
+    <div class="ias-card ias-card-full ias-span-4">
       <div class="ias-card-full-main">
         <div class="ias-card-tag">Career Intelligence · Demo</div>
         <div class="ias-card-icon ias-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
@@ -955,7 +957,7 @@ html,body{background:var(--warm-neutral);}
       </div>
     </div>
 
-    <div class="ias-card ias-card-full ias-span-12">
+    <div class="ias-card ias-card-full ias-span-4">
       <div class="ias-card-full-main">
         <div class="ias-card-tag">Everyday AI · Demo</div>
         <div class="ias-card-icon ias-icon-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M3 2v7c0 1.1.9 2 2 2h1a2 2 0 0 0 2-2V2"/><path d="M5 2v7"/><path d="M8 2v20"/><path d="M17 2c-1.7 0-3 2.2-3 5s1.3 5 3 5h1V2z"/><path d="M18 12v10"/></svg></div>
