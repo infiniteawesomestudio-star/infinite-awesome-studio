@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products · Infinite Awesome Studio</title>
+<meta name="description" content="Working tools from Infinite Awesome Studio: the Shovel Playbook, starter prompts and The Infinity Desk. Plus BeneBots and live proof-of-work demos.">
+<link rel="canonical" href="https://infiniteawesomestudio.com/products" />
+
+<!-- Open Graph / social share -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Infinite Awesome Studio" />
+<meta property="og:url" content="https://infiniteawesomestudio.com/products" />
+<meta property="og:title" content="Products · Infinite Awesome Studio" />
+<meta property="og:description" content="Working tools from Infinite Awesome Studio: the Shovel Playbook, starter prompts and The Infinity Desk. Plus BeneBots and live proof-of-work demos." />
+<meta property="og:image" content="https://infiniteawesomestudio.com/assets/benebots-crew.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Products · Infinite Awesome Studio" />
+<meta name="twitter:description" content="Working tools from Infinite Awesome Studio: the Shovel Playbook, starter prompts and The Infinity Desk. Plus BeneBots and live proof-of-work demos." />
+<meta name="twitter:image" content="https://infiniteawesomestudio.com/assets/benebots-crew.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{
+  --mint:#00C47A;
+  --ink:#1A1A1A;
+  --warm-neutral:#F5F5F2;
+  --light-gray:#EFEFEC;
+  --white:#FFFFFF;
+  --ink-blue:#0B4FBB;
+  --deep-forest:#002E1D;
+  --sunshine-gold:#F7D154;
+  --ink-70:rgba(26,26,26,0.70);
+  --ink-55:rgba(26,26,26,0.55);
+  --ink-40:rgba(26,26,26,0.40);
+  --ink-12:rgba(26,26,26,0.12);
+  --ink-08:rgba(26,26,26,0.08);
+  --font-display:'Bricolage Grotesque','Avenir Next','Helvetica Neue',system-ui,sans-serif;
+  --font-body:'Source Sans 3','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--warm-neutral);color:var(--ink);font-family:var(--font-body);min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+.ias-skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:100;}
+.ias-skip-link:focus{left:16px;top:16px;}
+
+/* NAV */
+.ias-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:1140px;margin:0 auto;position:relative;z-index:20;}
+.ias-logo img{height:44px;width:auto;display:block;}
+.ias-nav-links{display:flex;gap:26px;list-style:none;}
+.ias-nav-links a{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-70);text-decoration:none;transition:color .15s;}
+.ias-nav-links a:hover,.ias-nav-links a.active{color:var(--ink);}
+.ias-nav-cta{background:var(--ink);color:#fff;font-family:var(--font-body);font-size:14px;font-weight:600;padding:9px 18px;border-radius:10px;text-decoration:none;transition:background .15s;}
+.ias-nav-cta:hover{background:var(--deep-forest);}
+.ias-mobile-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);}
+@media(max-width:760px){.ias-nav-links,.ias-nav-cta{display:none;}.ias-mobile-toggle{display:block;}}
+.ias-mobile-menu{display:none;flex-direction:column;gap:4px;padding:0 32px 18px;max-width:1140px;margin:0 auto;}
+.ias-mobile-menu.open{display:flex;}
+.ias-mobile-menu a{padding:12px 14px;border-radius:10px;text-decoration:none;color:var(--ink-70);font-weight:500;font-size:15px;}
+.ias-mobile-menu a:hover{background:var(--white);color:var(--ink);}
+
+.wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
+
+/* PAGE OPENING — no eyebrow, no art */
+.open{padding:44px 0 0;}
+.open h1{font-family:var(--font-display);font-size:clamp(32px,5vw,48px);font-weight:700;line-height:1.06;letter-spacing:-0.02em;}
+.open-sub{font-size:18px;line-height:1.6;color:var(--ink-70);max-width:620px;margin-top:16px;}
+
+/* TIER 1 — a receipt, not cards */
+.buy{max-width:760px;margin:48px 0 0;border-top:1px solid var(--ink-12);}
+.buy-row{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--ink-12);}
+.buy-name{font-family:var(--font-display);font-size:22px;font-weight:700;line-height:1.2;letter-spacing:-0.01em;}
+.buy-name-link{color:inherit;text-decoration:none;}
+.buy-name-link:hover,.buy-name-link:focus-visible{text-decoration:underline;text-underline-offset:3px;}
+.buy-desc{font-size:15px;line-height:1.6;color:var(--ink-70);margin-top:7px;}
+.buy-side{text-align:right;}
+.buy-price{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--ink);white-space:nowrap;}
+.buy-link{display:inline-block;margin-top:6px;font-size:14px;font-weight:600;color:var(--mint);text-decoration:none;white-space:nowrap;}
+.buy-link:hover{text-decoration:underline;}
+
+/* TIER 2 — the one dark panel, the one two-column block */
+.bb{margin-top:72px;}
+.bb-panel{background:var(--ink);border-radius:20px;padding:48px;display:grid;grid-template-columns:1.2fr 0.8fr;gap:40px;align-items:center;color:var(--white);}
+.bb-panel h2{font-family:var(--font-display);font-size:28px;font-weight:700;line-height:1.15;letter-spacing:-0.01em;}
+.bb-status{font-size:17px;line-height:1.5;color:rgba(245,245,242,0.78);margin-top:10px;}
+.bb-body{font-size:15px;line-height:1.65;color:rgba(245,245,242,0.62);margin-top:16px;max-width:52ch;}
+.bb-actions{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:26px;}
+.bb-btn{background:var(--mint);color:#06281c;border-radius:10px;padding:13px 22px;font-weight:700;font-size:15px;text-decoration:none;transition:transform .15s;}
+.bb-btn:hover{transform:translateY(-2px);}
+.bb-ghost{color:rgba(245,245,242,0.75);font-size:15px;font-weight:600;text-decoration:none;}
+.bb-ghost:hover{color:var(--white);}
+.bb-art img{max-width:100%;height:auto;display:block;border-radius:12px;}
+
+/* TIER 3 — quiet proof, lighter than everything above */
+.proof{margin-top:56px;}
+.proof-intro{font-size:15px;line-height:1.6;color:var(--ink-55);margin-bottom:20px;}
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.proof-card{background:var(--light-gray);border:1px solid var(--ink-08);border-radius:14px;padding:24px;}
+.proof-card h3{font-family:var(--font-display);font-size:18px;font-weight:700;line-height:1.25;}
+.proof-card p{font-size:14px;line-height:1.6;color:var(--ink-70);margin-top:8px;}
+.proof-note{font-size:12px;line-height:1.5;color:var(--ink-40);margin-top:14px;}
+.proof-link{display:inline-block;margin-top:12px;font-size:14px;font-weight:600;color:var(--mint);text-decoration:none;}
+.proof-link:hover{text-decoration:underline;}
+
+.tail{margin-top:64px;padding-bottom:8px;font-size:14px;line-height:1.6;color:var(--ink-55);max-width:620px;}
+
+/* FOOTER */
+.ias-footer{max-width:1140px;margin:0 auto;padding:32px;border-top:1px solid var(--ink-08);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;}
+.ias-footer-left{font-family:var(--font-body);font-size:13px;color:var(--ink-55);}
+.ias-footer-left a{color:inherit;}
+.ias-footer-tag{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--mint);}
+.ias-footer-socials{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;font-weight:600;}
+.ias-footer-socials a{color:rgba(26,26,26,0.55);text-decoration:none;}
+.ias-footer-socials a:hover{color:var(--mint);}
+.ias-footer-disclaimer{flex-basis:100%;font-size:11px;line-height:1.55;color:rgba(26,26,26,0.4);}
+.ias-footer a.privacy{font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;}
+.ias-footer a.privacy:hover{color:var(--mint);}
+
+@media(max-width:860px){
+  .bb-panel{grid-template-columns:1fr;padding:32px;}
+  .proof-grid{grid-template-columns:1fr;}
+}
+@media(max-width:520px){
+  .buy-row{grid-template-columns:1fr;gap:10px;}
+  .buy-side{text-align:left;}
+  .open{padding:28px 0 0;}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{transition:none!important;animation:none!important;}
+}
+
+/* Motion: matches the Infinite Careers pass (01e5326) — transform/opacity only,
+   220ms ease-out, 40ms stagger. Hidden states apply only after JS adds .fx to <html>,
+   so no-JS and reduced-motion visitors see everything immediately. */
+.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(7px);transition:opacity 220ms cubic-bezier(0,0,.2,1),transform 220ms cubic-bezier(0,0,.2,1);}
+.fx .fx-r.fx-in,.fx .fx-s.fx-in>*{opacity:1;transform:none;}
+.fx .fx-s.fx-in>*:nth-child(2){transition-delay:40ms}
+.fx .fx-s.fx-in>*:nth-child(3){transition-delay:80ms}
+.fx .fx-s.fx-in>*:nth-child(4){transition-delay:120ms}
+.fx .fx-s.fx-in>*:nth-child(5){transition-delay:160ms}
+.fx .fx-s.fx-in>*:nth-child(6){transition-delay:200ms}
+.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:240ms}
+@media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
+</style>
+</head>
+<body>
+<a href="#main" class="ias-skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav class="ias-nav" aria-label="Main navigation">
+  <a class="ias-logo" href="/" aria-label="Infinite Awesome Studio home">
+    <img src="assets/ias-logo.png" alt="Infinite Awesome Studio" />
+  </a>
+  <ul class="ias-nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/products" class="active">Products</a></li>
+    <li><a href="/#mybenefitsguy">MyBenefitsGuy</a></li>
+    <li><a href="/benebots/">BeneBots</a></li>
+    <li><a href="/#infinite-workflows">Infinite Workflows</a></li>
+    <li><a href="/articles">Insights</a></li>
+    <li><a href="/prompt-library">Prompts</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+  <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-nav-cta">Book a Workflow Review</a>
+</nav>
+<div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="/#services" onclick="closeMobileNav()">Services</a>
+  <a href="/products" onclick="closeMobileNav()">Products</a>
+  <a href="/#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
+  <a href="/benebots/" onclick="closeMobileNav()">BeneBots</a>
+  <a href="/#infinite-workflows" onclick="closeMobileNav()">Infinite Workflows</a>
+  <a href="/articles" onclick="closeMobileNav()">Insights</a>
+  <a href="/prompt-library" onclick="closeMobileNav()">Prompts</a>
+  <a href="/#about" onclick="closeMobileNav()">About</a>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" onclick="closeMobileNav()">Book a Workflow Review</a>
+</div>
+
+<main id="main" class="wrap">
+
+  <!-- OPENING -->
+  <section class="open fx-r">
+    <h1>Things you can buy today.</h1>
+    <p class="open-sub">Everything here is real and in use. Three things have prices, one is being priced and two are just proof I build what I say I build.</p>
+  </section>
+
+  <!-- TIER 1 — available now -->
+  <section class="buy fx-s" aria-label="Available now">
+
+    <div class="buy-row">
+      <div>
+        <h2 class="buy-name">The Shovel Playbook</h2>
+        <p class="buy-desc">A 25-year benefits vet's honest map of where AI helps at work, where it must never drive, and how to tell the difference before you hit enter.</p>
+      </div>
+      <div class="buy-side">
+        <div class="buy-price">Pay what you want · $0–$9</div>
+        <a class="buy-link" href="https://infiniteawesome.gumroad.com/l/shovel-playbook" target="_blank" rel="noopener noreferrer">Get it on Gumroad →</a>
+      </div>
+    </div>
+
+    <div class="buy-row">
+      <div>
+        <h2 class="buy-name">The 5 Starter Prompts</h2>
+        <p class="buy-desc">Five benefits prompts for the person who got handed the benefits program on top of everything else. Each one tells you its risk tier, what to gather first and exactly what to check before it leaves your hands.</p>
+      </div>
+      <div class="buy-side">
+        <div class="buy-price">Free</div>
+        <a class="buy-link" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the prompts →</a>
+      </div>
+    </div>
+
+    <div class="buy-row">
+      <div>
+        <h2 class="buy-name"><a class="buy-name-link" href="/infinite-workflows/">The Infinity Desk</a></h2>
+        <p class="buy-desc">I build and run an AI front desk that catches every message, answers the questions you answer all day, books the appointment and collects the deposit. All while your hands are busy doing the work.</p>
+      </div>
+      <div class="buy-side">
+        <div class="buy-price">$500 setup + $250/mo</div>
+        <a class="buy-link" href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer">Book a setup call →</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TIER 2 — BeneBots -->
+  <section class="bb fx-r" aria-label="BeneBots">
+    <div class="bb-panel">
+      <div>
+        <h2>BeneBots</h2>
+        <p class="bb-status">Working software. Pricing in progress.</p>
+        <p class="bb-body">BeneBots are Infinite Awesome Studio's cast of plain-English explainers, built to make complex benefits and HR topics easier to teach, remember and reuse.</p>
+        <div class="bb-actions">
+          <a class="bb-btn" href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots%20Pricing%20Conversation">Talk to me about BeneBots →</a>
+          <a class="bb-ghost" href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer">View live demo ↗</a>
+        </div>
+      </div>
+      <div class="bb-art">
+        <img src="assets/benebots-crew.jpg" alt="MyBenefitsGuy with the BeneBots crew" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- TIER 3 — proof pieces -->
+  <section class="proof" aria-label="Proof pieces">
+    <p class="proof-intro">Not for sale. These exist so you can see the workmanship.</p>
+    <div class="proof-grid fx-s">
+
+      <div class="proof-card">
+        <h3>Infinite Careers</h3>
+        <p>A career-intelligence tool I built: paste a job and a resume, get fit scoring, skill-gap analysis, interview prep, salary intel and a 5-year path in one pass. It's the same kind of AI I build for clients.</p>
+        <p class="proof-note">Canned demo · click through, nothing to buy</p>
+        <a class="proof-link" href="/infinite-careers/">Try it →</a>
+      </div>
+
+      <div class="proof-card">
+        <h3>Infinite Pantry</h3>
+        <p>An AI meal planner I built for my own family so we could stop losing our evenings to "what's for dinner." Tell it who you're feeding, what you avoid and how much time you've got, and it builds the week plus a department-sorted grocery list.</p>
+        <p class="proof-note">Canned demo · click through, nothing to buy</p>
+        <a class="proof-link" href="/pantry/">Try it →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <p class="tail">Not seeing what you need? Tell me what the work is and I'll tell you straight whether I have something for it: <a href="mailto:ty@infiniteawesomestudio.com">ty@infiniteawesomestudio.com</a>.</p>
+
+</main>
+
+<footer class="ias-footer">
+  <div class="ias-footer-left">© 2026 Infinite Awesome Studio · <a href="mailto:ty@infiniteawesomestudio.com">ty@infiniteawesomestudio.com</a></div>
+  <div class="ias-footer-tag">Practical AI workflows. Plain-English education. Built for the little guy.</div>
+  <div class="ias-footer-socials">
+    <a href="/#mybenefitsguy">MyBenefitsGuy</a>
+    <a href="/benebots/">BeneBots</a>
+    <a href="/infinite-workflows/">Infinite Workflows</a>
+    <a href="/articles">Insights</a>
+    <a href="/prompt-library">Prompts</a>
+  </div>
+  <div class="ias-footer-socials">
+    <a href="https://www.linkedin.com/company/infiniteawesomestudio" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://instagram.com/mybenefitsguy" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a href="https://www.tiktok.com/@mybenefitsguy" target="_blank" rel="noopener noreferrer">TikTok</a>
+    <a href="https://www.facebook.com/mybenefitsguy" target="_blank" rel="noopener noreferrer">Facebook</a>
+    <a href="https://www.threads.net/@mybenefitsguy" target="_blank" rel="noopener noreferrer">Threads</a>
+  </div>
+  <a href="/privacy-policy" class="privacy">Privacy Policy</a>
+  <div class="ias-footer-disclaimer">
+    Infinite Awesome Studio provides AI workflow consulting, education content, prompt systems, SOPs and creative assets. IAS does not provide legal, tax, medical, investment, insurance, or employee benefits advice. MyBenefitsGuy and BeneBots content is general education only.
+  </div>
+</footer>
+
+<script>
+function toggleMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  var open=m.classList.toggle('open');
+  b.setAttribute('aria-expanded',open);
+  b.setAttribute('aria-label',open?'Close menu':'Open menu');
+}
+function closeMobileNav(){
+  var m=document.getElementById('ias-mobile-menu');
+  var b=document.querySelector('.ias-mobile-toggle');
+  m.classList.remove('open');
+  b.setAttribute('aria-expanded','false');
+  b.setAttribute('aria-label','Open menu');
+}
+</script>
+<script>
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;
+  document.documentElement.classList.add("fx");
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("fx-in");io.unobserve(e.target);}});},{threshold:0.12,rootMargin:"0px 0px -36px 0px"});
+  document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

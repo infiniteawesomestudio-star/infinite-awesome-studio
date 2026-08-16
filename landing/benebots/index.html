@@ -18,8 +18,10 @@
 <meta name="twitter:title" content="BeneBots · Plain-English explainers for benefits &amp; HR" />
 <meta name="twitter:description" content="A cast of plain-English explainers that make complex benefits and HR topics easier to teach, remember and reuse. General education only." />
 <meta name="twitter:image" content="https://infiniteawesomestudio.com/assets/benebots-crew.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap');
 
 :root{
   --mint:#00C47A;
@@ -34,8 +36,8 @@
   --ink-40:rgba(26,26,26,0.40);
   --ink-12:rgba(26,26,26,0.12);
   --ink-08:rgba(26,26,26,0.08);
-  --font-display:'Space Grotesk',system-ui,sans-serif;
-  --font-body:'Inter',system-ui,sans-serif;
+  --font-display:'Bricolage Grotesque','Avenir Next','Helvetica Neue',system-ui,sans-serif;
+  --font-body:'Source Sans 3','Segoe UI',system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -46,7 +48,7 @@ a{color:inherit;}
 
 /* NAV */
 .ias-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:1140px;margin:0 auto;position:relative;z-index:20;}
-.ias-logo img{height:34px;width:auto;display:block;}
+.ias-logo img{height:44px;width:auto;display:block;}
 .ias-nav-links{display:flex;gap:26px;list-style:none;}
 .ias-nav-links a{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-70);text-decoration:none;transition:color .15s;}
 .ias-nav-links a:hover,.ias-nav-links a.active{color:var(--ink);}
@@ -175,6 +177,7 @@ section{padding:46px 0;}
   </a>
   <ul class="ias-nav-links">
     <li><a href="/#services">Services</a></li>
+    <li><a href="/products">Products</a></li>
     <li><a href="/#mybenefitsguy" class="ias-nav-featured">MyBenefitsGuy</a></li>
     <li><a href="/benebots/" class="active">BeneBots</a></li>
     <li><a href="/#infinite-workflows">Infinite Workflows</a></li>
@@ -189,6 +192,7 @@ section{padding:46px 0;}
 </nav>
 <div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
   <a href="/#services" onclick="closeMobileNav()">Services</a>
+  <a href="/products" onclick="closeMobileNav()">Products</a>
   <a href="/#mybenefitsguy" onclick="closeMobileNav()">MyBenefitsGuy</a>
   <a href="/benebots/" onclick="closeMobileNav()">BeneBots</a>
   <a href="/#infinite-workflows" onclick="closeMobileNav()">Infinite Workflows</a>
