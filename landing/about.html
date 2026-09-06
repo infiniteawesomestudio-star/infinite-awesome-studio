@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Products · Infinite Awesome Studio</title>
-<meta name="description" content="Working tools from Infinite Awesome Studio: the Shovel Playbook, starter prompts, The Infinity Desk and BeneBots.">
-<link rel="canonical" href="https://infiniteawesomestudio.com/products" />
+<title>About Ty Mosher · Infinite Awesome Studio</title>
+<meta name="description" content="25 years in employee benefits, ten of them inside a major carrier. The background behind the AI pilots Infinite Awesome Studio runs.">
+<link rel="canonical" href="https://infiniteawesomestudio.com/about" />
 
 <!-- Open Graph / social share -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Infinite Awesome Studio" />
-<meta property="og:url" content="https://infiniteawesomestudio.com/products" />
-<meta property="og:title" content="Products · Infinite Awesome Studio" />
-<meta property="og:description" content="Working tools from Infinite Awesome Studio: the Shovel Playbook, starter prompts, The Infinity Desk and BeneBots." />
-<meta property="og:image" content="https://infiniteawesomestudio.com/assets/benebots-crew.jpg" />
+<meta property="og:url" content="https://infiniteawesomestudio.com/about" />
+<meta property="og:title" content="About Ty Mosher · Infinite Awesome Studio" />
+<meta property="og:description" content="25 years in employee benefits, ten of them inside a major carrier. The background behind the AI pilots Infinite Awesome Studio runs." />
+<meta property="og:image" content="https://infiniteawesomestudio.com/assets/ty-headshot-pro.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Products · Infinite Awesome Studio" />
-<meta name="twitter:description" content="Working tools from Infinite Awesome Studio: the Shovel Playbook, starter prompts, The Infinity Desk and BeneBots." />
-<meta name="twitter:image" content="https://infiniteawesomestudio.com/assets/benebots-crew.jpg" />
+<meta name="twitter:title" content="About Ty Mosher · Infinite Awesome Studio" />
+<meta name="twitter:description" content="25 years in employee benefits, ten of them inside a major carrier. The background behind the AI pilots Infinite Awesome Studio runs." />
+<meta name="twitter:image" content="https://infiniteawesomestudio.com/assets/ty-headshot-pro.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
@@ -140,6 +140,67 @@ a{color:inherit;}
 .fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:420ms}
 @media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
 
+/* ── /about ───────────────────────────────────────────────────────────────
+   Holds the long-form bio that used to occupy 1,685px of the homepage, which
+   was 2.8x the hero while the offer had no section at all.
+
+   The three headshot bugs from the homepage are fixed HERE rather than
+   carried over, because they travel with the photo:
+     1. grid-template-columns was 1.1fr 1fr, which handed the IMAGE the wider
+        column. Reversed: the words get the room.
+     2. align-items:center floated a 500px block inside a 1,333px row, which
+        is what produced the sea of beige around the photo. Now `start`.
+     3. max-height:460px capped the image so it could not grow into its own
+        column. Dropped; it is sized by its column instead. */
+.about-wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
+.about-hero{padding:64px 0 12px;max-width:760px;}
+.about-eyebrow{font-family:var(--font-body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-40);font-weight:600;display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;}
+.about-eyebrow::before{content:'';width:28px;height:2px;background:var(--mint);border-radius:2px;}
+.about-hero h1{font-family:var(--font-display);font-weight:700;font-size:44px;line-height:1.08;letter-spacing:-.02em;margin-bottom:16px;}
+.about-hero p{font-family:var(--font-body);font-size:18px;line-height:1.7;color:var(--ink-70);}
+.about-layout{
+  display:grid;
+  grid-template-columns:1fr 1.25fr;   /* bug 1: the words get the wider column */
+  gap:44px;
+  align-items:start;                   /* bug 2: no floating in a tall row */
+  background:var(--white);
+  border:1px solid var(--ink-08);
+  border-radius:20px;
+  padding:40px;
+  margin:36px 0 28px;
+}
+.about-photo img{
+  width:100%;height:auto;display:block;  /* bug 3: no max-height cap */
+  border-radius:16px;
+  box-shadow:0 12px 32px rgba(26,26,26,0.14);
+}
+.about-photo figcaption{font-family:var(--font-body);font-size:12.5px;line-height:1.5;color:var(--ink-55);margin-top:12px;}
+.about-body h2{font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1.15;letter-spacing:-.01em;margin-bottom:16px;}
+.about-body p{font-family:var(--font-body);font-size:16.5px;line-height:1.75;color:var(--ink-70);margin-bottom:16px;}
+.about-shift{list-style:none;margin:4px 0 20px;padding:0;}
+.about-shift li{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;font-family:var(--font-body);font-size:16.5px;line-height:1.7;color:var(--ink-70);}
+.about-shift li span{color:var(--mint-text);font-weight:700;flex-shrink:0;}
+.about-sign{font-family:var(--font-body);font-size:15px;line-height:1.6;color:var(--ink);padding-top:8px;border-top:1px solid var(--ink-08);}
+.about-sign small{display:block;font-size:13px;color:var(--ink-55);margin-top:4px;}
+.about-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:36px;}
+.about-panel{background:var(--white);border:1px solid var(--ink-08);border-radius:16px;padding:28px;}
+.about-panel h3{font-family:var(--font-display);font-weight:700;font-size:20px;margin-bottom:16px;}
+.about-feature{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-family:var(--font-body);font-size:15px;line-height:1.6;color:var(--ink-70);}
+.about-feature:last-child{margin-bottom:0;}
+.about-feature b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px;}
+.about-dot{width:8px;height:8px;border-radius:50%;background:var(--mint);flex-shrink:0;margin-top:7px;}
+.about-cta{display:flex;flex-wrap:wrap;gap:14px;padding:0 0 64px;}
+.about-btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:15px;font-weight:600;text-decoration:none;padding:13px 26px;border-radius:999px;}
+.about-btn-primary{background:var(--ink);color:#fff;}
+.about-btn-primary:hover{background:#000;}
+.about-btn-ghost{border:1px solid var(--ink-12);color:var(--ink);}
+.about-btn-ghost:hover{border-color:var(--ink);}
+@media(max-width:860px){
+  .about-layout{grid-template-columns:1fr;gap:28px;padding:28px;}
+  .about-hero h1{font-size:34px;}
+  .about-wrap{padding:0 20px;}
+}
+
 /* ── Nav lockup (2026-09-06) ───────────────────────────────────────────────
    Mark as an image, wordmark as LIVE TEXT. The old nav shipped a square
    stacked PNG whose "STUDIO" line rendered ~3px tall and whose file wasted
@@ -201,13 +262,13 @@ a{color:inherit;}
       <span class="ias-lockup"><span class="ias-lockup-name">INFINITE <em>AWESOME</em></span><span class="ias-lockup-sub">STUDIO</span></span>
   </a>
   <ul class="ias-nav-links">
-  <li><a href="/#services">What I Build</a></li>
-  <li><a href="/products" class="active">Products</a></li>
-  <li><a href="/benebots/">BeneBots</a></li>
-  <li><a href="/infinite-workflows/">The Infinity Desk</a></li>
-  <li><a href="/articles">Insights</a></li>
-  <li><a href="/prompt-library">Prompts</a></li>
-  <li><a href="/about">About</a></li>
+    <li><a href="/#services">What I Build</a></li>
+    <li><a href="/products">Products</a></li>
+    <li><a href="/benebots/">BeneBots</a></li>
+    <li><a href="/infinite-workflows/">The Infinity Desk</a></li>
+    <li><a href="/articles">Insights</a></li>
+    <li><a href="/prompt-library">Prompts</a></li>
+    <li><a href="/about" class="active">About</a></li>
   </ul>
   <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -217,79 +278,67 @@ a{color:inherit;}
 <div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
   <a href="/#services" onclick="closeMobileNav()">What I Build</a>
   <a href="/products" onclick="closeMobileNav()">Products</a>
-  <a href="/benebots/" onclick="closeMobileNav()">BeneBots</a>
   <a href="/infinite-workflows/" onclick="closeMobileNav()">The Infinity Desk</a>
   <a href="/articles" onclick="closeMobileNav()">Insights</a>
   <a href="/prompt-library" onclick="closeMobileNav()">Prompts</a>
   <a href="/about" onclick="closeMobileNav()">About</a>
-  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-mobile-cta" onclick="closeMobileNav()">Book 30 minutes</a>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" onclick="closeMobileNav()">Book 30 minutes</a>
 </div>
 
-<main id="main" class="wrap">
+<main id="main" class="about-wrap">
 
-  <!-- OPENING -->
-  <section class="open fx-r">
-    <h1>Things you can buy today.</h1>
-    <p class="open-sub">Everything here is real and in use. Three things have prices and one is being priced.</p>
+  <section class="about-hero fx-r">
+    <div class="about-eyebrow">ABOUT</div>
+    <h1>I&rsquo;m not an AI person who wandered into benefits. I&rsquo;m a benefits person who found a better tool.</h1>
+    <p>25 years in employee benefits. Ten of them inside one of the country&rsquo;s largest carriers, fifteen in the HR and broker world. This isn&rsquo;t theory. It&rsquo;s what I did every day.</p>
   </section>
 
-  <!-- TIER 1 — available now -->
-  <section class="buy fx-s" aria-label="Available now">
-
-    <div class="buy-row">
-      <div>
-        <h2 class="buy-name">The Shovel Playbook</h2>
-        <p class="buy-desc">A 25-year benefits vet&rsquo;s honest map of where AI helps at work, where it must never drive, and how to tell the difference before you hit enter.</p>
-      </div>
-      <div class="buy-side">
-        <div class="buy-price">Pay what you want · $0–$9</div>
-        <a class="buy-link" href="https://infiniteawesome.gumroad.com/l/shovel-playbook" target="_blank" rel="noopener noreferrer">Get it on Gumroad →</a>
-      </div>
-    </div>
-
-    <div class="buy-row">
-      <div>
-        <h2 class="buy-name">The 5 Starter Prompts</h2>
-        <p class="buy-desc">Five benefits prompts for the person who got handed the benefits program on top of everything else. Each one tells you its risk tier, what to gather first and exactly what to check before it leaves your hands.</p>
-      </div>
-      <div class="buy-side">
-        <div class="buy-price">Free</div>
-        <a class="buy-link" href="https://infiniteawesome.gumroad.com/l/starter-prompts" target="_blank" rel="noopener noreferrer">Get the prompts →</a>
+  <div class="about-layout fx-r">
+    <figure class="about-photo">
+      <img src="assets/ty-headshot-pro.jpg" width="1080" height="1350" alt="Ty Mosher, founder of Infinite Awesome Studio" />
+      <figcaption>Ty Mosher, founder.</figcaption>
+    </figure>
+    <div class="about-body">
+      <h2>How I got here</h2>
+      <p>I&rsquo;ve been in benefits since 2004. Over 25 years of watching how this industry works, what breaks and where the manual work piles up.</p>
+      <p>I spent fifteen years in the HR and broker world. Consulting, brokerage, advisory work, and everywhere I went the pattern was identical. Manual tasks. Outdated processes. HR teams buried under documentation with no real way out.</p>
+      <p>Then came ten years inside the machinery of a major carrier solving benefits operations and systems problems. I spent my days coding benefit structures, leading UAT for complex implementations and helping clients avoid their biggest pain points by getting ahead of the problem.</p>
+      <p>At some point, it clicked. The work wasn&rsquo;t broken. The systems were.</p>
+      <p>So I made a shift.</p>
+      <ul class="about-shift">
+        <li><span>&rarr;</span> I started showing benefits professionals how to use AI tools like Claude, ChatGPT and Copilot to cut their workload in half today.</li>
+        <li><span>&rarr;</span> And I built BeneBots, the automated version of those workflows for teams that want the long-term fix rather than another bandaid.</li>
+      </ul>
+      <p>That&rsquo;s the same method behind the two-week pilots I run now. The industry changes. The work eating somebody&rsquo;s week doesn&rsquo;t.</p>
+      <div class="about-sign">
+        Ty Mosher, Employee Benefits Account Manager | Founder, Infinite Awesome Studio
+        <small>Licensed Producer: MD &middot; VA &middot; DC</small>
       </div>
     </div>
+  </div>
 
-    <div class="buy-row">
-      <div>
-        <h2 class="buy-name"><a class="buy-name-link" href="/infinite-workflows/">The Infinity Desk</a></h2>
-        <p class="buy-desc">I build and run an AI front desk that catches every message, answers the questions you answer all day, books the appointment and collects the deposit. All while your hands are busy doing the work.</p>
-      </div>
-      <div class="buy-side">
-        <div class="buy-price">$500 setup + $250/mo</div>
-        <a class="buy-link" href="/infinite-workflows/">See how it works →</a>
-      </div>
+  <div class="about-cols fx-s">
+    <div class="about-panel">
+      <h3>What I actually do</h3>
+      <div class="about-feature"><span class="about-dot"></span><div><b>Process design</b>Turning messy, high-stakes work into repeatable systems anyone can follow.</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div><b>Stewardship reporting</b>Board-ready reports that actually get read.</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div><b>Plain-English education</b>Explainers, onboarding guides and FAQ content that make complex topics click.</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div><b>AI-augmented delivery</b>Powered by BeneBots behind the scenes.</div></div>
     </div>
-
-  </section>
-
-  <!-- TIER 2 — BeneBots -->
-  <section class="bb fx-r" aria-label="BeneBots">
-    <div class="bb-panel">
-      <div>
-        <h2>BeneBots</h2>
-        <p class="bb-status">Working software. Pricing in progress.</p>
-        <p class="bb-body">BeneBots are Infinite Awesome Studio&rsquo;s cast of plain-English explainers, built to make complex benefits and HR topics easier to teach, remember and reuse.</p>
-        <div class="bb-actions">
-          <a class="bb-btn" href="mailto:ty@infiniteawesomestudio.com?subject=BeneBots%20Pricing%20Conversation">Talk to me about BeneBots →</a>
-          <a class="bb-ghost" href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer">View live demo ↗</a>
-        </div>
-      </div>
-      <div class="bb-art">
-        <img src="assets/benebots-crew.jpg" alt="MyBenefitsGuy with the BeneBots crew" loading="lazy">
-      </div>
+    <div class="about-panel">
+      <h3>Credentials</h3>
+      <div class="about-feature"><span class="about-dot"></span><div>10 years inside a major carrier (NJ): Benefit Analyst &rarr; Business Systems Analyst II &rarr; Senior Analyst (Benefits Operations)</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div>15 years in benefits consulting &amp; brokerage (HR/Broker world)</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div>Health &amp; Life Producer licenses: MD, VA, DC</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div>GBA 1 (CEBS program), passed 2026</div></div>
+      <div class="about-feature"><span class="about-dot"></span><div>Built BeneBots to solve the problems I saw repeated 1,000+ times</div></div>
     </div>
-  </section>
+  </div>
 
-  <p class="tail">Not seeing what you need? Tell me what the work is and I&rsquo;ll tell you straight whether I have something for it: <a href="mailto:ty@infiniteawesomestudio.com">ty@infiniteawesomestudio.com</a>.</p>
+  <div class="about-cta fx-r">
+    <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="about-btn about-btn-primary">Book 30 minutes &rarr;</a>
+    <a href="/#pilot" class="about-btn about-btn-ghost">See how a pilot runs &rarr;</a>
+  </div>
 
 </main>
 

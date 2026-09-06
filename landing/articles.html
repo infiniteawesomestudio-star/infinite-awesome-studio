@@ -38,8 +38,14 @@ a{color:inherit;}
 .ias-skip-link:focus{left:16px;top:16px;}
 
 /* NAV */
-.ias-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:1140px;margin:0 auto;position:relative;z-index:20;}
-.ias-logo img{height:64px;width:auto;display:block;}
+/* Full-bleed sticky bar whose CONTENT still aligns to the 1140px column.
+   Keeping max-width on the nav itself would stick a 1140px island with the
+   page background showing in the gutters beside it. */
+.ias-nav{display:flex;align-items:center;justify-content:space-between;
+  padding:18px max(32px, calc((100% - 1140px) / 2 + 32px));
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,245,242,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--ink-08);}
 .ias-nav-links{display:flex;gap:26px;list-style:none;}
 .ias-nav-links a{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-70);text-decoration:none;transition:color .15s;}
 .ias-nav-links a:hover,.ias-nav-links a.active{color:var(--ink);}
@@ -52,7 +58,7 @@ a{color:inherit;}
   .ias-nav-links,.ias-nav-cta{display:none;}
   .ias-mobile-toggle{display:block;}
 }
-.ias-mobile-menu{display:none;flex-direction:column;gap:4px;padding:0 32px 18px;max-width:1140px;margin:0 auto;}
+.ias-mobile-menu{display:none;flex-direction:column;gap:4px;padding:0 max(32px, calc((100% - 1140px) / 2 + 32px)) 18px;position:sticky;top:60px;z-index:99;background:rgba(245,245,242,0.97);}
 .ias-mobile-menu.open{display:flex;}
 .ias-mobile-menu a{padding:12px 14px;border-radius:9px;text-decoration:none;color:var(--ink-70);font-weight:500;font-size:15px;}
 .ias-mobile-menu a:hover{background:var(--white);color:var(--ink);}
@@ -106,6 +112,56 @@ a{color:inherit;}
 .ias-footer-disclaimer{flex-basis:100%;font-size:11px;line-height:1.55;color:rgba(26,26,26,0.4);}
 .ias-footer a.privacy{font-family:var(--font-body);font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;}
 .ias-footer a.privacy:hover{color:var(--mint-text);}
+
+/* ── Nav lockup (2026-09-06) ───────────────────────────────────────────────
+   Mark as an image, wordmark as LIVE TEXT. The old nav shipped a square
+   stacked PNG whose "STUDIO" line rendered ~3px tall and whose file wasted
+   36% of its height on transparent margin, so height:64px only ever drew
+   41px of logo. Setting the wordmark in real type fixes both: it is crisp at
+   any DPI, it is selectable and readable by a screen reader, and it matches
+   the headlines by construction because it IS the headline face.
+   Mark source: ias-mark.png, cropped to real ink at alpha>8 (the generator
+   left a near-invisible alpha 1-14 haze across the full canvas, so a naive
+   getbbox reports 100% fill and would have re-baked the padding).
+   ⚠️ Typeface is deliberately the site's own Bricolage Grotesque. The vault
+   brand guide says Inter + Space Grotesk and the 9-06 brand sheet says Inter;
+   the live site has always shipped Bricolage + Source Sans 3. That conflict
+   is open and is Ty's to settle, so the logo follows the pixels on screen. */
+.ias-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
+.ias-logo img{height:48px;width:auto;display:block;}
+.ias-lockup{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;line-height:1;}
+.ias-lockup-name{
+  font-family:var(--font-display);
+  font-weight:700;font-size:17px;letter-spacing:-0.01em;
+  color:var(--ink);white-space:nowrap;
+}
+.ias-lockup-name em{font-style:normal;color:var(--mint-text);}
+/* Sized off the real brand asset, not by eye: in the master lockup STUDIO's
+   cap height is 66% of the name's (9px on a 17px name measured only 53%) and
+   its tracked width runs to 108% of the line above. Ty's call is to hold it
+   at 100% instead: at 108% the S and the O hang past the name on both ends
+   and read as a mistake rather than a flourish. Tracking is solved, not
+   guessed: glyphs measure 37.1px, so 5 internal gaps of 24.63px land the
+   ink exactly on the name's 160px. Bold 700 so it does not read skinny. */
+.ias-lockup-sub{
+  font-family:var(--font-body);
+  font-weight:700;font-size:11px;letter-spacing:2.24em;
+  /* letter-spacing also adds a trailing gap after the last glyph, which
+     would pad the lockup box with phantom width. Pull it back. */
+  margin-right:-2.24em;
+  color:var(--ink-70);white-space:nowrap;
+}
+@media(max-width:760px){
+  .ias-logo img{height:40px;}
+  .ias-lockup-name{font-size:15px;}
+  .ias-lockup-sub{font-size:8px;letter-spacing:0.36em;}
+}
+/* The wordmark costs 158px of nav width. Between the 760px hamburger
+   breakpoint and roughly 1080px that is exactly enough to push the 7 nav
+   links onto a second and third line (measured: 2 lines at 1000px, 3 at
+   880px, which the old 82px-wide logo did not do). Below 1080 the mark
+   carries the brand on its own and the links stay on one row. */
+@media(max-width:1080px){ .ias-lockup{display:none;} }
 </style>
 </head>
 <body>
@@ -114,20 +170,22 @@ a{color:inherit;}
 <!-- NAV -->
 <nav class="ias-nav" aria-label="Main navigation">
   <a class="ias-logo" href="/" aria-label="Infinite Awesome Studio home">
-    <img src="assets/ias-logo.png" alt="Infinite Awesome Studio" />
+    <img src="assets/ias-mark.png" width="680" height="483" alt="" />
+      <span class="ias-lockup"><span class="ias-lockup-name">INFINITE <em>AWESOME</em></span><span class="ias-lockup-sub">STUDIO</span></span>
   </a>
   <ul class="ias-nav-links">
-    <li><a href="/#services">What I Build</a></li>
-    <li><a href="/products">Products</a></li>
-    <li><a href="/benebots/">BeneBots</a></li>
-    <li><a href="/infinite-workflows/">The Infinity Desk</a></li>
-    <li><a href="/articles" class="active">Insights</a></li>
-    <li><a href="/#about">About</a></li>
+  <li><a href="/#services">What I Build</a></li>
+  <li><a href="/products">Products</a></li>
+  <li><a href="/benebots/">BeneBots</a></li>
+  <li><a href="/infinite-workflows/">The Infinity Desk</a></li>
+  <li><a href="/articles" class="active">Insights</a></li>
+  <li><a href="/prompt-library">Prompts</a></li>
+  <li><a href="/about">About</a></li>
   </ul>
   <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-nav-cta">Let's Talk</a>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-nav-cta">Book 30 minutes</a>
 </nav>
 <div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
   <a href="/#services" onclick="closeMobileNav()">What I Build</a>
@@ -135,14 +193,16 @@ a{color:inherit;}
   <a href="/benebots/" onclick="closeMobileNav()">BeneBots</a>
   <a href="/infinite-workflows/" onclick="closeMobileNav()">The Infinity Desk</a>
   <a href="/articles" onclick="closeMobileNav()">Insights</a>
-  <a href="/#about" onclick="closeMobileNav()">About</a>
+  <a href="/prompt-library" onclick="closeMobileNav()">Prompts</a>
+  <a href="/about" onclick="closeMobileNav()">About</a>
+  <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-mobile-cta" onclick="closeMobileNav()">Book 30 minutes</a>
 </div>
 
 <main id="main" class="wrap">
   <div class="page-head head-view">
     <div class="eyebrow">Insights</div>
     <h1 class="page-title">Notes from the benefits trenches.</h1>
-    <p class="page-sub">What's actually happening with AI and automation in the benefits and HR space.</p>
+    <p class="page-sub">What&rsquo;s actually happening with AI and automation in the benefits and HR space.</p>
   </div>
 
   <div id="grid" class="grid grid-view"></div>

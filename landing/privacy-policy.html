@@ -48,7 +48,6 @@ body {
   position: sticky; top: 0; z-index: 100;
 }
 .ias-logo { display: flex; align-items: center; text-decoration: none; }
-.ias-logo img { height: 64px; width: auto; display: block; }
 .back-link {
   font-family: var(--font-body); font-size: 13px; font-weight: 500;
   color: var(--ink-40); text-decoration: none; transition: color 0.15s;
@@ -127,13 +126,64 @@ body {
   .page-wrap { padding: 40px 20px 72px; }
   .ias-footer { padding: 24px 20px; }
 }
+
+/* ── Nav lockup (2026-09-06) ───────────────────────────────────────────────
+   Mark as an image, wordmark as LIVE TEXT. The old nav shipped a square
+   stacked PNG whose "STUDIO" line rendered ~3px tall and whose file wasted
+   36% of its height on transparent margin, so height:64px only ever drew
+   41px of logo. Setting the wordmark in real type fixes both: it is crisp at
+   any DPI, it is selectable and readable by a screen reader, and it matches
+   the headlines by construction because it IS the headline face.
+   Mark source: ias-mark.png, cropped to real ink at alpha>8 (the generator
+   left a near-invisible alpha 1-14 haze across the full canvas, so a naive
+   getbbox reports 100% fill and would have re-baked the padding).
+   ⚠️ Typeface is deliberately the site's own Bricolage Grotesque. The vault
+   brand guide says Inter + Space Grotesk and the 9-06 brand sheet says Inter;
+   the live site has always shipped Bricolage + Source Sans 3. That conflict
+   is open and is Ty's to settle, so the logo follows the pixels on screen. */
+.ias-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
+.ias-logo img{height:48px;width:auto;display:block;}
+.ias-lockup{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;line-height:1;}
+.ias-lockup-name{
+  font-family:var(--font-display);
+  font-weight:700;font-size:17px;letter-spacing:-0.01em;
+  color:var(--ink);white-space:nowrap;
+}
+.ias-lockup-name em{font-style:normal;color:var(--mint-text);}
+/* Sized off the real brand asset, not by eye: in the master lockup STUDIO's
+   cap height is 66% of the name's (9px on a 17px name measured only 53%) and
+   its tracked width runs to 108% of the line above. Ty's call is to hold it
+   at 100% instead: at 108% the S and the O hang past the name on both ends
+   and read as a mistake rather than a flourish. Tracking is solved, not
+   guessed: glyphs measure 37.1px, so 5 internal gaps of 24.63px land the
+   ink exactly on the name's 160px. Bold 700 so it does not read skinny. */
+.ias-lockup-sub{
+  font-family:var(--font-body);
+  font-weight:700;font-size:11px;letter-spacing:2.24em;
+  /* letter-spacing also adds a trailing gap after the last glyph, which
+     would pad the lockup box with phantom width. Pull it back. */
+  margin-right:-2.24em;
+  color:var(--ink-70);white-space:nowrap;
+}
+@media(max-width:760px){
+  .ias-logo img{height:40px;}
+  .ias-lockup-name{font-size:15px;}
+  .ias-lockup-sub{font-size:8px;letter-spacing:0.36em;}
+}
+/* The wordmark costs 158px of nav width. Between the 760px hamburger
+   breakpoint and roughly 1080px that is exactly enough to push the 7 nav
+   links onto a second and third line (measured: 2 lines at 1000px, 3 at
+   880px, which the old 82px-wide logo did not do). Below 1080 the mark
+   carries the brand on its own and the links stay on one row. */
+@media(max-width:1080px){ .ias-lockup{display:none;} }
 </style>
 </head>
 <body>
 
 <nav class="ias-nav" aria-label="Main navigation">
   <a href="/" class="ias-logo" aria-label="Infinite Awesome Studio home">
-    <img src="assets/ias-logo.png" alt="Infinite Awesome Studio" />
+    <img src="assets/ias-mark.png" width="680" height="483" alt="" />
+      <span class="ias-lockup"><span class="ias-lockup-name">INFINITE <em>AWESOME</em></span><span class="ias-lockup-sub">STUDIO</span></span>
   </a>
   <a href="/" class="back-link">← Back to Infinite Awesome Studio</a>
 </nav>
@@ -157,8 +207,8 @@ body {
       <p>We collect only what you voluntarily give us:</p>
       <ul>
         <li><strong>Email and contact info</strong> when you reach out directly via email or a contact form.</li>
-        <li><strong>Booking information</strong> when you schedule a free consultation through Calendly (name, email and any notes you add). Calendly's own privacy policy governs that data.</li>
-        <li><strong>Basic analytics</strong> — page views and traffic sources through Cloudflare's built-in analytics, which does not use cookies or fingerprinting.</li>
+        <li><strong>Booking information</strong> when you schedule a free consultation through Calendly (name, email and any notes you add). Calendly&rsquo;s own privacy policy governs that data.</li>
+        <li><strong>Basic analytics</strong> — page views and traffic sources through Cloudflare&rsquo;s built-in analytics, which does not use cookies or fingerprinting.</li>
       </ul>
       <p>We do not run advertising trackers, remarketing pixels, or third-party analytics scripts on this site.</p>
     </div>
@@ -181,7 +231,7 @@ body {
       <h2>Third-Party Services</h2>
       <ul>
         <li><strong>Calendly</strong> — used for scheduling free consultations. When you book a call, Calendly processes your name and email under their own privacy policy.</li>
-        <li><strong>Cloudflare</strong> — this site is hosted and delivered through Cloudflare Pages. Cloudflare may log basic request metadata (IP address, user agent) for security and performance purposes. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare's Privacy Policy</a>.</li>
+        <li><strong>Cloudflare</strong> — this site is hosted and delivered through Cloudflare Pages. Cloudflare may log basic request metadata (IP address, user agent) for security and performance purposes. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare&rsquo;s Privacy Policy</a>.</li>
       </ul>
     </div>
 

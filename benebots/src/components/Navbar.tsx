@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
+const IAS_URL = 'https://infiniteawesomestudio.com'
+
 const links = [
   { label: 'Features', href: '#features' },
   { label: 'How It Works', href: '#how-it-works' },
@@ -44,6 +46,16 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
+          {/* Parent site. Deliberately a plain <a> with an absolute URL, not a
+              react-router <Link>: the router would treat it as an in-app route
+              and never leave the BeneBots SPA. The logo above goes to the
+              BeneBots root, so before this there was no way back to IAS. */}
+          <a
+            href={IAS_URL}
+            className="text-sm font-body text-dark-muted hover:text-mint transition-colors whitespace-nowrap border-l border-dark-border pl-6"
+          >
+            &larr; Infinite Awesome Studio
+          </a>
         </nav>
 
         {/* CTA */}
@@ -87,6 +99,13 @@ export default function Navbar() {
                 {l.label}
               </a>
             ))}
+            <a
+              href={IAS_URL}
+              className="text-sm font-body text-dark-muted hover:text-mint py-1 transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              &larr; Infinite Awesome Studio
+            </a>
           </nav>
           <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-dark-border">
             <a

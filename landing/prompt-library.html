@@ -70,7 +70,6 @@ html,body{background:var(--warm-neutral);}
   background:rgba(245,245,242,0.92);
   backdrop-filter:blur(12px);
 }
-.ias-logo img{height:64px;width:auto;display:block;}
 .ias-nav-links{display:flex;gap:28px;list-style:none;}
 .ias-nav-links a{
   font-family:var(--font-body);font-size:13px;font-weight:500;
@@ -373,6 +372,56 @@ html,body{background:var(--warm-neutral);}
 .ias-footer-disclaimer{flex-basis:100%;font-size:11px;line-height:1.55;color:rgba(26,26,26,0.4);}
 .ias-footer a.privacy{font-family:var(--font-body);font-size:12px;color:rgba(26,26,26,0.35);text-decoration:none;}
 .ias-footer a.privacy:hover{color:var(--mint-text);}
+
+/* ── Nav lockup (2026-09-06) ───────────────────────────────────────────────
+   Mark as an image, wordmark as LIVE TEXT. The old nav shipped a square
+   stacked PNG whose "STUDIO" line rendered ~3px tall and whose file wasted
+   36% of its height on transparent margin, so height:64px only ever drew
+   41px of logo. Setting the wordmark in real type fixes both: it is crisp at
+   any DPI, it is selectable and readable by a screen reader, and it matches
+   the headlines by construction because it IS the headline face.
+   Mark source: ias-mark.png, cropped to real ink at alpha>8 (the generator
+   left a near-invisible alpha 1-14 haze across the full canvas, so a naive
+   getbbox reports 100% fill and would have re-baked the padding).
+   ⚠️ Typeface is deliberately the site's own Bricolage Grotesque. The vault
+   brand guide says Inter + Space Grotesk and the 9-06 brand sheet says Inter;
+   the live site has always shipped Bricolage + Source Sans 3. That conflict
+   is open and is Ty's to settle, so the logo follows the pixels on screen. */
+.ias-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
+.ias-logo img{height:48px;width:auto;display:block;}
+.ias-lockup{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;line-height:1;}
+.ias-lockup-name{
+  font-family:var(--font-display);
+  font-weight:700;font-size:17px;letter-spacing:-0.01em;
+  color:var(--ink);white-space:nowrap;
+}
+.ias-lockup-name em{font-style:normal;color:var(--mint-text);}
+/* Sized off the real brand asset, not by eye: in the master lockup STUDIO's
+   cap height is 66% of the name's (9px on a 17px name measured only 53%) and
+   its tracked width runs to 108% of the line above. Ty's call is to hold it
+   at 100% instead: at 108% the S and the O hang past the name on both ends
+   and read as a mistake rather than a flourish. Tracking is solved, not
+   guessed: glyphs measure 37.1px, so 5 internal gaps of 24.63px land the
+   ink exactly on the name's 160px. Bold 700 so it does not read skinny. */
+.ias-lockup-sub{
+  font-family:var(--font-body);
+  font-weight:700;font-size:11px;letter-spacing:2.24em;
+  /* letter-spacing also adds a trailing gap after the last glyph, which
+     would pad the lockup box with phantom width. Pull it back. */
+  margin-right:-2.24em;
+  color:var(--ink-70);white-space:nowrap;
+}
+@media(max-width:760px){
+  .ias-logo img{height:40px;}
+  .ias-lockup-name{font-size:15px;}
+  .ias-lockup-sub{font-size:8px;letter-spacing:0.36em;}
+}
+/* The wordmark costs 158px of nav width. Between the 760px hamburger
+   breakpoint and roughly 1080px that is exactly enough to push the 7 nav
+   links onto a second and third line (measured: 2 lines at 1000px, 3 at
+   880px, which the old 82px-wide logo did not do). Below 1080 the mark
+   carries the brand on its own and the links stay on one row. */
+@media(max-width:1080px){ .ias-lockup{display:none;} }
 </style>
 </head>
 <body>
@@ -383,26 +432,33 @@ html,body{background:var(--warm-neutral);}
 
   <!-- NAV -->
   <nav class="ias-nav" aria-label="Main navigation">
-    <div class="ias-logo">
-      <a href="/"><img src="assets/ias-logo.png" alt="Infinite Awesome Studio" /></a>
-    </div>
+    <a class="ias-logo" href="/" aria-label="Infinite Awesome Studio home">
+      <img src="assets/ias-mark.png" width="680" height="483" alt="" />
+      <span class="ias-lockup"><span class="ias-lockup-name">INFINITE <em>AWESOME</em></span><span class="ias-lockup-sub">STUDIO</span></span>
+    </a>
     <ul class="ias-nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/products">Products</a></li>
-      <li><a href="/benebots/">BeneBots</a></li>
-      <li><a href="/prompt-library" class="active">Prompt Library</a></li>
+    <li><a href="/#services">What I Build</a></li>
+    <li><a href="/products">Products</a></li>
+    <li><a href="/benebots/">BeneBots</a></li>
+    <li><a href="/infinite-workflows/">The Infinity Desk</a></li>
+    <li><a href="/articles">Insights</a></li>
+    <li><a href="/prompt-library" class="active">Prompts</a></li>
+    <li><a href="/about">About</a></li>
     </ul>
     <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-nav-cta">Let&rsquo;s Talk</a>
+    <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-nav-cta">Book 30 minutes</a>
   </nav>
   <div class="ias-mobile-menu" id="ias-mobile-menu" role="navigation" aria-label="Mobile navigation">
-    <a href="/" onclick="closeMobileNav()">Home</a>
+    <a href="/#services" onclick="closeMobileNav()">What I Build</a>
     <a href="/products" onclick="closeMobileNav()">Products</a>
     <a href="/benebots/" onclick="closeMobileNav()">BeneBots</a>
-    <a href="/prompt-library" onclick="closeMobileNav()">Prompt Library</a>
-    <a href="mailto:ty@infiniteawesomestudio.com?subject=Discovery%20Call%20Request" class="ias-mobile-cta" onclick="closeMobileNav()">Let&rsquo;s Talk</a>
+    <a href="/infinite-workflows/" onclick="closeMobileNav()">The Infinity Desk</a>
+    <a href="/articles" onclick="closeMobileNav()">Insights</a>
+    <a href="/prompt-library" onclick="closeMobileNav()">Prompts</a>
+    <a href="/about" onclick="closeMobileNav()">About</a>
+    <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-mobile-cta" onclick="closeMobileNav()">Book 30 minutes</a>
   </div>
 
   <!-- HERO -->
@@ -541,7 +597,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-1" hidden>
         <div class="pl-what">
-          <p>Building a stewardship report from a carrier data dump is a 90-minute grind. The data comes in messy, incomplete, or formatted for the carrier's benefit. This prompt takes whatever you have and structures it into a clean, defensible renewal narrative ready for your review before it goes anywhere near a client.</p>
+          <p>Building a stewardship report from a carrier data dump is a 90-minute grind. The data comes in messy, incomplete, or formatted for the carrier&rsquo;s benefit. This prompt takes whatever you have and structures it into a clean, defensible renewal narrative ready for your review before it goes anywhere near a client.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -550,13 +606,13 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </span>
-          <span>~100 min without &rarr; ~25 min with. <strong>75 minutes saved per report.</strong> At 10 clients that's 12+ hours back at renewal season.</span>
+          <span>~100 min without &rarr; ~25 min with. <strong>75 minutes saved per report.</strong> At 10 clients that&rsquo;s 12+ hours back at renewal season.</span>
         </div>
         <a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="pl-benebots-cta">
           Ready to automate this? Try BeneBots &rarr;
@@ -568,7 +624,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-gold">Broker / Acct Mgr</span><span class="pl-role pl-role-blue">Benefits Analyst</span></div>
           <h3 class="pl-card-title">Client Renewal Email</h3>
-          <p class="pl-card-tagline">You have the analysis. Now send the email they'll actually read.</p>
+          <p class="pl-card-tagline">You have the analysis. Now send the email they&rsquo;ll actually read.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-2" onclick="togglePrompt(this, 'prompt-body-2')">
           What it does <span class="pl-expand-icon">+</span>
@@ -585,13 +641,13 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </span>
-          <span>~45 min without &rarr; ~10 min with. <strong>35 minutes saved per client.</strong> At 20 renewal clients that's 11+ hours.</span>
+          <span>~45 min without &rarr; ~10 min with. <strong>35 minutes saved per client.</strong> At 20 renewal clients that&rsquo;s 11+ hours.</span>
         </div>
         <a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="pl-benebots-cta">
           Ready to automate this? Try BeneBots &rarr;
@@ -603,7 +659,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-coral">HR Executive</span><span class="pl-role pl-role-gold">Broker / Acct Mgr</span></div>
           <h3 class="pl-card-title">Board-Ready Benefits Brief</h3>
-          <p class="pl-card-tagline">Leadership doesn't read reports. They read narratives.</p>
+          <p class="pl-card-tagline">Leadership doesn&rsquo;t read reports. They read narratives.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-3" onclick="togglePrompt(this, 'prompt-body-3')">
           What it does <span class="pl-expand-icon">+</span>
@@ -620,7 +676,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -654,7 +710,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-4" hidden>
         <div class="pl-what">
-          <p>Open enrollment isn't one email — it's a sequence. This prompt generates the full 4-email sequence at once: kickoff, mid-point reminder, deadline week, last chance. Consistent voice, escalating urgency, under 200 words each.</p>
+          <p>Open enrollment isn&rsquo;t one email — it&rsquo;s a sequence. This prompt generates the full 4-email sequence at once: kickoff, mid-point reminder, deadline week, last chance. Consistent voice, escalating urgency, under 200 words each.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -663,7 +719,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -690,7 +746,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-5" hidden>
         <div class="pl-what">
-          <p>Every OE, HR gets the same questions. What's an HSA? Can I add my spouse? What if I miss the deadline? This prompt takes your plan details and generates a clean, grouped, plain-English FAQ that actually reduces call volume.</p>
+          <p>Every OE, HR gets the same questions. What&rsquo;s an HSA? Can I add my spouse? What if I miss the deadline? This prompt takes your plan details and generates a clean, grouped, plain-English FAQ that actually reduces call volume.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -726,7 +782,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-6" hidden>
         <div class="pl-what">
-          <p>Communicating plan changes is the hardest part of OE. Especially when something gets worse. This prompt helps you communicate the change honestly without creating panic — because employees find out eventually, and they always can tell when they're being managed.</p>
+          <p>Communicating plan changes is the hardest part of OE. Especially when something gets worse. This prompt helps you communicate the change honestly without creating panic — because employees find out eventually, and they always can tell when they&rsquo;re being managed.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -770,7 +826,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-7" hidden>
         <div class="pl-what">
-          <p>When an employee loses coverage, they often need written verification to enroll in a spouse's plan or apply for ACA marketplace coverage. HR gets asked for this constantly and writes it from scratch every time. This prompt generates a clean, accurate letter.</p>
+          <p>When an employee loses coverage, they often need written verification to enroll in a spouse&rsquo;s plan or apply for ACA marketplace coverage. HR gets asked for this constantly and writes it from scratch every time. This prompt generates a clean, accurate letter.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -798,7 +854,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span></div>
           <h3 class="pl-card-title">Qualifying Life Event Response</h3>
           <span class="pl-open-flag">In the free 5</span>
-          <p class="pl-card-tagline">They just had a baby. They have 30 days. Don't make them figure it out themselves.</p>
+          <p class="pl-card-tagline">They just had a baby. They have 30 days. Don&rsquo;t make them figure it out themselves.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-8" onclick="togglePrompt(this, 'prompt-body-8')">
           What it does <span class="pl-expand-icon">+</span>
@@ -841,7 +897,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-9" hidden>
         <div class="pl-what">
-          <p>COBRA election notices get ignored. Not because people don't care — because they're dealing with a job loss or a family disruption and paperwork is the last thing on their mind. A timely, warm follow-up that makes the action step as simple as possible can prevent a lapse that has real consequences.</p>
+          <p>COBRA election notices get ignored. Not because people don&rsquo;t care — because they&rsquo;re dealing with a job loss or a family disruption and paperwork is the last thing on their mind. A timely, warm follow-up that makes the action step as simple as possible can prevent a lapse that has real consequences.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -850,7 +906,7 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -977,7 +1033,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1003,7 +1059,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-12" hidden>
         <div class="pl-what">
-          <p>After the stewardship work, the negotiation and the market comparison — someone has to make a recommendation. Not a summary of everything reviewed. A clear position: here's what we recommend, why the data supports it, what was considered and rejected and one decision needed.</p>
+          <p>After the stewardship work, the negotiation and the market comparison — someone has to make a recommendation. Not a summary of everything reviewed. A clear position: here&rsquo;s what we recommend, why the data supports it, what was considered and rejected and one decision needed.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -1012,7 +1068,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1038,7 +1094,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-18" hidden>
         <div class="pl-what">
-          <p>At the end of every plan year, a broker should be able to answer one question: what did we do for this client, and was it worth their trust? This prompt generates the annual client review — what you delivered, what you achieved, what's coming next year and why the relationship is worth continuing. The document that earns the renewal before the renewal conversation starts.</p>
+          <p>At the end of every plan year, a broker should be able to answer one question: what did we do for this client, and was it worth their trust? This prompt generates the annual client review — what you delivered, what you achieved, what&rsquo;s coming next year and why the relationship is worth continuing. The document that earns the renewal before the renewal conversation starts.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -1047,7 +1103,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1074,7 +1130,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span><span class="pl-role pl-role-coral">HR Executive</span></div>
           <h3 class="pl-card-title">Compliance Deadline Reminder Generator</h3>
           <span class="pl-open-flag">In the free 5</span>
-          <p class="pl-card-tagline">The filing is not the hard part. Remembering it's coming is.</p>
+          <p class="pl-card-tagline">The filing is not the hard part. Remembering it&rsquo;s coming is.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-13" onclick="togglePrompt(this, 'prompt-body-13')">
           What it does <span class="pl-expand-icon">+</span>
@@ -1082,7 +1138,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-13" hidden>
         <div class="pl-what">
-          <p>5500 filing windows. ACA reporting. FSA run-out periods. Medicare Part D notices. These happen the same time every year. But in a small HR team they still get missed. This prompt generates the internal heads-up: what's coming, who owns it, what HR needs to gather. Not the filing. The reminder.</p>
+          <p>5500 filing windows. ACA reporting. FSA run-out periods. Medicare Part D notices. These happen the same time every year. But in a small HR team they still get missed. This prompt generates the internal heads-up: what&rsquo;s coming, who owns it, what HR needs to gather. Not the filing. The reminder.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -1097,7 +1153,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
           <span class="pl-clock-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </span>
-          <span>~35 min without &rarr; ~8 min with. <strong>27 minutes saved per reminder — and the deadline doesn't get missed.</strong></span>
+          <span>~35 min without &rarr; ~8 min with. <strong>27 minutes saved per reminder — and the deadline doesn&rsquo;t get missed.</strong></span>
         </div>
         <a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="pl-benebots-cta">
           Ready to automate this? Try BeneBots &rarr;
@@ -1109,7 +1165,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
         <div class="pl-card-top">
           <div class="pl-card-roles"><span class="pl-role pl-role-mint">HR Coordinator</span><span class="pl-role pl-role-blue">Benefits Analyst</span><span class="pl-role pl-role-gold">Broker / Acct Mgr</span></div>
           <h3 class="pl-card-title">Carrier Document Follow-Up Email</h3>
-          <p class="pl-card-tagline">They were supposed to send it by now. Here's how you ask again without losing the relationship.</p>
+          <p class="pl-card-tagline">They were supposed to send it by now. Here&rsquo;s how you ask again without losing the relationship.</p>
         </div>
         <button class="pl-expand-btn" aria-expanded="false" aria-controls="prompt-body-14" onclick="togglePrompt(this, 'prompt-body-14')">
           What it does <span class="pl-expand-icon">+</span>
@@ -1117,7 +1173,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
       </div>
       <div class="pl-card-body" id="prompt-body-14" hidden>
         <div class="pl-what">
-          <p>SBCs that never show up. 5500 data requests that go unanswered. Renewal proposals that are holding everything up. At some point you have to follow up — professionally, with a deadline, without torching a carrier relationship you'll have for years.</p>
+          <p>SBCs that never show up. 5500 data requests that go unanswered. Renewal proposals that are holding everything up. At some point you have to follow up — professionally, with a deadline, without torching a carrier relationship you&rsquo;ll have for years.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -1126,7 +1182,7 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1240,7 +1296,7 @@ WHAT WAS DISCUSSED / DECISIONS MADE / OPEN ITEMS / ACTION ITEMS (owner + deadlin
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">
@@ -1266,7 +1322,7 @@ WHAT WAS DISCUSSED / DECISIONS MADE / OPEN ITEMS / ACTION ITEMS (owner + deadlin
       </div>
       <div class="pl-card-body" id="prompt-body-17" hidden>
         <div class="pl-what">
-          <p>Adding a benefit. Restructuring cost-sharing. Moving to a new carrier. Every significant change requires a business case before leadership will approve it. A spreadsheet is not a business case. This generates the proposal: what you're recommending, the cost, the ROI, the risk and one specific ask.</p>
+          <p>Adding a benefit. Restructuring cost-sharing. Moving to a new carrier. Every significant change requires a business case before leadership will approve it. A spreadsheet is not a business case. This generates the proposal: what you&rsquo;re recommending, the cost, the ROI, the risk and one specific ask.</p>
         </div>
         <div class="pl-gather">
           <div class="pl-gather-label">Step 1: Gather</div>
@@ -1275,7 +1331,7 @@ WHAT WAS DISCUSSED / DECISIONS MADE / OPEN ITEMS / ACTION ITEMS (owner + deadlin
         <div class="pl-locked">
           <div class="pl-locked-head">Part of Infinite Benefits</div>
           <p class="pl-locked-body">The full prompt lives in Infinite Benefits, the complete pack for the HR team of one. Not out yet. Grab the free 5 and you will know the day it lands.</p>
-          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what's coming &rarr;</a>
+          <a class="pl-locked-btn pl-locked-btn-ghost" href="https://infiniteawesome.gumroad.com" target="_blank" rel="noopener noreferrer">See what&rsquo;s coming &rarr;</a>
         </div>
         <div class="pl-time-saved">
           <span class="pl-clock-icon">

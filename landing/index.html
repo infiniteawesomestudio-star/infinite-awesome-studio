@@ -52,7 +52,13 @@ html,body{background:var(--warm-neutral);}
   background:var(--warm-neutral);
   color:var(--ink);
   min-height:700px;
-  overflow:hidden;
+  /* `clip`, not `hidden`. Both clip the decorative .ias-glow to the rounded
+     card, but `hidden` makes this a SCROLL CONTAINER, which silently breaks
+     position:sticky for every descendant, including the nav. `clip` has no
+     scrollport, so the sticky nav resolves against the viewport instead.
+     On a browser too old for `clip` the declaration is dropped: sticky still
+     works and the glow spills slightly past the rounded corner. */
+  overflow:clip;
   position:relative;
   border-radius:16px;
   margin:16px;
@@ -79,31 +85,54 @@ html,body{background:var(--warm-neutral);}
 }
 
 /* ================= AI PILLARS (Hero) ================= */
-.ias-ai-pillars{
-  display:flex;flex-direction:column;gap:10px;
-  margin:20px 0 28px;
-}
-.ias-ai-pillar{
-  display:flex;align-items:center;gap:12px;
-  background:var(--white);
-  border:1px solid var(--ink-12);
-  border-radius:10px;
-  padding:10px 16px;
-  font-family:var(--font-body);
-  font-size:14px;
-  color:var(--ink-70);
-  line-height:1.4;
-}
-.ias-ai-pillar strong{color:var(--ink);}
 
 /* Two-column hero: copy left, AI pillars right */
+/* Single column since 2026-09-06. The hero used to run a second column of
+   three "tool pillar" cards. They took 46% of the hero's width to display a
+   145px block inside a 489px column (30% vertical fill, the same swimming
+   pattern the headshot had), and being white cards on cream they were the
+   highest-contrast objects on screen, competing with a 56px H1.
+   The structural reason for cutting them matters more than the space: the
+   hero is the DOOR, and the door is a question ("is anyone actually using
+   it?"). The pillars answered that question in the same viewport, which turns
+   a provocation into a feature list. Canon keeps the door and the room as
+   separate assets: sell with the license question, teach once inside. All
+   three tools still get a proper section further down, framed with an eyebrow
+   and the "same playbook elsewhere" line that makes them mean something. */
 .ias-hero-inner{
   display:grid;
-  grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);
-  gap:48px;align-items:center;
+  grid-template-columns:minmax(0,1fr) minmax(0,0.72fr);
+  gap:56px;align-items:center;
+}
+.ias-hero-figure{
+  position:relative;
+  aspect-ratio:4/5;
+  /* width:100% is required, not redundant: `margin-left:auto` turns off a
+     grid item's default stretch, so without it the figure falls back to
+     content width and the aspect ratio then derives a tiny height. */
+  width:100%;max-width:440px;margin-left:auto;
+  border-radius:18px;
+  overflow:hidden;
+  background:var(--mint-wash);
+  box-shadow:0 18px 44px rgba(26,26,26,0.12);
+}
+.ias-hero-figure img{width:100%;height:100%;object-fit:cover;display:block;}
+/* Placeholder state, shown only while the slot has no photograph in it.
+   Delete .ias-slot and drop an <img> in when the real image lands. */
+.ias-slot{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;text-align:center;padding:24px;
+  border:1px dashed rgba(0,122,74,0.35);
+  font-family:var(--font-body);color:var(--mint-text);
+}
+.ias-slot b{font-size:14px;font-weight:700;}
+.ias-slot span{font-size:12px;color:var(--ink-55);line-height:1.5;max-width:24ch;}
+@media(max-width:900px){
+  .ias-hero-inner{grid-template-columns:1fr;gap:32px;}
+  .ias-hero-figure{max-width:420px;}
 }
 .ias-hero-copy{min-width:0;}
-.ias-hero-inner .ias-ai-pillars{margin:0;}
 
 /* ================= AI TOOLS SECTION ================= */
 .ias-ai-tools-cards{
@@ -155,48 +184,20 @@ html,body{background:var(--warm-neutral);}
 }
 
 /* ================= FOUNDER BIO ================= */
-.ias-founder-layout{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:48px;
-  align-items:start;
-  max-width:900px;
-  margin:0 auto;
-}
-.ias-founder-creds{
-  background:var(--white);
-  border:1px solid var(--ink-12);
-  border-radius:16px;
-  padding:28px;
-}
-.ias-creds-title{
-  font-family:var(--font-display);font-size:13px;font-weight:700;
-  letter-spacing:0.1em;text-transform:uppercase;
-  color:var(--ink-55);margin-bottom:16px;
-}
-.ias-cred-item{
-  display:flex;align-items:flex-start;gap:10px;
-  font-family:var(--font-body);font-size:14px;
-  color:var(--ink-70);line-height:1.5;
-  margin-bottom:12px;
-}
-.ias-cred-dot{
-  flex-shrink:0;
-  width:7px;height:7px;border-radius:50%;
-  background:var(--mint);margin-top:6px;
-}
 
 /* ================= NAV ================= */
 .ias-nav{
   display:flex;align-items:center;justify-content:space-between;
   padding:22px 36px;
   border-bottom:1px solid var(--ink-08);
-  position:relative;z-index:2;
-  background:rgba(245,245,242,0.7);
-  backdrop-filter:blur(10px);
+  /* Sticky since 2026-09-06. prompt-library and privacy-policy were already
+     sticky; the other four were not, so the behaviour was inconsistent across
+     the site. Opacity raised 0.7 -> 0.92 because content now scrolls under it
+     and 0.7 let headlines read through the bar. */
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,245,242,0.92);
+  backdrop-filter:blur(12px);
 }
-.ias-logo{display:flex;align-items:center;}
-.ias-logo img{height:64px;width:auto;display:block;}
 
 .ias-nav-links{display:flex;gap:28px;list-style:none;}
 .ias-nav-links a{
@@ -315,13 +316,90 @@ html,body{background:var(--warm-neutral);}
   border:1px solid var(--ink-08);
   border-radius:14px;
   padding:24px;
-  transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s;
+  transition:border-color 0.2s,box-shadow 0.2s;
   cursor:default;
+  position:relative;overflow:hidden;
 }
 .ias-card:hover{
   border-color:var(--ink-12);
-  transform:translateY(-2px);
   box-shadow:0 8px 24px rgba(26,26,26,0.06);
+}
+
+/* ── The Elevator card (WP2) ───────────────────────────────────────────────
+   Ported from alrush.com's stacked two-layer card, measured 2026-09-06. A
+   second content layer parks exactly one card-height below and rises to
+   inset 0 on hover over 0.4s. The card's OUTER BOUNDS NEVER MOVE, which is
+   why the bento card's old 2px lift is gone from .ias-card:hover above. Uses
+   transform:translateY(100%->0) rather than animating `top`, so it composites
+   instead of triggering layout every frame.
+
+   Bento cards only. It was tried on the BeneBot cards too and pulled back
+   out: those sit on artwork, so the layer had to be translucent to let the
+   art ghost through, and translucent mint over six different bot colours
+   read as muddy rather than expensive. The bot cards keep their original
+   background/border/lift hover, unchanged.
+
+   The back layer carries its own CTA, which is not decoration. A full-cover
+   layer would otherwise sit on top of the card's inline "Explore ->" link
+   and swallow the click.
+
+   Gated to real pointers so touch devices keep the plain card and its inline
+   link.
+
+   `visibility` is load-bearing, not decoration. Without it the parked layer is
+   still a hit-target: under prefers-reduced-motion the transform is dropped, so
+   an opacity:0 layer would sit at inset:0 over the card and silently swallow
+   every click on the "Explore ->" link underneath. visibility:hidden also keeps
+   the layer out of the tab order, so the back CTA carries tabindex="-1" and the
+   layer is aria-hidden. Nothing is lost by that: every link and every fact on
+   the back layer also exists on the front of the card, so keyboard and screen
+   reader users get the same content and the same destinations by the normal
+   route. The back layer is a pointer-only enhancement and is built to be one. */
+.ias-elev-back{display:none;}
+@media (hover:hover) and (pointer:fine){
+  .ias-elev-back{
+    display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+    position:absolute;inset:0;
+    gap:10px;padding:24px;
+    border-radius:inherit;
+    background:var(--mint);
+    transform:translateY(100%);
+    opacity:0;
+    visibility:hidden;
+    transition:transform .4s ease-in-out,opacity .4s ease-in-out,visibility 0s linear .4s;
+  }
+  .ias-card:hover .ias-elev-back{
+    transform:translateY(0);
+    opacity:1;
+    visibility:visible;
+    transition:transform .4s ease-in-out,opacity .4s ease-in-out,visibility 0s linear 0s;
+  }
+  .ias-elev-title{
+    font-family:var(--font-display);
+    font-weight:700;font-size:22px;line-height:1.15;letter-spacing:-0.01em;
+    color:#052B1C;
+  }
+  .ias-elev-sub{
+    font-family:var(--font-body);
+    font-size:14px;line-height:1.5;
+    color:rgba(5,43,28,0.82);
+    max-width:34ch;
+  }
+  .ias-elev-link{
+    font-family:var(--font-body);
+    font-size:14px;font-weight:700;
+    color:#052B1C;text-decoration:none;
+    border-bottom:2px solid rgba(5,43,28,0.35);
+    padding-bottom:2px;
+    transition:border-color .15s;
+  }
+  .ias-elev-link:hover,.ias-elev-link:focus-visible{border-bottom-color:#052B1C;}
+
+  /* Reduced motion keeps the layer (it carries real content and a real link),
+     drops only the travel. */
+  @media(prefers-reduced-motion:reduce){
+    .ias-elev-back{transform:none;transition:opacity .01ms;}
+  }
 }
 .ias-card-full{
   display:flex;flex-direction:column;align-items:flex-start;gap:22px;
@@ -466,10 +544,33 @@ html,body{background:var(--warm-neutral);}
   background:var(--mint);border-radius:2px;
 }
 /* The problem — quiet essay interlude */
-.ias-problem{position:relative;z-index:2;max-width:680px;margin:0 auto;padding:96px 36px 88px;}
+/* Two columns since 2026-09-06: the offset figure pair borrowed from
+   alrush.com. ⚠️ That composition is NOT an animation — the effect is purely
+   the overlap plus the type, at zero runtime cost. */
+.ias-problem{position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:96px 36px 88px;
+  display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1fr);gap:56px;align-items:center;}
+.ias-problem-copy{max-width:560px;}
+/* Height solved, not guessed: each figure is 58% of the container width and
+   3:4, so it stands 0.773W tall. A container of 1.3W leaves the pair
+   overlapping by ~30% of a figure's height. At the first attempt (0.92W)
+   they overlapped 81% and read as one stack. */
+.ias-problem-figs{position:relative;aspect-ratio:1/1.3;}
+.ias-problem-fig{
+  position:absolute;width:58%;aspect-ratio:3/4;
+  border-radius:14px;overflow:hidden;
+  background:var(--mint-wash);
+  box-shadow:0 16px 40px rgba(26,26,26,0.14);
+}
+.ias-problem-fig img{width:100%;height:100%;object-fit:cover;display:block;}
+.ias-problem-fig-a{left:0;top:0;}
+.ias-problem-fig-b{right:0;bottom:0;}
+@media(max-width:900px){
+  .ias-problem{grid-template-columns:1fr;gap:40px;padding:72px 24px 64px;}
+  .ias-problem-figs{max-width:460px;}
+}
 .ias-problem-lede{font-family:var(--font-display);font-weight:500;font-size:30px;line-height:1.25;letter-spacing:-0.01em;color:var(--ink);margin-bottom:28px;}
-.ias-problem p:not(.ias-problem-lede){font-family:var(--font-body);font-size:18px;line-height:1.8;color:var(--ink-70);margin-bottom:20px;}
-.ias-problem p:last-child{margin-bottom:0;}
+.ias-problem-copy p:not(.ias-problem-lede){font-family:var(--font-body);font-size:18px;line-height:1.8;color:var(--ink-70);margin-bottom:20px;}
+.ias-problem-copy p:last-child{margin-bottom:0;}
 
 .ias-section-title{
   font-family:var(--font-display);
@@ -491,69 +592,143 @@ html,body{background:var(--warm-neutral);}
   max-width:620px;
 }
 
-/* The Guy showcase */
-.ias-guy-layout{
+/* ── Credibility strip (WP3) ───────────────────────────────────────────────
+   Replaces the 1,685px founder section, which was 27.5% of the homepage and
+   2.8x the hero while the offer had no section at all. The long-form bio now
+   lives at /about. What stays here is the one line that does the positioning
+   work, a compact credential row and a way out.
+
+   The homepage headshot bugs are fixed here too, since they travel with the
+   photo: the image gets the NARROW column (it used to get the wider one at
+   1.1fr 1fr), and it is sized by a fixed square crop rather than a
+   max-height cap floating in a tall centred row. */
+.ias-cred{
   display:grid;
-  grid-template-columns:1.1fr 1fr;
-  gap:40px;
-  align-items:center;
+  grid-template-columns:172px 1fr;
+  gap:32px;align-items:center;
+  max-width:1040px;margin:0 auto;
   background:var(--white);
   border:1px solid var(--ink-08);
   border-radius:20px;
-  padding:40px;
-  position:relative;
-  overflow:hidden;
+  padding:28px 32px;
 }
-.ias-guy-img-wrap{
-  position:relative;
-  background:transparent;
-  border-radius:16px;
-  padding:20px;
-  display:flex;align-items:center;justify-content:center;
-  min-height:340px;
-}
-.ias-guy-img-wrap img{
-  max-width:100%;height:auto;
+.ias-cred-photo{
+  width:172px;height:172px;
+  border-radius:16px;object-fit:cover;object-position:50% 22%;
   display:block;
+  box-shadow:0 10px 26px rgba(26,26,26,0.14);
 }
-.ias-guy-content{position:relative;}
-.ias-guy-title{
+.ias-cred-line{
   font-family:var(--font-display);
-  font-size:32px;font-weight:700;
-  line-height:1.1;letter-spacing:-0.02em;
-  margin-bottom:10px;
+  font-weight:700;font-size:24px;line-height:1.22;letter-spacing:-0.01em;
+  color:var(--ink);margin-bottom:12px;max-width:44ch;
 }
-.ias-guy-tagline{
-  font-family:var(--font-body);
-  font-size:18px;font-weight:500;
-  color:var(--mint-text);
-  margin-bottom:18px;
-  font-style:italic;
+.ias-cred-line em{font-style:normal;color:var(--mint-text);}
+.ias-cred-facts{display:flex;flex-wrap:wrap;gap:8px 10px;margin-bottom:14px;}
+.ias-cred-fact{
+  font-family:var(--font-body);font-size:13px;font-weight:600;
+  color:var(--ink-70);background:var(--mint-wash);
+  padding:6px 12px;border-radius:999px;
 }
-.ias-guy-body{
-  font-family:var(--font-body);
-  font-size:15px;font-weight:400;
-  color:var(--ink-70);
-  line-height:1.7;
-  margin-bottom:22px;
+.ias-cred-more{
+  font-family:var(--font-body);font-size:15px;font-weight:700;
+  color:var(--mint-text);text-decoration:none;
+  border-bottom:2px solid rgba(0,196,122,0.35);padding-bottom:2px;
 }
-.ias-guy-body strong{color:var(--ink);font-weight:600;}
+.ias-cred-more:hover{border-bottom-color:var(--mint-text);}
+@media(max-width:720px){
+  .ias-cred{grid-template-columns:1fr;gap:20px;padding:24px;justify-items:start;}
+  .ias-cred-line{font-size:21px;}
+}
 
-.ias-guy-features{
-  display:grid;grid-template-columns:1fr 1fr;gap:14px;
-  margin-bottom:24px;
+/* ── The pilot (WP4) ───────────────────────────────────────────────────────
+   No price on this page, deliberately. A number here gets forwarded and
+   compared before anyone has spoken to Ty, and it is the first thing on a
+   page promising "no procurement" that smells like procurement. The fee is
+   a room conversation. What the section carries instead is six numbers that
+   are not money: 45 minutes, two weeks, one page, day 14 and the two zeros.
+   The proof metric is recovered HOURS, converted by the client at their own
+   loaded rate, which is both a bigger number than the fee and one they
+   already believe because it is theirs. */
+.ias-pilot-stages{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;max-width:1040px;margin:0 auto 28px;
 }
-.ias-guy-feature{
-  display:flex;gap:10px;align-items:flex-start;
+.ias-pilot-stage{
+  background:var(--white);
+  border:1px solid var(--ink-08);
+  border-radius:14px;
+  padding:26px 24px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.ias-pilot-step{
+  display:flex;align-items:baseline;gap:10px;
   font-family:var(--font-body);
-  font-size:13px;color:var(--ink-70);line-height:1.5;
+  font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+  font-weight:700;color:var(--mint-text);
 }
-.ias-guy-feature-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--mint);
-  margin-top:7px;flex-shrink:0;
+.ias-pilot-step span:last-child{
+  letter-spacing:0.02em;text-transform:none;
+  font-weight:600;color:var(--ink-40);
 }
-.ias-guy-feature strong{color:var(--ink);font-weight:600;display:block;margin-bottom:2px;}
+.ias-pilot-stage h3{
+  font-family:var(--font-display);
+  font-weight:700;font-size:24px;line-height:1.15;
+  letter-spacing:-0.01em;color:var(--ink);
+}
+.ias-pilot-stage p{
+  font-family:var(--font-body);
+  font-size:15px;line-height:1.65;color:var(--ink-70);
+}
+.ias-pilot-days{
+  display:flex;flex-wrap:wrap;gap:8px 10px;
+  max-width:1040px;margin:0 auto 32px;
+  padding:16px 18px;
+  background:var(--mint-wash);
+  border-radius:12px;
+}
+.ias-pilot-day{
+  font-family:var(--font-body);font-size:13px;color:var(--ink-70);
+  display:inline-flex;align-items:baseline;gap:6px;
+}
+.ias-pilot-day strong{color:var(--mint-text);font-weight:700;white-space:nowrap;}
+.ias-pilot-day+.ias-pilot-day::before{content:'\00B7';color:var(--ink-40);margin-right:4px;}
+.ias-pilot-split{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;max-width:1040px;margin:0 auto;
+}
+.ias-pilot-panel{
+  border:1px solid var(--ink-08);border-radius:14px;padding:24px;
+  background:var(--white);
+}
+.ias-pilot-panel h3{
+  font-family:var(--font-display);font-weight:700;font-size:20px;
+  line-height:1.2;color:var(--ink);margin-bottom:10px;
+}
+.ias-pilot-panel p{
+  font-family:var(--font-body);font-size:15px;line-height:1.65;color:var(--ink-70);
+}
+.ias-zero-row{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.ias-zero{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--font-body);font-size:14px;color:var(--ink-70);
+}
+.ias-zero b{
+  font-family:var(--font-display);font-size:26px;font-weight:700;
+  color:var(--mint-text);line-height:1;min-width:26px;
+}
+.ias-pilot-terms{
+  max-width:1040px;margin:26px auto 0;
+  font-family:var(--font-body);font-size:15px;line-height:1.7;color:var(--ink-70);
+}
+.ias-pilot-terms strong{color:var(--ink);font-weight:600;}
+@media(max-width:520px){
+  .ias-pilot-stage{padding:22px 20px;}
+}
+
+/* The Guy showcase */
+
 
 /* ================================================
    SECTION: BeneBots (The Bot)
@@ -719,12 +894,9 @@ html,body{background:var(--warm-neutral);}
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1040px){
-  .ias-guy-layout{grid-template-columns:1fr;}
   .ias-benebots-hero{grid-template-columns:1fr;}
 }
 @media (max-width: 920px){
-  .ias-hero-inner{grid-template-columns:1fr;gap:32px;}
-  .ias-hero-inner .ias-ai-pillars{margin:8px 0 0;}
   .ias-span-4{grid-column:span 6;}
   .ias-bento > .ias-span-4:last-child{grid-column:1/-1;}
 }
@@ -737,8 +909,6 @@ html,body{background:var(--warm-neutral);}
   .ias-nav-links{display:none;}
   .ias-nav-cta{display:none;}
   .ias-mobile-toggle{display:block;}
-  .ias-guy-features{grid-template-columns:1fr;}
-  .ias-founder-layout{grid-template-columns:1fr;}
   .ias-benebots-cta-row{flex-direction:column;align-items:flex-start;}
   .ias-benebots-cta-group{margin-left:0;flex-wrap:wrap;}
 }
@@ -748,21 +918,73 @@ html,body{background:var(--warm-neutral);}
   .ias-problem{padding:72px 20px 64px;}
   .ias-nav{padding:18px 20px;}
   .ias-h1{font-size:32px;}
-  .ias-guy-layout{padding:24px;}
 }
 
-/* Motion: matches the Infinite Careers pass (01e5326) — transform/opacity only,
-   220ms ease-out, 40ms stagger. Hidden states apply only after JS adds .fx to <html>,
-   so no-JS and reduced-motion visitors see everything immediately. */
-.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(7px);transition:opacity 220ms cubic-bezier(0,0,.2,1),transform 220ms cubic-bezier(0,0,.2,1);}
+/* Motion: retuned 2026-09-06 (WP1). Travel and easing borrowed from alrush.com,
+   duration and stagger deliberately shorter: A. Rush animates ONE section, this page
+   animates several, so 620ms/80ms there would read sluggish here. 28px / 480ms / 70ms
+   puts the slowest grid tail just under 1s. Transform/opacity only. Hidden states apply
+   only after JS adds .fx to <html>, so no-JS and reduced-motion visitors see everything
+   immediately. The hero is deliberately NOT revealed: it paints on load, not on scroll. */
+.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(28px);transition:opacity 480ms cubic-bezier(.2,.7,.2,1),transform 480ms cubic-bezier(.2,.7,.2,1);}
 .fx .fx-r.fx-in,.fx .fx-s.fx-in>*{opacity:1;transform:none;}
-.fx .fx-s.fx-in>*:nth-child(2){transition-delay:40ms}
-.fx .fx-s.fx-in>*:nth-child(3){transition-delay:80ms}
-.fx .fx-s.fx-in>*:nth-child(4){transition-delay:120ms}
-.fx .fx-s.fx-in>*:nth-child(5){transition-delay:160ms}
-.fx .fx-s.fx-in>*:nth-child(6){transition-delay:200ms}
-.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:240ms}
+.fx .fx-s.fx-in>*:nth-child(2){transition-delay:70ms}
+.fx .fx-s.fx-in>*:nth-child(3){transition-delay:140ms}
+.fx .fx-s.fx-in>*:nth-child(4){transition-delay:210ms}
+.fx .fx-s.fx-in>*:nth-child(5){transition-delay:280ms}
+.fx .fx-s.fx-in>*:nth-child(6){transition-delay:350ms}
+.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:420ms}
 @media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
+
+/* ── Nav lockup (2026-09-06) ───────────────────────────────────────────────
+   Mark as an image, wordmark as LIVE TEXT. The old nav shipped a square
+   stacked PNG whose "STUDIO" line rendered ~3px tall and whose file wasted
+   36% of its height on transparent margin, so height:64px only ever drew
+   41px of logo. Setting the wordmark in real type fixes both: it is crisp at
+   any DPI, it is selectable and readable by a screen reader, and it matches
+   the headlines by construction because it IS the headline face.
+   Mark source: ias-mark.png, cropped to real ink at alpha>8 (the generator
+   left a near-invisible alpha 1-14 haze across the full canvas, so a naive
+   getbbox reports 100% fill and would have re-baked the padding).
+   ⚠️ Typeface is deliberately the site's own Bricolage Grotesque. The vault
+   brand guide says Inter + Space Grotesk and the 9-06 brand sheet says Inter;
+   the live site has always shipped Bricolage + Source Sans 3. That conflict
+   is open and is Ty's to settle, so the logo follows the pixels on screen. */
+.ias-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
+.ias-logo img{height:48px;width:auto;display:block;}
+.ias-lockup{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;line-height:1;}
+.ias-lockup-name{
+  font-family:var(--font-display);
+  font-weight:700;font-size:17px;letter-spacing:-0.01em;
+  color:var(--ink);white-space:nowrap;
+}
+.ias-lockup-name em{font-style:normal;color:var(--mint-text);}
+/* Sized off the real brand asset, not by eye: in the master lockup STUDIO's
+   cap height is 66% of the name's (9px on a 17px name measured only 53%) and
+   its tracked width runs to 108% of the line above. Ty's call is to hold it
+   at 100% instead: at 108% the S and the O hang past the name on both ends
+   and read as a mistake rather than a flourish. Tracking is solved, not
+   guessed: glyphs measure 37.1px, so 5 internal gaps of 24.63px land the
+   ink exactly on the name's 160px. Bold 700 so it does not read skinny. */
+.ias-lockup-sub{
+  font-family:var(--font-body);
+  font-weight:700;font-size:11px;letter-spacing:2.24em;
+  /* letter-spacing also adds a trailing gap after the last glyph, which
+     would pad the lockup box with phantom width. Pull it back. */
+  margin-right:-2.24em;
+  color:var(--ink-70);white-space:nowrap;
+}
+@media(max-width:760px){
+  .ias-logo img{height:40px;}
+  .ias-lockup-name{font-size:15px;}
+  .ias-lockup-sub{font-size:8px;letter-spacing:0.36em;}
+}
+/* The wordmark costs 158px of nav width. Between the 760px hamburger
+   breakpoint and roughly 1080px that is exactly enough to push the 7 nav
+   links onto a second and third line (measured: 2 lines at 1000px, 3 at
+   880px, which the old 82px-wide logo did not do). Below 1080 the mark
+   carries the brand on its own and the links stay on one row. */
+@media(max-width:1080px){ .ias-lockup{display:none;} }
 </style>
 </head>
 <body>
@@ -774,9 +996,10 @@ html,body{background:var(--warm-neutral);}
 
   <!-- ============== NAV ============== -->
   <nav class="ias-nav" aria-label="Main navigation">
-    <div class="ias-logo">
-      <img src="assets/ias-logo.png" alt="Infinite Awesome Studio" />
-    </div>
+    <a class="ias-logo" href="/" aria-label="Infinite Awesome Studio home">
+      <img src="assets/ias-mark.png" width="680" height="483" alt="" />
+      <span class="ias-lockup"><span class="ias-lockup-name">INFINITE <em>AWESOME</em></span><span class="ias-lockup-sub">STUDIO</span></span>
+    </a>
     <ul class="ias-nav-links">
       <li><a href="#services">What I Build</a></li>
       <li><a href="/products">Products</a></li>
@@ -784,7 +1007,7 @@ html,body{background:var(--warm-neutral);}
       <li><a href="/infinite-workflows/">The Infinity Desk</a></li>
       <li><a href="/articles">Insights</a></li>
       <li><a href="/prompt-library">Prompts</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
     <button class="ias-mobile-toggle" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -800,7 +1023,7 @@ html,body{background:var(--warm-neutral);}
     <a href="/infinite-workflows/" onclick="closeMobileNav()">The Infinity Desk</a>
     <a href="/articles" onclick="closeMobileNav()">Insights</a>
     <a href="/prompt-library" onclick="closeMobileNav()">Prompts</a>
-    <a href="#about" onclick="closeMobileNav()">About</a>
+    <a href="/about" onclick="closeMobileNav()">About</a>
     <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-mobile-cta" onclick="closeMobileNav()">Book 30 minutes</a>
   </div>
 
@@ -815,7 +1038,7 @@ html,body{background:var(--warm-neutral);}
         <em>Almost Nobody Uses It.</em>
       </h1>
       <p class="ias-sub">
-        You are already paying for Copilot, or ChatGPT, or Gemini. Somebody signed off on the licenses months ago. So is anyone actually using it? Are you? I get your team using the AI you already bought, on the work that is eating their week. No new software, no procurement, no six-week rollout.
+        You&rsquo;re already paying for Copilot, or ChatGPT, or Gemini. Somebody signed off on the licenses months ago. So is anyone actually using it? Are you? I get your team using the AI you already bought, on the work that is eating their week. No new software, no procurement, no six-week rollout.
       </p>
       <div class="ias-cta-row">
         <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-btn-primary">Book 30 minutes &rarr;</a>
@@ -823,29 +1046,109 @@ html,body{background:var(--warm-neutral);}
       </div>
       <p class="ias-hero-kicker">25 years in employee benefits, the most paperwork-heavy and most regulated corner of business there is. Protected health information in every file, deadlines with real penalties attached. If AI can be made safe and useful under those rules, it will hold up under yours.</p>
     </div>
-    <div class="ias-ai-pillars">
-      <div class="ias-ai-pillar">
-        <span>&#129309;</span>
-        <span><strong>Copilot</strong>: Stewardship reports in 15 min (was 90)</span>
-      </div>
-      <div class="ias-ai-pillar">
-        <span>&#129504;</span>
-        <span><strong>Claude</strong>: Quote follow-ups drafted and ready to send in 30 seconds</span>
-      </div>
-      <div class="ias-ai-pillar">
-        <span>&#10024;</span>
-        <span><strong>ChatGPT</strong>: Meeting notes turned into action plans in under 3 minutes</span>
-      </div>
-    </div>
+    <figure class="ias-hero-figure">
+      <img src="assets/hero-team.jpg" width="1122" height="1402" alt="Two colleagues working through a document together on a laptop in an office" loading="eager" fetchpriority="high" />
+    </figure>
    </div>
   </section>
 
   <!-- ============== THE PROBLEM ============== -->
   <section class="ias-problem" id="the-problem">
-    <p class="ias-problem-lede">The same admin work has been piling up in every business.</p>
-    <p>Whether you run an HR department, manage operations or run a small business, the same pattern always shows up: work that could be automated, still being done by hand. The same reports rebuilt every quarter. The same questions answered over and over.</p>
-    <p>I've watched it from both sides, inside a major carrier, running operations for large Fortune 500 corporations and consulting to hundreds of business owners big and small. The problems don't change. Neither does the fix.</p>
+    <div class="ias-problem-copy">
+      <p class="ias-problem-lede">The same admin work has been piling up in every business.</p>
+      <p>Whether you run an HR department, manage operations or run a small business, the same pattern always shows up: work that could be automated, still being done by hand. The same reports rebuilt every quarter. The same questions answered over and over.</p>
+      <p>I&rsquo;ve watched it from both sides, inside a major carrier, running operations for large Fortune 500 corporations and consulting to hundreds of business owners big and small. The problems don&rsquo;t change. Neither does the fix.</p>
+    </div>
+    <div class="ias-problem-figs">
+      <figure class="ias-problem-fig ias-problem-fig-a">
+        <img src="assets/problem-before.jpg" width="1086" height="1448" alt="A desk buried under stacked files, printed reports and sticky notes" loading="lazy" />
+      </figure>
+      <figure class="ias-problem-fig ias-problem-fig-b">
+        <img src="assets/problem-after.jpg" width="1086" height="1448" alt="The same desk cleared, with one laptop, a notebook and a single stack of paper" loading="lazy" />
+      </figure>
+    </div>
   </section>
+  <!-- ============== THE PILOT ============== -->
+  <section class="ias-section" id="pilot">
+    <div class="ias-section-header fx-r">
+      <div class="ias-section-heading">
+        <div class="ias-eyebrow">THE PILOT</div>
+        <h2 class="ias-section-title">Pick One Process. Two Weeks.<br><em>One solid answer at the end.</em></h2>
+        <p class="ias-section-sub">Not a strategy deck and not a six-week rollout. One process you already run, rebuilt on the licenses you already pay for, run by your own people and measured against the way you do it today.</p>
+      </div>
+    </div>
+
+    <div class="ias-pilot-stages fx-s">
+      <div class="ias-pilot-stage">
+        <div class="ias-pilot-step"><span>Step 01</span><span>Free</span></div>
+        <h3>Scope</h3>
+        <p>A 45-minute call. We pick one process, agree what good looks like and you name the person who signs off on the output. You get a one-page scope back inside 72 hours. If it turns out there&rsquo;s nothing here worth two weeks, I&rsquo;ll tell you on the call.</p>
+      </div>
+      <div class="ias-pilot-stage">
+        <div class="ias-pilot-step"><span>Step 02</span><span>Two weeks</span></div>
+        <h3>Pilot</h3>
+        <p>Built on the licenses you already own. No new software and nothing to procure. Days three to ten it&rsquo;s your team running it on their own real work, because a tool nobody adopts isn&rsquo;t a result.</p>
+      </div>
+      <div class="ias-pilot-stage">
+        <div class="ias-pilot-step"><span>Step 03</span><span>Day 14</span></div>
+        <h3>Finding</h3>
+        <p>One page, delivered live rather than emailed. Hours recovered measured against the baseline we set on day zero, what&rsquo;s worth keeping and what to drop. Yours to keep either way.</p>
+      </div>
+    </div>
+
+    <div class="ias-pilot-days fx-r">
+      <span class="ias-pilot-day"><strong>Day 0</strong> Scope call</span>
+      <span class="ias-pilot-day"><strong>Days 1&ndash;2</strong> Build</span>
+      <span class="ias-pilot-day"><strong>Days 3&ndash;10</strong> Your team runs it</span>
+      <span class="ias-pilot-day"><strong>Day 6</strong> Check-in</span>
+      <span class="ias-pilot-day"><strong>Days 11&ndash;13</strong> Findings</span>
+      <span class="ias-pilot-day"><strong>Day 14</strong> Decision</span>
+    </div>
+
+    <div class="ias-pilot-split fx-s">
+      <div class="ias-pilot-panel">
+        <h3>About half the time, the answer is no.</h3>
+        <p>That&rsquo;s the outcome most people won&rsquo;t put in writing before they start. If the process has no source of truth, was never really defined or your licensing blocks the part that actually matters, the finding says so and tells you which one it was. A no that costs you two weeks is a great deal cheaper than a yes that costs you a year.</p>
+      </div>
+      <div class="ias-pilot-panel">
+        <h3>Two numbers stay at zero.</h3>
+        <p>If either one moves, the pilot has failed no matter what else it saved. These are written into the scope before anything is built.</p>
+        <div class="ias-zero-row">
+          <div class="ias-zero"><b>0</b><span>pieces of regulated data entered into AI</span></div>
+          <div class="ias-zero"><b>0</b><span>outputs used without a human verifying them</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="ias-pilot-terms fx-r"><strong>The scope call is free.</strong> The pilot itself is a single fixed fee, agreed in writing before anything gets built. No hourly billing, no change orders and no surprise second phase. We talk about the number on the call, once we both know what the process actually is.</p>
+
+    <div class="ias-cta-row" style="max-width:1040px;margin:26px auto 0;">
+      <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-btn-primary">Book the scope call →</a>
+      <!-- Label matches the destination on purpose. This lands on the QUICK WIN
+     section, which shows what the TOOLS do, not what a pilot looks like.
+     "See what it looks like first" read as a pilot preview, which the site
+     cannot honestly give until a real Finding exists to show. -->
+      <a href="#ai-tools" class="ias-btn-ghost">See the quick wins first →</a>
+    </div>
+  </section>
+  <!-- ============== CREDIBILITY STRIP ============== -->
+  <section class="ias-section" id="about">
+    <div class="ias-cred fx-r">
+      <img class="ias-cred-photo" src="assets/ty-headshot-pro.jpg" width="1080" height="1350" alt="Ty Mosher, founder of Infinite Awesome Studio" />
+      <div>
+        <p class="ias-cred-line">I&rsquo;m not an AI person who wandered into benefits.<br><em>I&rsquo;m a benefits person who found a better tool.</em></p>
+        <div class="ias-cred-facts">
+          <span class="ias-cred-fact">25 years in employee benefits</span>
+          <span class="ias-cred-fact">10 years inside a major carrier</span>
+          <span class="ias-cred-fact">15 years HR &amp; broker side</span>
+          <span class="ias-cred-fact">GBA 1, passed 2026</span>
+          <span class="ias-cred-fact">Licensed: MD &middot; VA &middot; DC</span>
+        </div>
+        <a class="ias-cred-more" href="/about">The short story, long edition →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ============== QUICK WIN: AI TOOLS ============== -->
   <section class="ias-section" id="ai-tools">
     <div class="ias-section-header fx-r">
@@ -890,73 +1193,6 @@ html,body{background:var(--warm-neutral);}
     </div>
     <p class="ias-ai-tools-footnote">All free or &lt;$20/mo. Try them today.</p>
   </section>
-  <!-- ============== FOUNDER ============== -->
-  <section class="ias-section" id="about">
-    <div class="ias-section-header fx-r">
-      <div class="ias-section-heading">
-        <h2 class="ias-section-title">I learned to tame chaos in the most paperwork-heavy corner of business there is.</h2>
-        <p class="ias-section-sub">
-          25 years in benefits. 10 years inside one of the country&rsquo;s largest carriers in Benefits Operations. 15 years in the HR/Broker world. This isn&rsquo;t theory. It&rsquo;s what I did every day.
-        </p>
-      </div>
-    </div>
-
-    <div class="ias-guy-layout fx-s">
-      <div class="ias-guy-img-wrap">
-        <!-- Ty Mosher, founder. MyBenefitsGuy remains the face of the BeneBots section. -->
-        <img src="assets/ty-headshot-pro.jpg" width="1080" height="1350" alt="Ty Mosher, founder of Infinite Awesome Studio" style="border-radius:16px;max-height:460px;width:auto;object-fit:cover;box-shadow:0 12px 32px rgba(26,26,26,0.14);"/>
-      </div>
-      <div class="ias-guy-content">
-        <h3 class="ias-guy-title">I'm not an AI person who wandered into benefits. I'm a benefits person who found a better tool.</h3>
-        <p class="ias-guy-body">
-          I&rsquo;ve been in benefits since 2004. Over 25 years of watching how this industry works, what breaks and where the manual work piles up.
-        </p>
-        <p class="ias-guy-body">
-          I spent fifteen years in the HR and broker world. Consulting, brokerage, advisory work&hellip;and everywhere I went, the pattern was identical. Manual tasks. Outdated processes. HR teams buried under documentation with no real way out.
-        </p>
-        <p class="ias-guy-body">
-          Then came ten years inside the machinery of a major carrier solving benefits operations and systems problems. I spent my days coding benefit structures, leading UAT for complex implementations and helping clients avoid their biggest pain points by getting ahead of the problem.
-        </p>
-        <p class="ias-guy-body">
-          At some point, it clicked. The work wasn&rsquo;t broken. The systems were.
-        </p>
-        <p class="ias-guy-body">So I made a shift.</p>
-        <ul style="padding-left:0;list-style:none;margin-bottom:18px;">
-          <li class="ias-guy-body" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="color:var(--mint-text);font-weight:700;flex-shrink:0;">→</span> I started showing benefits professionals how to use AI tools like Claude, ChatGPT and Copilot to cut their workload in half today.</li>
-          <li class="ias-guy-body" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="color:var(--mint-text);font-weight:700;flex-shrink:0;">→</span> And I built BeneBots&hellip;the automated version of those workflows for teams that want the long-term fix, not another bandaid.</li>
-        </ul>
-        <p class="ias-guy-body" style="margin-top:8px;">
-          Ty Mosher, Employee Benefits Account Manager | Founder, Infinite Awesome Studio<br>
-          <span style="font-size:13px;opacity:0.7;">Licensed Producer: MD &middot; VA &middot; DC</span>
-        </p>
-
-        <div class="ias-guy-features">
-          <div class="ias-guy-feature"><span class="ias-guy-feature-dot"></span><div><strong>Process design</strong>Turning messy, high-stakes work into repeatable systems anyone can follow.</div></div>
-          <div class="ias-guy-feature"><span class="ias-guy-feature-dot"></span><div><strong>Stewardship reporting</strong>Board-ready reports that actually get read.</div></div>
-          <div class="ias-guy-feature"><span class="ias-guy-feature-dot"></span><div><strong>Plain-English education</strong>Explainers, onboarding guides and FAQ content that make complex topics click.</div></div>
-          <div class="ias-guy-feature"><span class="ias-guy-feature-dot"></span><div><strong>AI-augmented delivery</strong>Powered by BeneBots behind the scenes.</div></div>
-        </div>
-
-    <div class="ias-founder-layout" style="margin-top:48px;">
-      <div>
-        <div class="ias-founder-creds">
-          <div class="ias-creds-title">Credentials</div>
-          <div class="ias-cred-item"><span class="ias-cred-dot"></span><span>10 years inside a major carrier (NJ): Benefit Analyst → Business Systems Analyst II → Senior Analyst (Benefits Operations)</span></div>
-          <div class="ias-cred-item"><span class="ias-cred-dot"></span><span>15 years in benefits consulting &amp; brokerage (HR/Broker world)</span></div>
-          <div class="ias-cred-item"><span class="ias-cred-dot"></span><span>Health &amp; Life Producer licenses: MD, VA, DC</span></div>
-          <div class="ias-cred-item"><span class="ias-cred-dot"></span><span>GBA 1 (CEBS program), passed 2026</span></div>
-          <div class="ias-cred-item"><span class="ias-cred-dot"></span><span>Built BeneBots to solve the problems I saw repeated 1,000+ times</span></div>
-        </div>
-      </div>
-    </div>
-
-        <div class="ias-cta-row">
-          <a href="https://calendly.com/infiniteawesomestudio" target="_blank" rel="noopener noreferrer" class="ias-btn-mint">Book 30 minutes →</a>
-          <a href="#benebots" class="ias-btn-ghost">See the bots he built</a>
-        </div>
-      </div>
-    </div>
-  </section>
   <!-- ============== THE SHELF ============== -->
   <section class="ias-section" style="padding-bottom:8px;">
     <div class="ias-section-header fx-r">
@@ -969,7 +1205,7 @@ html,body{background:var(--warm-neutral);}
   </section>
 
   <!-- ============== BENTO ============== -->
-  <div class="ias-bento" id="services">
+  <div class="ias-bento fx-s" id="services">
 
     <div class="ias-card ias-span-6">
       <div class="ias-card-tag">Done-For-You &middot; Live Offer</div>
@@ -980,6 +1216,12 @@ html,body{background:var(--warm-neutral);}
         <span class="ias-pill ias-pill-gold">A Front Desk That Never Sleeps</span>
       </div>
       <a href="/infinite-workflows/" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore The Infinity Desk →</a>
+    
+      <div class="ias-elev-back" aria-hidden="true">
+        <div class="ias-elev-title">The Infinity Desk</div>
+        <div class="ias-elev-sub">The front-desk work that never stops, running whether you&rsquo;re at the desk or not.</div>
+        <a class="ias-elev-link" tabindex="-1" href="/infinite-workflows/">Explore The Infinity Desk →</a>
+      </div>
     </div>
 
     <div class="ias-card ias-span-6">
@@ -997,6 +1239,12 @@ html,body{background:var(--warm-neutral);}
         <span class="ias-pill ias-pill-mint">MyBenefitsGuy</span>
       </div>
       <a href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer" class="ias-ai-tool-link" style="display:block;margin-top:14px;">Explore BeneBots →</a>
+    
+      <div class="ias-elev-back" aria-hidden="true">
+        <div class="ias-elev-title">MyBenefitsGuy + BeneBots</div>
+        <div class="ias-elev-sub">Six bots carrying 25 years of benefits work, on the tasks that bury an HR team.</div>
+        <a class="ias-elev-link" tabindex="-1" href="https://benebots.infiniteawesomestudio.com" target="_blank" rel="noopener noreferrer">Explore BeneBots →</a>
+      </div>
     </div>
 
     <div class="ias-card ias-card-full ias-span-6">
@@ -1004,11 +1252,17 @@ html,body{background:var(--warm-neutral);}
         <div class="ias-card-tag">Career Intelligence · Demo</div>
         <div class="ias-card-icon ias-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
         <div class="ias-card-title">Infinite Careers</div>
-        <div class="ias-card-body">A career-intelligence tool I built: paste a job and a resume, get fit scoring, skill-gap analysis, interview prep, salary intel and a 5-year path in one pass. Click through a live sample. It's the same kind of AI I build for clients.</div>
+        <div class="ias-card-body">A career-intelligence tool I built: paste a job and a resume, get fit scoring, skill-gap analysis, interview prep, salary intel and a 5-year path in one pass. Click through a live sample. It&rsquo;s the same kind of AI I build for clients.</div>
       </div>
       <div class="ias-card-full-aside">
         <span class="ias-pill ias-pill-blue">Live Demo</span>
         <a href="/infinite-careers/" class="ias-btn-primary">Try the demo →</a>
+      </div>
+    
+      <div class="ias-elev-back" aria-hidden="true">
+        <div class="ias-elev-title">Infinite Careers</div>
+        <div class="ias-elev-sub">Paste a job and a resume. Fit, gaps, interview prep, salary and a five-year path in one pass.</div>
+        <a class="ias-elev-link" tabindex="-1" href="/infinite-careers/">Try the demo →</a>
       </div>
     </div>
 
@@ -1017,11 +1271,17 @@ html,body{background:var(--warm-neutral);}
         <div class="ias-card-tag">Everyday AI · Demo</div>
         <div class="ias-card-icon ias-icon-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M3 2v7c0 1.1.9 2 2 2h1a2 2 0 0 0 2-2V2"/><path d="M5 2v7"/><path d="M8 2v20"/><path d="M17 2c-1.7 0-3 2.2-3 5s1.3 5 3 5h1V2z"/><path d="M18 12v10"/></svg></div>
         <div class="ias-card-title">Infinite Pantry</div>
-        <div class="ias-card-body">An AI meal planner I built for my own family so we could stop losing our evenings to "what's for dinner." Tell it who you're feeding, what you avoid and how much time you've got, and it builds the week plus a department-sorted grocery list. Load a sample kitchen and see a finished plan in one click. Same method as the client work, pointed at a home problem.</div>
+        <div class="ias-card-body">An AI meal planner I built for my own family so we could stop losing our evenings to "what&rsquo;s for dinner." Tell it who you&rsquo;re feeding, what you avoid and how much time you&rsquo;ve got, and it builds the week plus a department-sorted grocery list. Load a sample kitchen and see a finished plan in one click. Same method as the client work, pointed at a home problem.</div>
       </div>
       <div class="ias-card-full-aside">
         <span class="ias-pill ias-pill-mint">Live Demo</span>
         <a href="/pantry/" class="ias-btn-primary">Try the demo →</a>
+      </div>
+    
+      <div class="ias-elev-back" aria-hidden="true">
+        <div class="ias-elev-title">Infinite Pantry</div>
+        <div class="ias-elev-sub">Built for my own family, on the same method as the client work, pointed at a home problem.</div>
+        <a class="ias-elev-link" tabindex="-1" href="/pantry/">Try the demo →</a>
       </div>
     </div>
 

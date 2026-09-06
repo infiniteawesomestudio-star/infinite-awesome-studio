@@ -31,3 +31,6 @@ worker/.dev.vars
 # Session backups — working files, never commit
 _backups-*/
 *.bak-*
+
+# Eval/measurement output — internal results, never publish
+test-packs/
