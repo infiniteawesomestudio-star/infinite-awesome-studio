@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Insights · Infinite Awesome Studio</title>
 <meta name="description" content="Notes on AI and automation in the benefits and HR space, from a 25-year benefits veteran building practical tools.">
 <link rel="canonical" href="https://infiniteawesomestudio.com/articles" />
@@ -178,6 +182,21 @@ a{color:inherit;}
    880px, which the old 82px-wide logo did not do). Below 1080 the mark
    carries the brand on its own and the links stay on one row. */
 @media(max-width:1080px){ .ias-lockup{display:none;} }
+
+/* Motion (2026-09-06 WP1, extended here 2026-09-06). Same constants as the
+   homepage so the two pages feel like one site: 28px / 480ms /
+   cubic-bezier(.2,.7,.2,1) / 70ms stagger. Transform+opacity only. The hidden
+   state applies only after JS adds .fx to <html>, so no-JS and reduced-motion
+   visitors get everything painted immediately. Heroes never reveal. */
+.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(28px);transition:opacity 480ms cubic-bezier(.2,.7,.2,1),transform 480ms cubic-bezier(.2,.7,.2,1);}
+.fx .fx-r.fx-in,.fx .fx-s.fx-in>*{opacity:1;transform:none;}
+.fx .fx-s.fx-in>*:nth-child(2){transition-delay:70ms}
+.fx .fx-s.fx-in>*:nth-child(3){transition-delay:140ms}
+.fx .fx-s.fx-in>*:nth-child(4){transition-delay:210ms}
+.fx .fx-s.fx-in>*:nth-child(5){transition-delay:280ms}
+.fx .fx-s.fx-in>*:nth-child(6){transition-delay:350ms}
+.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:420ms}
+@media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
 </style>
 </head>
 <body>
@@ -215,13 +234,13 @@ a{color:inherit;}
 </div>
 
 <main id="main" class="wrap">
-  <div class="page-head head-view">
+  <div class="page-head head-view fx-r">
     <div class="eyebrow">Insights</div>
     <h1 class="page-title">Notes from the benefits trenches.</h1>
     <p class="page-sub">What&rsquo;s actually happening with AI and automation in the benefits and HR space.</p>
   </div>
 
-  <div id="grid" class="grid grid-view"></div>
+  <div id="grid" class="grid grid-view fx-s"></div>
   <article id="reader" class="reader" aria-live="polite"></article>
 </main>
 
@@ -344,12 +363,38 @@ fetch('blog-posts.json',{cache:'no-cache'})
     POSTS=(data&&data.posts)||[];
     renderGrid();
     route();
+    if(window.iasFx)window.iasFx.scan();
   })
   .catch(function(){
     document.getElementById('grid').innerHTML='<div class="state"><div class="ico">⚠️</div><div>Couldn\'t load articles right now.</div></div>';
   });
 
 window.addEventListener('hashchange',route);
+</script>
+<script>
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;
+  document.documentElement.classList.add("fx");
+  var delivered=0;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){delivered++;e.target.classList.add("fx-in");io.unobserve(e.target);}});},{threshold:0.12,rootMargin:"0px 0px -36px 0px"});
+  /* unobserve+observe, not a bare observe: re-observing an element the observer
+     already holds is a no-op and delivers nothing. The cycle forces a fresh
+     initial callback, which is the whole point of re-scanning after content
+     lands asynchronously. */
+  function scan(){document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){if(el.classList.contains("fx-in"))return;io.unobserve(el);io.observe(el);});}
+  /* Reveal everything, now. Used where content is shown by something other than
+     scrolling, so a container that never intersected cannot strand its children
+     at opacity:0. */
+  function revealAll(){document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){io.unobserve(el);el.classList.add("fx-in");});}
+  window.iasFx={scan:scan,revealAll:revealAll};
+  scan();
+  /* Safety net. A target in the viewport at load always delivers immediately, so
+     in a healthy browser this has fired long before the timer and does nothing.
+     If the observer has delivered NOTHING, something is wrong with it and the
+     cost of being wrong here is a blank page, so show the content. Insights
+     builds its grid from a fetch, which makes it the page with the most to lose. */
+  setTimeout(function(){ if(delivered===0) revealAll(); }, 1500);
+})();
 </script>
 </body>
 </html>

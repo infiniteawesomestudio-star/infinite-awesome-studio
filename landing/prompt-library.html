@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Free Benefits AI Prompt Library | Infinite Awesome Studio</title>
 <meta name="description" content="19 free AI prompts built by a 25-year benefits veteran. For HR coordinators, benefits analysts, brokers and HR executives.">
 <link rel="canonical" href="https://infiniteawesomestudio.com/prompt-library" />
@@ -437,6 +441,21 @@ html,body{background:var(--warm-neutral);}
    880px, which the old 82px-wide logo did not do). Below 1080 the mark
    carries the brand on its own and the links stay on one row. */
 @media(max-width:1080px){ .ias-lockup{display:none;} }
+
+/* Motion (2026-09-06 WP1, extended here 2026-09-06). Same constants as the
+   homepage so the two pages feel like one site: 28px / 480ms /
+   cubic-bezier(.2,.7,.2,1) / 70ms stagger. Transform+opacity only. The hidden
+   state applies only after JS adds .fx to <html>, so no-JS and reduced-motion
+   visitors get everything painted immediately. Heroes never reveal. */
+.fx .fx-r,.fx .fx-s>*{opacity:0;transform:translateY(28px);transition:opacity 480ms cubic-bezier(.2,.7,.2,1),transform 480ms cubic-bezier(.2,.7,.2,1);}
+.fx .fx-r.fx-in,.fx .fx-s.fx-in>*{opacity:1;transform:none;}
+.fx .fx-s.fx-in>*:nth-child(2){transition-delay:70ms}
+.fx .fx-s.fx-in>*:nth-child(3){transition-delay:140ms}
+.fx .fx-s.fx-in>*:nth-child(4){transition-delay:210ms}
+.fx .fx-s.fx-in>*:nth-child(5){transition-delay:280ms}
+.fx .fx-s.fx-in>*:nth-child(6){transition-delay:350ms}
+.fx .fx-s.fx-in>*:nth-child(n+7){transition-delay:420ms}
+@media(prefers-reduced-motion:reduce){.fx .fx-r,.fx .fx-s>*{opacity:1;transform:none;transition:none;}}
 </style>
 </head>
 <body>
@@ -498,11 +517,11 @@ html,body{background:var(--warm-neutral);}
     <div class="pl-empty" id="pl-empty">No prompts match that filter.</div>
     
   <section class="pl-section" id="cat-onboarding" data-cat="onboarding">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">New Hire &amp; Onboarding</h2>
       <span class="pl-section-count">1 prompt</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="coordinator" data-cat="onboarding">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -594,11 +613,11 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
     </div>
   </section>
   <section class="pl-section" id="cat-stewardship" data-cat="stewardship">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">Stewardship &amp; Reporting</h2>
       <span class="pl-section-count">3 prompts</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="analyst broker" data-cat="stewardship">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -707,11 +726,11 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
     </div>
   </section>
   <section class="pl-section" id="cat-oe" data-cat="oe">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">Open Enrollment</h2>
       <span class="pl-section-count">3 prompts</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="coordinator exec" data-cat="oe">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -822,11 +841,11 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
     </div>
   </section>
   <section class="pl-section" id="cat-cobra" data-cat="cobra">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">COBRA &amp; Life Events</h2>
       <span class="pl-section-count">3 prompts</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="coordinator analyst" data-cat="cobra">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -937,11 +956,11 @@ YOUR NEXT STEPS: [numbered action list with deadline]</pre>
     </div>
   </section>
   <section class="pl-section" id="cat-renewal" data-cat="renewal">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">Renewal &amp; Carrier Strategy</h2>
       <span class="pl-section-count">4 prompts</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="broker analyst" data-cat="renewal">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -1134,11 +1153,11 @@ CARRIER OBJECTIONS + RESPONSES / WALK-AWAY / HOW TO OPEN / HOW TO CLOSE</pre>
     </div>
   </section>
   <section class="pl-section" id="cat-compliance" data-cat="compliance">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">Compliance &amp; Documentation</h2>
       <span class="pl-section-count">3 prompts</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="coordinator analyst exec" data-cat="compliance">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -1284,11 +1303,11 @@ WHAT WAS DISCUSSED / DECISIONS MADE / OPEN ITEMS / ACTION ITEMS (owner + deadlin
     </div>
   </section>
   <section class="pl-section" id="cat-executive" data-cat="executive">
-    <div class="pl-section-header">
+    <div class="pl-section-header fx-r">
       <h2 class="pl-section-title">Executive Summaries</h2>
       <span class="pl-section-count">2 prompts</span>
     </div>
-    <div class="pl-cards">
+    <div class="pl-cards fx-s">
     <div class="pl-card" data-roles="exec analyst" data-cat="executive">
       <div class="pl-card-inner">
         <div class="pl-card-top">
@@ -1479,7 +1498,36 @@ function filterPrompts(btn) {
   });
 
   document.getElementById('pl-empty').style.display = visibleTotal === 0 ? 'block' : 'none';
+
+  /* Filtering shows sections that may never have scrolled into view. Reveal
+     everything rather than let a re-shown card sit at opacity:0. */
+  if(window.iasFx)window.iasFx.revealAll();
 }
+</script>
+<script>
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;
+  document.documentElement.classList.add("fx");
+  var delivered=0;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){delivered++;e.target.classList.add("fx-in");io.unobserve(e.target);}});},{threshold:0.12,rootMargin:"0px 0px -36px 0px"});
+  /* unobserve+observe, not a bare observe: re-observing an element the observer
+     already holds is a no-op and delivers nothing. The cycle forces a fresh
+     initial callback, which is the whole point of re-scanning after content
+     lands asynchronously. */
+  function scan(){document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){if(el.classList.contains("fx-in"))return;io.unobserve(el);io.observe(el);});}
+  /* Reveal everything, now. Used where content is shown by something other than
+     scrolling, so a container that never intersected cannot strand its children
+     at opacity:0. */
+  function revealAll(){document.querySelectorAll(".fx-r,.fx-s").forEach(function(el){io.unobserve(el);el.classList.add("fx-in");});}
+  window.iasFx={scan:scan,revealAll:revealAll};
+  scan();
+  /* Safety net. A target in the viewport at load always delivers immediately, so
+     in a healthy browser this has fired long before the timer and does nothing.
+     If the observer has delivered NOTHING, something is wrong with it and the
+     cost of being wrong here is a blank page, so show the content. Insights
+     builds its grid from a fetch, which makes it the page with the most to lose. */
+  setTimeout(function(){ if(delivered===0) revealAll(); }, 1500);
+})();
 </script>
 </body>
 </html>
