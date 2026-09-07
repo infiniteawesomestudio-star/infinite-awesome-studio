@@ -120,8 +120,20 @@ html,body{background:var(--warm-neutral);}
    and the "same playbook elsewhere" line that makes them mean something. */
 .ias-hero-inner{
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,0.72fr);
+  grid-template-columns:minmax(0,1fr) minmax(0,0.66fr);
   gap:56px;align-items:center;
+  /* The hero was the ONLY full-bleed section on the page: every block below it
+     is a centred 1040-1140 container, so at 1920 the copy sat at x=52 and the
+     figure at x=1853 with a 501px hole between them, and the image landed 331px
+     right of where the page's right edge is everywhere else. 1140 is not a round
+     number picked by eye, it matches .ias-problem exactly, so the figure's right
+     edge and the section below it now share a line.
+     0.66fr rather than 0.72fr because a 1140 container makes the copy column a
+     constant 630px above ~1212px viewport, and the h1's widest hardcoded line
+     ("Almost Nobody Uses It.") measures 605px in Bricolage and 629px in the
+     Helvetica Neue fallback: a 1px margin that wraps to four lines during font
+     load. 0.66fr buys 48px / 24px and costs the figure 9px. */
+  max-width:1140px;margin-left:auto;margin-right:auto;
 }
 .ias-hero-figure{
   position:relative;
