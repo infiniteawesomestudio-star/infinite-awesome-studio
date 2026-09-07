@@ -29,7 +29,7 @@ Infinite Awesome Studio (parent — IP, brand, production system)
 |---|---|---|---|
 | **Infinite Careers** | Claude-powered career-intelligence platform (fit scoring, ATS, gap analysis, resume optimization, bias analysis) | Live | [infiniteawesomestudio.com/infinite-careers](https://infiniteawesomestudio.com/infinite-careers/) |
 | **BeneBots** | Roster of specialized, domain-specific benefits AI agents (COBRA, HSA, leave, plan comparison, claims, open enrollment, compliance) | Live | [benebots.infiniteawesomestudio.com](https://benebots.infiniteawesomestudio.com) |
-| **Infinite Workflows** | Done-with-you AI workflow automation for small-business owners | Live | [infiniteawesomestudio.com/infinite-workflows](https://infiniteawesomestudio.com/infinite-workflows/) |
+| **The Infinity Desk** | Done-for-you AI front desk for solo service pros: catches every message, answers the repeat questions, books the appointment and takes the deposit | Live | [infiniteawesomestudio.com/infinity-desk](https://infiniteawesomestudio.com/infinity-desk/) |
 | **MBG Content Engine** | Knowledge-grounded, multi-platform content-automation pipeline (below) | Live (production) | — |
 | **Infinite Pantry** | AI meal-planning + pantry-aware grocery assistant | Early build | _separate repo_ |
 

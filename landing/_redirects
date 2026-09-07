@@ -1,0 +1,12 @@
+# Cloudflare Pages redirects. First match wins, so keep the most specific first.
+#
+# 2026-09-06: /infinite-workflows/ became /infinity-desk/. The page has been
+# labelled "The Infinity Desk" since the 9-05 reorder and canon retires the
+# "Infinite Workflows" name, but the path still carried it. These two rules
+# keep every link ever shared, printed or indexed alive.
+#
+# NOTE: deliberately NO catch-all here. Unknown paths already resolve to the
+# homepage with HTTP 200 via the Pages fallback, and an SPA-style
+# "/*  /index.html  200" line would also swallow these rules.
+/infinite-workflows/*    /infinity-desk/:splat    301
+/infinite-workflows      /infinity-desk/          301
