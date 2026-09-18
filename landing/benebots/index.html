@@ -93,13 +93,17 @@ a{color:inherit;}
 section{padding:46px 0;}
 .section-head{margin-bottom:30px;}
 
-/* TWO LANES */
-.lanes{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+/* THE LANE (2026-09-17: was TWO LANES, side by side) ────────────────────────
+   The client-facing card came out, so the surviving card spans the row rather
+   than sitting at half width with a hole beside it. Its list then sets in two
+   columns: five 14px items down one side of a 1,020px card is a strip of text
+   against empty space, which is what the two-column grid used to prevent. */
+.lanes{display:grid;grid-template-columns:1fr;gap:22px;}
 .lane{background:var(--white);border:1px solid var(--ink-08);border-radius:18px;padding:28px;}
 .lane h3{font-family:var(--font-display);font-size:19px;font-weight:700;margin-bottom:6px;}
 .lane .lane-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-text);margin-bottom:12px;}
-.lane ul{list-style:none;margin-top:14px;}
-.lane li{font-size:14px;line-height:1.5;color:var(--ink-70);padding:7px 0 7px 22px;position:relative;}
+.lane ul{list-style:none;margin-top:14px;columns:2;column-gap:40px;}
+.lane li{font-size:14px;line-height:1.5;color:var(--ink-70);padding:7px 0 7px 22px;position:relative;break-inside:avoid;}
 .lane li::before{content:'→';position:absolute;left:0;color:var(--mint-text);font-weight:700;}
 
 /* ROSTER */
@@ -156,6 +160,7 @@ section{padding:46px 0;}
 @media(max-width:860px){
   .hero{grid-template-columns:1fr;}
   .lanes,.roster{grid-template-columns:1fr;}
+  .lane ul{columns:1;}
   .social-feature{grid-template-columns:1fr;padding:30px;}
   .bot{flex-direction:column;}
 }
@@ -267,7 +272,7 @@ section{padding:46px 0;}
   <!-- HERO -->
   <section class="hero">
     <div>
-      <div class="eyebrow">Character-led education &amp; automation</div>
+      <div class="eyebrow">Character-led education</div>
       <h1>Plain-English explainers for the most confusing topic in business.</h1>
       <p>BeneBots are Infinite Awesome Studio's cast of plain-English explainers, built to make complex benefits and HR topics easier to teach, remember and reuse. The same method behind The Infinity Desk, pointed at the work benefits and HR teams live in. General education only, human-reviewed, never advice.</p>
       <div class="btn-row">
@@ -280,12 +285,8 @@ section{padding:46px 0;}
     </div>
   </section>
 
-  <!-- TWO LANES -->
+  <!-- THE LANE (was TWO LANES) -->
   <section>
-    <div class="section-head">
-      <div class="eyebrow">Two ways BeneBots work</div>
-      <h2 class="section-title">One cast. A public face and a private workhorse.</h2>
-    </div>
     <div class="lanes">
       <div class="lane">
         <div class="lane-tag">Public education campaign</div>
@@ -296,17 +297,6 @@ section{padding:46px 0;}
           <li>Social posts, carousels, skits, explainers and storylines</li>
           <li>General education and entertainment only</li>
           <li>Drives awareness back to Infinite Awesome Studio</li>
-        </ul>
-      </div>
-      <div class="lane">
-        <div class="lane-tag">Client-facing asset layer</div>
-        <h3>Behind the scenes for benefits &amp; HR teams</h3>
-        <ul>
-          <li>Internal training assets and onboarding explainers</li>
-          <li>Employee FAQ content and knowledge-base drafts</li>
-          <li>Open enrollment and leave-process education</li>
-          <li>Report drafts and leadership summaries</li>
-          <li>Branded content campaigns, plain-English throughout</li>
         </ul>
       </div>
     </div>
