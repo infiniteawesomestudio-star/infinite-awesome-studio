@@ -151,14 +151,21 @@ a{color:inherit;}
    Holds the long-form bio that used to occupy 1,685px of the homepage, which
    was 2.8x the hero while the offer had no section at all.
 
-   The three headshot bugs from the homepage are fixed HERE rather than
-   carried over, because they travel with the photo:
-     1. grid-template-columns was 1.1fr 1fr, which handed the IMAGE the wider
-        column. Reversed: the words get the room.
-     2. align-items:center floated a 500px block inside a 1,333px row, which
-        is what produced the sea of beige around the photo. Now `start`.
-     3. max-height:460px capped the image so it could not grow into its own
-        column. Dropped; it is sized by its column instead. */
+   2026-09-17: the founder photo came out, which retires the whole headshot
+   bug list this comment used to carry (the image no longer gets a column, so
+   it cannot get the wrong one).
+
+   The card now runs the SAME width as .about-cols below it, so the page is
+   one column edge to edge instead of stepping narrow-wide-narrow. Filling
+   that width with a single run of text would put the bio at ~130 characters
+   a line, roughly double a readable measure, so the prose sets in two
+   columns: ~470px each, ~59 characters, and the block's height halves so
+   both columns are on screen at once. The heading and the signature span
+   both columns so the card still opens and closes on one line.
+
+   Rejected: a left rail holding the heading and signature. It fills the
+   width on paper, but the prose runs ~780px tall against ~150px of rail
+   content, which re-creates the empty column the photo used to occupy. */
 .about-wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
 .about-hero{padding:64px 0 12px;max-width:760px;}
 .about-eyebrow{font-family:var(--font-body);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-40);font-weight:600;display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;}
@@ -166,22 +173,18 @@ a{color:inherit;}
 .about-hero h1{font-family:var(--font-display);font-weight:700;font-size:44px;line-height:1.08;letter-spacing:-.02em;margin-bottom:16px;}
 .about-hero p{font-family:var(--font-body);font-size:18px;line-height:1.7;color:var(--ink-70);}
 .about-layout{
-  display:grid;
-  grid-template-columns:1fr 1.25fr;   /* bug 1: the words get the wider column */
-  gap:44px;
-  align-items:start;                   /* bug 2: no floating in a tall row */
+  display:block;
   background:var(--white);
   border:1px solid var(--ink-08);
   border-radius:20px;
   padding:40px;
   margin:36px 0 28px;
 }
-.about-photo img{
-  width:100%;height:auto;display:block;  /* bug 3: no max-height cap */
-  border-radius:16px;
-  box-shadow:0 12px 32px rgba(26,26,26,0.14);
-}
-.about-photo figcaption{font-family:var(--font-body);font-size:12.5px;line-height:1.5;color:var(--ink-55);margin-top:12px;}
+.about-body{columns:2;column-gap:56px;}
+.about-body h2{column-span:all;}
+.about-body p{orphans:2;widows:2;}
+.about-shift{break-inside:avoid;}
+.about-sign{column-span:all;margin-top:8px;}
 .about-body h2{font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1.15;letter-spacing:-.01em;margin-bottom:16px;}
 .about-body p{font-family:var(--font-body);font-size:16.5px;line-height:1.75;color:var(--ink-70);margin-bottom:16px;}
 .about-shift{list-style:none;margin:4px 0 20px;padding:0;}
@@ -203,7 +206,8 @@ a{color:inherit;}
 .about-btn-ghost{border:1px solid var(--ink-12);color:var(--ink);}
 .about-btn-ghost:hover{border-color:var(--ink);}
 @media(max-width:860px){
-  .about-layout{grid-template-columns:1fr;gap:28px;padding:28px;}
+  .about-layout{padding:28px;}
+  .about-body{columns:1;}
   .about-hero h1{font-size:34px;}
   .about-wrap{padding:0 20px;}
 }
@@ -302,10 +306,6 @@ a{color:inherit;}
   </section>
 
   <div class="about-layout fx-r">
-    <figure class="about-photo">
-      <img src="assets/ty-headshot-pro.jpg" width="1080" height="1350" alt="Ty Mosher, founder of Infinite Awesome Studio" />
-      <figcaption>Ty Mosher, founder.</figcaption>
-    </figure>
     <div class="about-body">
       <h2>How I got here</h2>
       <p>I&rsquo;ve been in benefits since 2004. Over 25 years of watching how this industry works, what breaks and where the manual work piles up.</p>

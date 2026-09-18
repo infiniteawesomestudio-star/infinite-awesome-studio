@@ -633,30 +633,23 @@ html,body{background:var(--warm-neutral);}
    lives at /about. What stays here is the one line that does the positioning
    work, a compact credential row and a way out.
 
-   The homepage headshot bugs are fixed here too, since they travel with the
-   photo: the image gets the NARROW column (it used to get the wider one at
-   1.1fr 1fr), and it is sized by a fixed square crop rather than a
-   max-height cap floating in a tall centred row. */
+   2026-09-17: the founder photo came out. The strip is now a single text
+   column, so the two-column grid and the .ias-cred-photo crop rules went with
+   it. The credential row does the work the face used to do, which is why the
+   positioning line gets a wider measure here than the 44ch it needed when it
+   was sharing the card with a 172px image. */
 .ias-cred{
-  display:grid;
-  grid-template-columns:172px 1fr;
-  gap:32px;align-items:center;
+  display:block;
   max-width:1040px;margin:0 auto;
   background:var(--white);
   border:1px solid var(--ink-08);
   border-radius:20px;
   padding:28px 32px;
 }
-.ias-cred-photo{
-  width:172px;height:172px;
-  border-radius:16px;object-fit:cover;object-position:50% 22%;
-  display:block;
-  box-shadow:0 10px 26px rgba(26,26,26,0.14);
-}
 .ias-cred-line{
   font-family:var(--font-display);
   font-weight:700;font-size:24px;line-height:1.22;letter-spacing:-0.01em;
-  color:var(--ink);margin-bottom:12px;max-width:44ch;
+  color:var(--ink);margin-bottom:12px;max-width:54ch;
 }
 .ias-cred-line em{font-style:normal;color:var(--mint-text);}
 .ias-cred-facts{display:flex;flex-wrap:wrap;gap:8px 10px;margin-bottom:14px;}
@@ -672,7 +665,7 @@ html,body{background:var(--warm-neutral);}
 }
 .ias-cred-more:hover{border-bottom-color:var(--mint-text);}
 @media(max-width:720px){
-  .ias-cred{grid-template-columns:1fr;gap:20px;padding:24px;justify-items:start;}
+  .ias-cred{padding:24px;}
   .ias-cred-line{font-size:21px;}
 }
 
@@ -1230,7 +1223,6 @@ html,body{background:var(--warm-neutral);}
   <!-- ============== CREDIBILITY STRIP ============== -->
   <section class="ias-section" id="about">
     <div class="ias-cred fx-r">
-      <img class="ias-cred-photo" src="assets/ty-headshot-pro.jpg" width="1080" height="1350" alt="Ty Mosher, founder of Infinite Awesome Studio" />
       <div>
         <p class="ias-cred-line">I&rsquo;m not an AI person who wandered into benefits.<br><em>I&rsquo;m a benefits person who found a better tool.</em></p>
         <div class="ias-cred-facts">
