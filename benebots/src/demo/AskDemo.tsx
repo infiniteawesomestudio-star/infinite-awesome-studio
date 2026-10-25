@@ -1,101 +1,118 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send } from 'lucide-react'
 import ExportBar from '../components/ExportBar'
+import { useClient } from '../client/ClientContext'
+import type { Client } from '../data/demoProfile'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
 }
 
-const SUGGESTED = [
-  "What's the difference between the HDHP and PPO?",
-  "How much does Demo Co put in my HSA?",
-  "I just had a baby. What do I do?",
-  "When is open enrollment?",
-]
+// Everything below is built from the active client, so the switcher changes
+// the suggestions, the canned answers and the tenant the worker answers from.
+function suggestedFor(client: Client): string[] {
+  return [
+    "What's the difference between the HDHP and PPO?",
+    `How much does ${client.companyName} put in my HSA?`,
+    "I just had a baby. What do I do?",
+    "When is open enrollment?",
+  ]
+}
 
-const FOLLOW_UPS: { keywords: string[]; suggestions: string[] }[] = [
-  {
-    keywords: ['hdhp', 'ppo', 'deductible', 'plan', 'coinsurance', 'oopm', 'out-of-pocket'],
-    suggestions: ["How much does Demo Co put in my HSA?", "Which plan is better if I barely use healthcare?", "What's the out-of-pocket max on the PPO?"],
-  },
-  {
-    keywords: ['hsa', 'health savings', 'contribution', 'seed', 'limit'],
-    suggestions: ["Can I use my HSA for dental and vision?", "What happens to my HSA if I switch to the PPO?", "What's the HSA family limit for 2026?"],
-  },
-  {
-    keywords: ['fsa', 'flexible spending', 'carryover', 'dependent care'],
-    suggestions: ["Can I have both an HSA and FSA?", "What can I spend my FSA on?", "When does my FSA carryover expire?"],
-  },
-  {
-    keywords: ['baby', 'newborn', 'birth', 'parental', 'maternity', 'paternity', 'child'],
-    suggestions: ["How long is Demo Co's paid parental leave?", "When do I need to add my baby to insurance?", "Does FMLA run at the same time as parental leave?"],
-  },
-  {
-    keywords: ['cobra', 'lose coverage', 'leaving', 'job loss', 'continuation'],
-    suggestions: ["How long does COBRA coverage last?", "How much does COBRA cost?", "Are there alternatives to COBRA?"],
-  },
-  {
-    keywords: ['open enrollment', 'oe', 'enroll', 'election', 'change plan'],
-    suggestions: ["What if I miss open enrollment?", "When does open enrollment happen at Demo Co?", "Can I change my HSA election during the year?"],
-  },
-  {
-    keywords: ['401k', 'retirement', 'match', 'roth', 'contribution'],
-    suggestions: ["What's Demo Co's 401(k) match?", "Is there a Roth 401(k) option?", "When am I vested in the match?"],
-  },
-  {
-    keywords: ['dental', 'vision', 'vsp', 'delta', 'orthodont'],
-    suggestions: ["Does dental cover orthodontics?", "What's the annual dental maximum?", "Is vision included with medical or separate?"],
-  },
-]
+function followUpsFor(client: Client): { keywords: string[]; suggestions: string[] }[] {
+  const co = client.companyName
+  return [
+    {
+      keywords: ['hdhp', 'ppo', 'deductible', 'plan', 'coinsurance', 'oopm', 'out-of-pocket'],
+      suggestions: [`How much does ${co} put in my HSA?`, "Which plan is better if I barely use healthcare?", "What's the out-of-pocket max on the PPO?"],
+    },
+    {
+      keywords: ['hsa', 'health savings', 'contribution', 'seed', 'limit'],
+      suggestions: ["Can I use my HSA for dental and vision?", "What happens to my HSA if I switch to the PPO?", "What's the HSA family limit for 2026?"],
+    },
+    {
+      keywords: ['fsa', 'flexible spending', 'carryover', 'dependent care'],
+      suggestions: ["Can I have both an HSA and FSA?", "What can I spend my FSA on?", "When does my FSA carryover expire?"],
+    },
+    {
+      keywords: ['baby', 'newborn', 'birth', 'parental', 'maternity', 'paternity', 'child'],
+      suggestions: [`How long is ${co}'s paid parental leave?`, "When do I need to add my baby to insurance?", "Does FMLA run at the same time as parental leave?"],
+    },
+    {
+      keywords: ['cobra', 'lose coverage', 'leaving', 'job loss', 'continuation'],
+      suggestions: ["How long does COBRA coverage last?", "How much does COBRA cost?", "Are there alternatives to COBRA?"],
+    },
+    {
+      keywords: ['open enrollment', 'oe', 'enroll', 'election', 'change plan'],
+      suggestions: ["What if I miss open enrollment?", `When does open enrollment happen at ${co}?`, "Can I change my HSA election during the year?"],
+    },
+    {
+      keywords: ['401k', 'retirement', 'match', 'roth', 'contribution'],
+      suggestions: [`What's ${co}'s 401(k) match?`, "Is there a Roth 401(k) option?", "When am I vested in the match?"],
+    },
+    {
+      keywords: ['dental', 'vision', 'orthodont'],
+      suggestions: ["Does dental cover orthodontics?", "What's the annual dental maximum?", "Is vision included with medical or separate?"],
+    },
+  ]
+}
 
-function getFollowUps(lastReply: string): string[] {
+function getFollowUps(client: Client, lastReply: string): string[] {
   const lower = lastReply.toLowerCase()
-  for (const group of FOLLOW_UPS) {
+  for (const group of followUpsFor(client)) {
     if (group.keywords.some(k => lower.includes(k))) {
       return group.suggestions
     }
   }
-  return ["What other benefits does Demo Co offer?", "How does the HSA work?", "What happens during open enrollment?"]
+  return [`What other benefits does ${client.companyName} offer?`, "How does the HSA work?", "What happens during open enrollment?"]
 }
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL as string | undefined
 const WORKER_TOKEN = import.meta.env.VITE_WORKER_TOKEN as string | undefined
 
+const usd = (n: number) => `$${n.toLocaleString()}`
+
 // Canned, grounded answers for the PUBLIC demo (zero API calls, no secrets shipped).
 // The live worker path is used only in internal dev where the worker creds are set.
-const CANNED: { keywords: string[]; answer: string }[] = [
-  { keywords: ['hdhp', 'ppo', 'deductible', 'plan', 'difference', 'coinsurance', 'out-of-pocket', 'oopm'],
-    answer: `Demo Co offers two medical plans:\n\n• HDHP with HSA — $1,700 individual / $3,400 family deductible, $4,000 / $8,000 out-of-pocket max, and Demo Co seeds your HSA with $1,000. Lower premium, higher deductible.\n• PPO — $500 / $1,000 deductible with $30 primary-care and $55 specialist copays from day one. Higher premium, more predictable costs.\n\nIf you're generally healthy or want the HSA tax advantage, the HDHP usually wins. If you want copays without a big deductible, the PPO is the safer pick.` },
-  { keywords: ['hsa', 'health savings', 'seed', 'contribution', 'contribute', 'limit'],
-    answer: `If you enroll in the HDHP, Demo Co contributes $1,000 to your HSA each year — it's yours to keep and rolls over. For 2026 you can contribute up to $4,400 (individual) or $8,750 (family), plus an extra $1,000 if you're 55+. HSA money is triple tax-advantaged and never expires.` },
-  { keywords: ['baby', 'newborn', 'birth', 'parental', 'maternity', 'paternity', 'child', 'pregnan'],
-    answer: `Congratulations! A few things:\n\n• Demo Co offers 6 weeks of fully paid parental leave, which runs alongside FMLA.\n• Add your new dependent within 30 days of birth — it's a qualifying life event, so you can change your election outside open enrollment.\n• Short-term disability through The Hartford covers the medical recovery portion of leave.\n\nStart the paperwork with Demo Co HR (hr@democo.example).` },
-  { keywords: ['open enrollment', 'oe', 'enroll', 'election', 'when can i change', 'change plan', 'qualifying'],
-    answer: `Open enrollment is your once-a-year window to change medical, dental, vision, and HSA/FSA elections. Outside that window you can only make changes after a qualifying life event — marriage, birth, or loss of other coverage — and you have 30 days from the event to act.` },
-  { keywords: ['fsa', 'flexible spending', 'carryover', 'dependent care'],
-    answer: `Demo Co offers a Health FSA (up to $3,400, with $680 carryover) and a Dependent Care FSA (up to $7,500, or $3,750 if you're married filing separately). Important: you can't pair a general Health FSA with an HSA — if you're on the HDHP/HSA, you'd use a Limited Purpose FSA (dental and vision only) instead.` },
-  { keywords: ['cobra', 'lose coverage', 'leaving', 'job loss', 'continuation', 'quit', 'laid off'],
-    answer: `If you lose coverage, COBRA (administered by WEX Benefits) lets you continue your current plan, typically for up to 18 months. You have 60 days from the qualifying event to elect it. The coverage is identical, but you pay the full premium yourself.` },
-  { keywords: ['401', 'retirement', 'match', 'roth', 'vest'],
-    answer: `Demo Co matches 100% of your first 3% and 50% of the next 2% — so contributing 5% earns the full 4% employer match. There's a Roth 401(k) option, and SECURE 2.0 catch-up contributions are available.` },
-  { keywords: ['dental', 'vision', 'vsp', 'delta', 'orthodont', 'glasses', 'braces'],
-    answer: `Dental is through Delta Dental PPO — preventive care covered 100% (no deductible), $2,500 annual max, and orthodontia at 50% up to a $2,000 lifetime maximum. Vision is through VSP.` },
-]
-
-function cannedAnswer(question: string): string {
-  const q = question.toLowerCase()
-  for (const item of CANNED) {
-    if (item.keywords.some(k => q.includes(k))) return item.answer
-  }
-  return `I'm the Ask BeneBot demo for Demo Co. I can walk you through the medical plans (HDHP vs PPO), the HSA and FSA, the 401(k) match, parental leave, open enrollment, COBRA, and dental/vision. Pick a suggested question above or ask about any of those.`
+// Statutory figures (HSA, FSA, DCFSA limits) are the same for every client;
+// everything else comes from the client's own profile.
+function cannedFor(c: Client): { keywords: string[]; answer: string }[] {
+  const co = c.companyName
+  const { hdhp, ppo } = c.medical
+  return [
+    { keywords: ['hdhp', 'ppo', 'deductible', 'plan', 'difference', 'coinsurance', 'out-of-pocket', 'oopm'],
+      answer: `${co} offers two medical plans:\n\n• HDHP with HSA — ${usd(hdhp.deductible.individual)} individual / ${usd(hdhp.deductible.family)} family deductible, ${usd(hdhp.oopm.individual)} / ${usd(hdhp.oopm.family)} out-of-pocket max, and ${co} seeds your HSA with ${usd(hdhp.employerHsaSeed)}. Lower premium, higher deductible.\n• PPO — ${usd(ppo.deductible.individual)} / ${usd(ppo.deductible.family)} deductible with ${usd(ppo.primaryCareCopay)} primary-care and ${usd(ppo.specialistCopay)} specialist copays from day one. Higher premium, more predictable costs.\n\nIf you're generally healthy or want the HSA tax advantage, the HDHP usually wins. If you want copays without a big deductible, the PPO is the safer pick.` },
+    { keywords: ['hsa', 'health savings', 'seed', 'contribution', 'contribute', 'limit'],
+      answer: `If you enroll in the HDHP, ${co} contributes ${usd(c.hsa.employerSeed)} to your HSA each year — it's yours to keep and rolls over. For 2026 you can contribute up to ${usd(c.hsa.limit2026Individual)} (individual) or ${usd(c.hsa.limit2026Family)} (family), plus an extra ${usd(c.hsa.catchUp55)} if you're 55+. HSA money is triple tax-advantaged and never expires.` },
+    { keywords: ['baby', 'newborn', 'birth', 'parental', 'maternity', 'paternity', 'child', 'pregnan'],
+      answer: `Congratulations! A few things:\n\n• ${co} offers ${c.loa.companyParentalLeave} of paid parental leave, which runs alongside FMLA.\n• Add your new dependent within 30 days of birth — it's a qualifying life event, so you can change your election outside open enrollment.\n• Short-term disability through ${c.loa.stdCarrier} covers the medical recovery portion of leave.\n\nStart the paperwork with ${c.loa.loaAdministrator}.` },
+    { keywords: ['open enrollment', 'oe', 'enroll', 'election', 'when can i change', 'change plan', 'qualifying'],
+      answer: `Open enrollment is your once-a-year window to change medical, dental, vision, and HSA/FSA elections. Outside that window you can only make changes after a qualifying life event — marriage, birth, or loss of other coverage — and you have 30 days from the event to act.` },
+    { keywords: ['fsa', 'flexible spending', 'carryover', 'dependent care'],
+      answer: `${co} offers a Health FSA (up to ${usd(c.fsa.healthFsa.limit)}, with ${usd(c.fsa.healthFsa.carryover)} carryover) and a Dependent Care FSA (up to ${usd(c.fsa.dependentCareFsa.limit)}, or ${usd(c.fsa.dependentCareFsa.limit / 2)} if you're married filing separately). Important: you can't pair a general Health FSA with an HSA — if you're on the HDHP/HSA, you'd use a Limited Purpose FSA (dental and vision only) instead.` },
+    { keywords: ['cobra', 'lose coverage', 'leaving', 'job loss', 'continuation', 'quit', 'laid off'],
+      answer: `If you lose coverage, COBRA (administered by ${c.cobra.administrator}) lets you continue your current plan, typically for up to 18 months. You have ${c.cobra.qualifyingEventWindow} days from the qualifying event to elect it. The coverage is identical, but you pay the full premium yourself.` },
+    { keywords: ['401', 'retirement', 'match', 'roth', 'vest'],
+      answer: `${co}'s 401(k) match: ${c.retirement.match}.${c.retirement.rothOption ? ' There\'s a Roth 401(k) option.' : ''}${c.retirement.secure2CatchUp ? ' SECURE 2.0 catch-up contributions are available.' : ''}` },
+    { keywords: ['dental', 'vision', 'orthodont', 'glasses', 'braces'],
+      answer: `Dental is through ${c.dental.carrier} — preventive care covered ${c.dental.preventive} (no deductible), ${usd(c.dental.annualMax)} annual max, and orthodontia at ${c.dental.ortho}. Vision is through ${c.vision.carrier}.` },
+  ]
 }
 
-async function callWorker(messages: Message[]): Promise<string> {
+function cannedAnswer(client: Client, question: string): string {
+  const q = question.toLowerCase()
+  for (const item of cannedFor(client)) {
+    if (item.keywords.some(k => q.includes(k))) return item.answer
+  }
+  return `I'm the Ask BeneBot demo for ${client.companyName}. I can walk you through the medical plans (HDHP vs PPO), the HSA and FSA, the 401(k) match, parental leave, open enrollment, COBRA, and dental/vision. Pick a suggested question above or ask about any of those.`
+}
+
+async function callWorker(client: Client, messages: Message[]): Promise<string> {
   if (!WORKER_URL || !WORKER_TOKEN) {
     // Public demo: no worker configured → grounded canned answer, zero network calls.
     await new Promise(r => setTimeout(r, 450))
-    return cannedAnswer(messages[messages.length - 1]?.content ?? '')
+    return cannedAnswer(client, messages[messages.length - 1]?.content ?? '')
   }
   const res = await fetch(WORKER_URL, {
     method: 'POST',
@@ -103,7 +120,7 @@ async function callWorker(messages: Message[]): Promise<string> {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${WORKER_TOKEN}`,
     },
-    body: JSON.stringify({ botId: 'ask', messages, maxTokens: 1024 }),
+    body: JSON.stringify({ botId: 'ask', tenantId: client.id, messages, maxTokens: 1024 }),
   })
   if (!res.ok) throw new Error(`Worker error ${res.status}`)
   const data = await res.json()
@@ -113,6 +130,7 @@ async function callWorker(messages: Message[]): Promise<string> {
 }
 
 export default function AskDemo() {
+  const client = useClient()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -126,6 +144,14 @@ export default function AskDemo() {
     if (container) container.scrollTop = container.scrollHeight
   }, [messages])
 
+  // A conversation belongs to one client. Switching clients starts fresh so
+  // nothing said about one employer's plan carries into another's.
+  useEffect(() => {
+    setMessages([])
+    setFollowUps([])
+    setError(null)
+  }, [client.id])
+
   const send = async (text: string) => {
     if (!text.trim() || loading) return
     const userMsg: Message = { role: 'user', content: text.trim() }
@@ -136,9 +162,9 @@ export default function AskDemo() {
     setLoading(true)
     setError(null)
     try {
-      const reply = await callWorker(next)
+      const reply = await callWorker(client, next)
       setMessages(m => [...m, { role: 'assistant', content: reply }])
-      setFollowUps(getFollowUps(reply))
+      setFollowUps(getFollowUps(client, reply))
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'unknown'
       if (msg.includes('429')) {
@@ -157,7 +183,7 @@ export default function AskDemo() {
   }
 
   const buildTranscript = () =>
-    `# Ask BeneBot — Demo Co (transcript)\n\n${messages
+    `# Ask BeneBot — ${client.companyName} (transcript)\n\n${messages
       .map(m => `**${m.role === 'user' ? 'You' : 'BeneBot'}:** ${m.content}`)
       .join('\n\n')}\n`
 
@@ -175,13 +201,13 @@ export default function AskDemo() {
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-6 py-10">
               <div className="text-center">
-                <p className="font-display font-bold text-dark-text text-lg mb-1">Ask BeneBot | Demo Co</p>
+                <p className="font-display font-bold text-dark-text text-lg mb-1">Ask BeneBot | {client.companyName}</p>
                 <p className="text-sm font-body text-dark-muted max-w-sm">
-                  Ask anything about Demo Co's benefits. Every answer is grounded in the actual plan data.
+                  Ask anything about {client.companyName}'s benefits. Every answer is grounded in the actual plan data.
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 gap-2.5 w-full max-w-xl">
-                {SUGGESTED.map(q => (
+                {suggestedFor(client).map(q => (
                   <button
                     key={q}
                     onClick={() => send(q)}
@@ -270,7 +296,7 @@ export default function AskDemo() {
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Ask about Demo Co's benefits…"
+              placeholder={`Ask about ${client.companyName}'s benefits…`}
               disabled={loading}
               className="flex-1 px-4 py-2.5 text-sm font-body bg-dark-base border border-dark-border rounded-xl text-dark-text placeholder-dark-muted focus:outline-none focus:border-[#00C47A]/40 transition-colors disabled:opacity-50"
             />
@@ -283,7 +309,7 @@ export default function AskDemo() {
             </button>
           </form>
           <p className="text-[10px] font-body text-dark-muted mt-2 text-center">
-            Demo mode. Responses are grounded in Demo Co plan data
+            Demo mode. Responses are grounded in {client.companyName} plan data
           </p>
         </div>
       </div>

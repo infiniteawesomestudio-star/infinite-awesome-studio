@@ -107,7 +107,7 @@ async function generateDraft(DEMO_PROFILE: Client, section: Section, drafts: Rec
   const res = await fetch(WORKER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${WORKER_TOKEN}` },
-    body: JSON.stringify({ botId: 'stewardship', messages: [{ role: 'user', content: userMsg }], maxTokens: 1024 }),
+    body: JSON.stringify({ botId: 'stewardship', tenantId: DEMO_PROFILE.id, messages: [{ role: 'user', content: userMsg }], maxTokens: 1024 }),
   })
   if (!res.ok) return drafts[section]
   const data = await res.json()

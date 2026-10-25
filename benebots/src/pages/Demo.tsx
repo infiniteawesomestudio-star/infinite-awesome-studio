@@ -8,7 +8,6 @@ import OECoachDemo from '../demo/OECoachDemo'
 import LOANavigatorDemo from '../demo/LOANavigatorDemo'
 import ClaimsCompassDemo from '../demo/ClaimsCompassDemo'
 import { ClientProvider, useClient, useClientControls } from '../client/ClientContext'
-import { CLIENTS } from '../data/demoProfile'
 
 const BOT_META: Record<string, { name: string; color: string; tagline: string; image: string }> = {
   ask: { name: 'Ask BeneBot', color: '#00C47A', tagline: 'Employee Q&A, grounded in the client\'s plans', image: '/MyBenefitsGuy_AskBot_TP.png' },
@@ -67,8 +66,6 @@ function DemoInner() {
   }
 
   const isChat = botId === 'ask'
-  // Ask runs against the live worker (Demo Co context), so it stays single-client.
-  const headerClientName = isChat ? CLIENTS[0].companyName : client.companyName
 
   return (
     <div className="h-screen bg-dark-base text-dark-text flex flex-col overflow-hidden">
@@ -92,11 +89,11 @@ function DemoInner() {
               className="text-[10px] font-body font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full border"
               style={{ backgroundColor: `${meta.color}12`, color: meta.color, borderColor: `${meta.color}33` }}
             >
-              Demo mode | {headerClientName}
+              Demo mode | {client.companyName}
             </span>
           </div>
           <div className="flex items-center gap-4">
-            {!isChat && <ClientSwitcher />}
+            <ClientSwitcher />
             <Link
               to="/"
               className="text-xs font-body text-dark-muted hover:text-mint transition-colors flex items-center gap-1"

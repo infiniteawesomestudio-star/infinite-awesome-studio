@@ -18,6 +18,15 @@ PUBLIC_DAILY_CAP = "60"
 binding = "PUBLIC_KV"
 id = "785e9d97fbab4219822575b1695c0d97"
 
+# Real tenant records (one KV key per client: tenant:<tenantId>). Built with
+# tools/build-tenant.mjs. Until this is bound, only the built-in fictional demo
+# tenants resolve and every other tenantId fails closed with a 404.
+# Create once:  npx wrangler kv namespace create TENANTS
+# then uncomment and paste the id it prints:
+# [[kv_namespaces]]
+# binding = "TENANTS"
+# id = "<id from the create command>"
+
 [[unsafe.bindings]]
 name = "RATE_LIMITER"
 type = "ratelimit"

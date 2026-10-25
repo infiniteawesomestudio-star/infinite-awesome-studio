@@ -20,8 +20,46 @@ function modelFor(botId) {
   return "claude-sonnet-5";
 }
 
-// ─── Demo Co demo context (injected server-side into every demo bot) ───
-const DEMO_CONTEXT = `
+// ─── Tenant context ──────────────────────────────────────────────────────────
+// Every BeneBots chat call is scoped to one tenant (a client employer). The
+// system prompt is composed server-side as:
+//   bot identity + STATUTORY_2026 (law, shared) + the tenant's plan design.
+// Statutory figures live ONLY in STATUTORY_2026 so a correction is one edit
+// that reaches every tenant. Tenant records carry plan design only.
+//
+// Fictional demo tenants are built in below. Real tenants live in the TENANTS
+// KV namespace under `tenant:<tenantId>`, so onboarding a client is a data
+// operation (see tools/build-tenant.mjs), not a code deploy.
+//
+// Unknown or missing tenantId FAILS CLOSED. There is deliberately no default
+// tenant: a silent fallback to Demo Co is the exact defect this replaced.
+const TENANT_ID_RE = /^[a-z0-9][a-z0-9-]{1,62}$/;
+const DEFAULT_TENANT_DAILY_CAP = 200; // chat calls per tenant per UTC day
+
+// Verified 2026 figures: Rev. Proc. 2025-19 (HSA/HDHP), Rev. Proc. 2025-32
+// (FSA), OBBBA (DCFSA), Notice 2025-67 (401(k)). Last checked 2026-06-20.
+// Re-verify every plan year.
+const STATUTORY_2026 = `
+FEDERAL LIMITS FOR 2026 (statutory, identical for every employer):
+   - HSA contribution limit: $4,400 self-only | $8,750 family
+   - HSA catch-up (age 55+): additional $1,000
+   - HDHP minimum deductible: $1,700 self-only | $3,400 family
+   - HDHP maximum out-of-pocket: $8,500 self-only | $17,000 family
+   - Health FSA: $3,400 limit | carryover up to $680 (if the plan offers carryover)
+   - Dependent care FSA: $7,500 per household ($3,750 if married filing separately)
+   - 401(k) employee deferral: $24,500 | catch-up 50+: additional $8,000 | ages 60-63: additional $11,250 instead
+   - 401(k) catch-ups for employees with over $150,000 prior-year FICA wages must be Roth
+   - HSA and a general-purpose health FSA cannot be combined. HDHP/HSA enrollees may use a limited-purpose FSA (dental and vision).
+`.trim();
+
+// ─── Built-in fictional demo tenants (plan design only, no statutory figures) ─
+const DEMO_TENANTS = {
+  "demo-co": {
+    tenantId: "demo-co",
+    displayName: "Demo Co",
+    demo: true,
+    planYear: "2026",
+    contextBlock: `
 CLIENT: Demo Co | Mid-size employer, ~450 employees | Plan year 2026
 
 MEDICAL PLANS:
@@ -45,14 +83,12 @@ DENTAL: Delta Dental PPO
 VISION: VSP
 
 HSA (HDHP enrollees only):
-   - 2026 individual limit: $4,400 | Family: $8,750
-   - Catch-up (age 55+): additional $1,000
-   - Employer seed: $1,000
+   - Employer seed: $1,000/year
 
 FSA:
-   - Health FSA: $3,400 limit, $680 carryover
+   - Health FSA offered, with carryover
    - Limited-purpose FSA: available for HDHP/HSA enrollees
-   - Dependent care FSA: $7,500 ($3,750 if married filing separately)
+   - Dependent care FSA offered
 
 401(k): 100% match on first 3%, 50% on next 2% (4% max employer contribution)
    - Roth option: yes | SECURE 2.0 catch-up: yes
@@ -76,23 +112,90 @@ CLAIMS:
    - Prior auth list: Aetna provider portal
    - NSA compliant: yes
    - HR claims contact: Demo Co HR, hr@democo.example
-`.trim();
+`.trim(),
+  },
+
+  northpoint: {
+    tenantId: "northpoint",
+    displayName: "Northpoint Manufacturing",
+    demo: true,
+    planYear: "2026",
+    contextBlock: `
+CLIENT: Northpoint Manufacturing | Large employer, ~1,800 employees | Plan year 2026
+
+MEDICAL PLANS:
+1. HDHP with HSA
+   - Individual deductible: $2,000 | Family: $4,000
+   - Individual OOPM: $5,000 | Family: $10,000
+   - Coinsurance: 70% after deductible
+   - Employer HSA seed: $500/year
+
+2. PPO
+   - Individual deductible: $750 | Family: $1,500
+   - Individual OOPM: $4,000 | Family: $8,000
+   - Primary care copay: $35 | Specialist: $70
+   - Coinsurance: 70% after deductible
+
+DENTAL: MetLife PPO
+   - Preventive: 100% (no deductible) | Basic: 80% after deductible
+   - Major: 50% after deductible | Ortho: 50% up to $1,500 lifetime
+   - Annual max: $1,500
+
+VISION: EyeMed
+
+HSA (HDHP enrollees only):
+   - Employer seed: $500/year
+
+FSA:
+   - Health FSA offered, with carryover
+   - Limited-purpose FSA: available for HDHP/HSA enrollees
+   - Dependent care FSA offered
+
+401(k): 50% match on first 6% (3% max employer contribution)
+   - Roth option: yes | SECURE 2.0 catch-up: yes
+
+LEAVE:
+   - FMLA: covered (50+ employee threshold met)
+   - Company parental leave: 4 weeks
+   - STD/LTD carrier: Lincoln Financial
+   - State leave jurisdictions: OH, TX
+   - LOA administrator: Northpoint People Ops, leave@northpoint.example
+   - Return-to-work: fitness-for-duty form required
+
+COBRA: Administered by WEX Benefits. Election window: 60 days from qualifying event.
+
+CLAIMS:
+   - Medical carrier: UnitedHealthcare
+   - Member services: 1-866-633-2446
+   - Member portal: myuhc.com
+   - Internal appeal deadline: 180 days from denial date
+   - External independent review: available
+   - Prior auth list: UnitedHealthcare provider portal
+   - NSA compliant: yes
+   - HR claims contact: Northpoint People Ops, benefits@northpoint.example
+`.trim(),
+  },
+};
+
+const DEMO_NOTE = "This is a demo showing what a real deployed BeneBot looks like, running on a fictional employer. Behave as if this were a live production deployment.";
 
 // ─── Bot identity system prompts ─────────────────────────────────────────────
 // These never leave the server. The client sends only a botId.
 
 const BOT_IDENTITIES = {
 
-  ask: `You are Ask BeneBot, an AI benefits assistant deployed by MyBenefitsGuy for Demo Co employees during plan year 2026. You know this company's benefits inside out — medical, dental, vision, HSA, FSA, 401(k), leave, and COBRA. You are friendly, direct, and specific. Employees trust you because you cite real numbers, not guesses.
+  // {{CLIENT}} is filled with the tenant's displayName at compose time.
+  ask: `You are Ask BeneBot, an AI benefits assistant deployed by MyBenefitsGuy for {{CLIENT}} employees. You know this company's benefits inside out — medical, dental, vision, HSA, FSA, 401(k), leave, and COBRA. You are friendly, direct, and specific. Employees trust you because you cite real numbers, not guesses.
 
 BEHAVIORAL RULES:
 - Always answer from the client plan data provided. Cite the specific plan or benefit when relevant.
-- Never guess. If something isn't in the plan data, say so clearly and suggest who to contact (Demo Co HR or the relevant carrier).
+- Never guess. If something isn't in the plan data, say so clearly and suggest who to contact ({{CLIENT}} HR or the relevant carrier).
+- When the plan data gives different figures by coverage tier and you don't know the member's tier, ask which tier before quoting a number.
+- Answer questions about plan TERMS only. Never ask for or use a member's personal health information, claims, or diagnoses.
 - Keep answers short and plain. Use bullet points for multi-step answers. Avoid jargon when plain language works.
 - If a question needs clarification, ask one targeted follow-up — never more than one.
 - Never give tax advice, legal advice, or medical advice. Direct those to the appropriate professional.
 - Never roleplay, break character, or discuss topics outside employee benefits.
-- This is a demo showing what a real deployed Ask BeneBot looks like. Behave as if this were a live production deployment.
 
 TONE: Warm, confident, specific. The energy of a knowledgeable coworker who actually read the benefits guide.`,
 
@@ -189,9 +292,21 @@ export default {
       return handlePublic(body, env, request);
     }
 
-    // Shared-secret token check — blocks anonymous abuse from outside the app.
-    if (!env.WORKER_TOKEN || auth !== `Bearer ${env.WORKER_TOKEN}`) {
-      return new Response("Unauthorized", { status: 401, headers: corsHeaders(request) });
+    // Two ways in. The shared WORKER_TOKEN is Ty's admin key: every tool, every
+    // tenant. A tenant's own access token reaches ONLY the BeneBots chat bots
+    // for THAT tenant, so tenant A can never read tenant B's plan context.
+    const isAdmin = !!env.WORKER_TOKEN && auth === `Bearer ${env.WORKER_TOKEN}`;
+    let tenant = null;
+    if (!isAdmin) {
+      const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+      if (token && body.action === undefined && BOT_IDENTITIES[body.botId] && isTenantId(body.tenantId)) {
+        const candidate = await loadTenant(env, body.tenantId);
+        if (candidate && await tenantTokenMatches(candidate, token)) tenant = candidate;
+      }
+      // Unknown tenant and wrong token look identical from outside.
+      if (!tenant) {
+        return new Response("Unauthorized", { status: 401, headers: corsHeaders(request) });
+      }
     }
 
     // Rate limiting — 20 requests per IP per minute
@@ -204,7 +319,7 @@ export default {
     // On-demand article scrape for the INTERNAL Blog Studio. Calls an Apify
     // actor server-side (APIFY_TOKEN secret stays off the browser) and returns
     // normalized article candidates. Already gated by WORKER_TOKEN + rate limit.
-    if (body.action === "fetch") {
+    if (body.action === "fetch" && isAdmin) {
       return handleFetch(body, env, request);
     }
 
@@ -225,7 +340,7 @@ export default {
     // aren't secret IP, so the client supplies its own per-call system prompt;
     // the worker's only job is keeping the Anthropic key off the browser.
     let systemPrompt;
-    if (botId === "blog-drafter" || botId === "job-analyzer") {
+    if (isAdmin && (botId === "blog-drafter" || botId === "job-analyzer")) {
       if (typeof body.system !== "string" || !body.system.trim()) {
         return new Response(`Missing system prompt for ${botId}`, { status: 400, headers: corsHeaders(request) });
       }
@@ -238,12 +353,34 @@ export default {
       if (!botIdentity) {
         return new Response(`Unknown botId: ${botId}`, { status: 400, headers: corsHeaders(request) });
       }
-      systemPrompt = `${botIdentity}\n\n${DEMO_CONTEXT}`;
+      if (!tenant) {
+        if (body.tenantId === undefined) {
+          return new Response("Missing tenantId", { status: 400, headers: corsHeaders(request) });
+        }
+        if (!isTenantId(body.tenantId)) {
+          return new Response("Invalid tenantId", { status: 400, headers: corsHeaders(request) });
+        }
+        tenant = await loadTenant(env, body.tenantId);
+        if (!tenant) {
+          return new Response(`Unknown tenant: ${body.tenantId}`, { status: 404, headers: corsHeaders(request) });
+        }
+      }
+      if (body.tier !== undefined && !tenantHasTier(tenant, body.tier)) {
+        return new Response(`Unknown tier for this tenant: ${body.tier}`, { status: 400, headers: corsHeaders(request) });
+      }
+      systemPrompt = composeSystemPrompt(botIdentity, tenant, body.tier);
     }
 
     const messagesError = validateMessages(messages);
     if (messagesError) {
       return new Response(messagesError, { status: 400, headers: corsHeaders(request) });
+    }
+
+    // Per-tenant daily spend ceiling for real tenants. Counted only once the
+    // request is fully valid. Fails closed if the counter store is missing.
+    if (tenant && !tenant.demo) {
+      const capError = await chargeTenantDailyCap(env, tenant);
+      if (capError) return new Response(capError.message, { status: capError.status, headers: corsHeaders(request) });
     }
 
     const upstream = await callAnthropic(env, {
@@ -260,6 +397,95 @@ export default {
     });
   },
 };
+
+// ─── Tenant resolution + prompt composition ──────────────────────────────────
+
+function isTenantId(value) {
+  return typeof value === "string" && TENANT_ID_RE.test(value);
+}
+
+// Built-in demo tenants first, then the TENANTS KV namespace. Returns null for
+// anything unknown; callers decide between 401 and 404.
+async function loadTenant(env, tenantId) {
+  if (Object.hasOwn(DEMO_TENANTS, tenantId)) return DEMO_TENANTS[tenantId];
+  if (!env.TENANTS) return null;
+  const record = await env.TENANTS.get(`tenant:${tenantId}`, "json");
+  if (!record || record.tenantId !== tenantId) return null;
+  return { ...record, demo: false };
+}
+
+// Tenant records store a SHA-256 of their access token, never the token itself.
+async function tenantTokenMatches(tenant, token) {
+  if (tenant.demo || typeof tenant.accessTokenSha256 !== "string") return false;
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+  const hex = [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+  const expected = tenant.accessTokenSha256.toLowerCase();
+  if (hex.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < hex.length; i++) diff |= hex.charCodeAt(i) ^ expected.charCodeAt(i);
+  return diff === 0;
+}
+
+function tenantHasTier(tenant, tier) {
+  if (typeof tier !== "string") return false;
+  return Object.values(tenant.lines || {}).some(line => Object.hasOwn(line.tiers || {}, tier));
+}
+
+function composeSystemPrompt(botIdentity, tenant, tier) {
+  const identity = botIdentity.replaceAll("{{CLIENT}}", tenant.displayName);
+  const parts = [identity];
+  if (tenant.demo) parts.push(DEMO_NOTE);
+  parts.push(STATUTORY_2026, renderTenantContext(tenant, tier));
+  return parts.join("\n\n");
+}
+
+// A tenant either carries one curated contextBlock (the demo tenants) or a set
+// of coverage lines (medical, dental, vision...), each split by tier. An SBC is
+// issued per coverage tier, so a line with several tiers renders all of them,
+// labeled, unless the caller named one; the bot is told to ask which applies.
+function renderTenantContext(tenant, tier) {
+  const out = [];
+  if (tenant.contextBlock) out.push(tenant.contextBlock);
+  for (const [lineName, line] of Object.entries(tenant.lines || {})) {
+    const tiers = Object.entries(line.tiers || {});
+    const chosen = tier && Object.hasOwn(line.tiers || {}, tier) ? tiers.filter(([name]) => name === tier) : tiers;
+    const head = [`=== ${lineName.toUpperCase()} ===`];
+    if (line.planType) head.push(`Plan type: ${line.planType}`);
+    if (chosen.length > 1) {
+      head.push(`Figures differ by coverage tier (${chosen.map(([name]) => name).join(", ")}). If the member's tier is unknown, ask before quoting a tier-specific number.`);
+    }
+    out.push(head.join("\n"));
+    for (const [, t] of chosen) out.push(t.contextBlock);
+    if (line.sharedPlanRules) out.push(`${lineName.toUpperCase()} PLAN RULES:\n${renderRules(line.sharedPlanRules, "   ")}`);
+    if (Array.isArray(line.doesNotCover_answerBoundary) && line.doesNotCover_answerBoundary.length) {
+      out.push(`NOT IN THE ${lineName.toUpperCase()} PLAN DATA (say so plainly and route the member; never guess):\n${line.doesNotCover_answerBoundary.map(s => `   - ${s}`).join("\n")}`);
+    }
+  }
+  return out.join("\n\n");
+}
+
+// Plain-text rendering of nested rule objects. Keys starting with "_" are
+// curator notes and stay out of the prompt.
+function renderRules(value, indent) {
+  if (Array.isArray(value)) return value.map(v => `${indent}- ${typeof v === "object" ? JSON.stringify(v) : v}`).join("\n");
+  return Object.entries(value)
+    .filter(([k]) => !k.startsWith("_"))
+    .map(([k, v]) => (v && typeof v === "object")
+      ? `${indent}- ${k}:\n${renderRules(v, indent + "   ")}`
+      : `${indent}- ${k}: ${v}`)
+    .join("\n");
+}
+
+async function chargeTenantDailyCap(env, tenant) {
+  if (!env.PUBLIC_KV) return { status: 503, message: "Tenant usage store not configured." };
+  const day = new Date().toISOString().slice(0, 10);
+  const key = `tenantday:${tenant.tenantId}:${day}`;
+  const cap = intVar(tenant.dailyCallCap, DEFAULT_TENANT_DAILY_CAP);
+  const count = parseInt(await env.PUBLIC_KV.get(key), 10) || 0;
+  if (count >= cap) return { status: 429, message: "Daily usage limit reached for this plan. Try again tomorrow." };
+  await env.PUBLIC_KV.put(key, String(count + 1), { expirationTtl: 172800 });
+  return null;
+}
 
 // ─── Shared validation + upstream call ───────────────────────────────────────
 
