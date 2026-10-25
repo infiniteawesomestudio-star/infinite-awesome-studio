@@ -21,11 +21,10 @@ id = "785e9d97fbab4219822575b1695c0d97"
 # Real tenant records (one KV key per client: tenant:<tenantId>). Built with
 # tools/build-tenant.mjs. Until this is bound, only the built-in fictional demo
 # tenants resolve and every other tenantId fails closed with a 404.
-# Create once:  npx wrangler kv namespace create TENANTS
-# then uncomment and paste the id it prints:
-# [[kv_namespaces]]
-# binding = "TENANTS"
-# id = "<id from the create command>"
+# Created 2026-10-25 with: npx wrangler kv namespace create TENANTS
+[[kv_namespaces]]
+binding = "TENANTS"
+id = "2827237fad734eadaaff1a7e76589b97"
 
 [[unsafe.bindings]]
 name = "RATE_LIMITER"
