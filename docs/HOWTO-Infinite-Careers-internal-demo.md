@@ -10,7 +10,7 @@
 
 ## Pilot access (magic links)
 
-Named pilot testers get `?access=<code>` links. The code is checked against the worker's `PILOT_CODES` secret and bypasses Turnstile and both caps (still burst rate-limited). Codes + links + PII rules: `02-Products/Infinite-Careers/02-pilot-access.md` in the IAS vault (private, not in this repo). Rotate/revoke by editing the `PILOT_CODES` secret (comma-separated). Pilot codes also unlock localhost origins on the public route, so Ty-mediated runs work against the deployed worker without the token file.
+Named pilot testers get `?access=<code>` links. The code is checked against the worker's `PILOT_CODES` secret and bypasses Turnstile and both caps (still burst rate-limited). Codes + links + PII rules: `04-Products/Infinite-Careers/02-pilot-access.md` in the IAS vault (private, not in this repo). Rotate/revoke by editing the `PILOT_CODES` secret (comma-separated). Pilot codes also unlock localhost origins on the public route, so Ty-mediated runs work against the deployed worker without the token file.
 
 ## Running internal live mode
 

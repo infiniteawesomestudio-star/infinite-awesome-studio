@@ -13,7 +13,7 @@ import worker from "../index.js";
 import { buildTenant } from "../tools/build-tenant.mjs";
 
 const FIXTURES_DIR = process.env.BENEBOTS_FIXTURES_DIR ||
-  join(homedir(), "Library/CloudStorage/OneDrive-Personal/Obsidian/Infinite Awesome Studio/02-Products/BeneBots/fixtures");
+  join(homedir(), "Library/CloudStorage/OneDrive-Personal/Obsidian/Infinite Awesome Studio/03-Benefits/BeneBots/fixtures");
 const fixture = name => JSON.parse(readFileSync(join(FIXTURES_DIR, name), "utf8"));
 const medical = fixture("tenant-testco-hdhp.json");
 const dental = fixture("tenant-testco-dental-dhmo.json");
