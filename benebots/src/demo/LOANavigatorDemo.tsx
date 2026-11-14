@@ -9,19 +9,19 @@ type State = 'CA' | 'NY' | 'WA' | 'other'
 const STATE_LEAVE: Record<Exclude<State, 'other'>, { name: string; paidLeave: string; duration: string; note: string }> = {
   CA: {
     name: 'California',
-    paidLeave: 'California Paid Family Leave (PFL), up to 8 weeks at 60–70% of wages',
+    paidLeave: 'California Paid Family Leave (PFL), up to 8 weeks at about 70–90% of wages depending on income, capped at $1,765/week (2026)',
     duration: 'CFRA: up to 12 weeks job-protected leave',
     note: 'CA requires leave stacking analysis between CFRA, PDL (pregnancy disability), and FMLA. They do not run concurrently in all cases.',
   },
   NY: {
     name: 'New York',
-    paidLeave: 'NY Paid Family Leave, up to 12 weeks at 67% of statewide average weekly wage',
+    paidLeave: 'NY Paid Family Leave, up to 12 weeks at 67% of your average weekly wage, capped at $1,228.53/week (2026)',
     duration: '12 weeks of job-protected, paid leave',
     note: 'NY PFL is employee-funded via payroll deduction. HR must track the NY DBL (disability) integration with PFL when leaves overlap.',
   },
   WA: {
     name: 'Washington',
-    paidLeave: 'WA Paid Family & Medical Leave, up to 12 weeks (18 in some cases) at 90% of wages up to state average',
+    paidLeave: 'WA Paid Family & Medical Leave, up to 12 weeks (16 combined, 18 with pregnancy complications) at up to 90% of weekly pay, capped at $1,647/week (2026)',
     duration: '12–18 weeks depending on qualifying event',
     note: 'WA PFML has both employee and employer contribution requirements. HR must register and report quarterly.',
   },
@@ -32,18 +32,18 @@ function buildEmployeeContent(DEMO_PROFILE: Client): Record<State, string[]> {
   return {
     CA: [
       `${co} offers ${DEMO_PROFILE.loa.companyParentalLeave} of fully paid parental leave. This runs concurrently with FMLA (up to 12 weeks) and CFRA.`,
-      `California adds up to 8 weeks of paid CA PFL through the state program, which begins where ${co}'s paid leave ends.`,
+      `California adds up to 8 weeks of paid CA PFL through the state program (about 70–90% of wages depending on income, up to $1,765/week in 2026), which begins where ${co}'s paid leave ends.`,
       `Short-term disability through ${DEMO_PROFILE.loa.stdCarrier} covers your income during medical portions of leave (pregnancy recovery, serious health condition).`,
       `Contact ${DEMO_PROFILE.loa.loaAdministrator} to start your leave paperwork. ${co} requires the fitness-for-duty form before returning to work.`,
     ],
     NY: [
-      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of paid parental leave stacks with NY PFL (up to 12 weeks at 67% of the statewide average weekly wage).`,
+      `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of paid parental leave stacks with NY PFL (up to 12 weeks at 67% of your average weekly wage, capped at $1,228.53/week in 2026).`,
       `FMLA runs concurrently with NY PFL for qualifying events. You typically only get the longer of the two, not both added together.`,
       `STD through ${DEMO_PROFILE.loa.stdCarrier} covers disability-related absence (pregnancy disability, serious health condition). PFL covers bonding or family care.`,
       `Start with ${DEMO_PROFILE.loa.loaAdministrator}. NY requires 30 days notice when leave is foreseeable.`,
     ],
     WA: [
-      `WA Paid Family & Medical Leave provides up to 12 weeks (18 in some cases) at approximately 90% of your wage up to the state average.`,
+      `WA Paid Family & Medical Leave provides up to 12 weeks (16 combined, 18 with pregnancy complications) at up to 90% of your weekly pay, capped at $1,647/week in 2026.`,
       `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of paid parental leave runs concurrently with FMLA and WA PFML.`,
       `Notify ${DEMO_PROFILE.loa.loaAdministrator} as early as possible, ideally 30 days before leave. WA PFML applications go through the WA Employment Security Department directly.`,
       `Fitness-for-duty form required before returning from medical leave.`,
@@ -53,6 +53,7 @@ function buildEmployeeContent(DEMO_PROFILE: Client): Record<State, string[]> {
       `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} of fully paid parental leave applies for new child events. This is ${co}'s policy on top of FMLA.`,
       `STD/LTD coverage through ${DEMO_PROFILE.loa.stdCarrier} provides income replacement during disability-related absences.`,
       `Contact ${DEMO_PROFILE.loa.loaAdministrator} to initiate. Allow 5–7 business days for paperwork processing.`,
+      `This view covers federal rules only. Many states run their own paid family and medical leave programs, so check your state's program before planning how your pay is covered.`,
     ],
   }
 }
@@ -87,6 +88,7 @@ function buildHrContent(DEMO_PROFILE: Client): Record<State, string[]> {
       `STD/LTD through ${DEMO_PROFILE.loa.stdCarrier} manages income replacement. Coordinate leave dates with the carrier's claim status.`,
       `Benefits continue during FMLA at the same cost. If the employee fails to return, you may recover the employer's share of premiums paid.`,
       `${co}'s ${DEMO_PROFILE.loa.companyParentalLeave} paid parental leave policy runs concurrently with FMLA for qualifying events. Document both.`,
+      `This view covers federal FMLA only. Check whether the employee's work state runs its own paid leave program. Some collect payroll contributions before any benefits are payable: Maryland collects from January 2027 and pays benefits from January 2028.`,
     ],
   }
 }
